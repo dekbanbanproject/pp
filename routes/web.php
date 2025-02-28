@@ -3957,10 +3957,7 @@ Route::match(['get','post'],'env_trash_parameter_switchactive',[App\Http\Control
  Route::match(['get', 'post'], 'report_prs_gas/{id}', [App\Http\Controllers\ReportPrs::class, 'report_prs_gas'])->name('ch.report_prs_gas'); //
 
 
-  //********************* */ report_prs  ***********************************
-  Route::match(['get', 'post'], 'report_prs', [App\Http\Controllers\ReportPrs::class, 'report_prs'])->name('ch.report_prs'); //
-  Route::match(['get', 'post'], 'report_prs_air/{id}', [App\Http\Controllers\ReportPrs::class, 'report_prs_air'])->name('ch.report_prs_air'); //
-  Route::match(['get', 'post'], 'report_prs_gas/{id}', [App\Http\Controllers\ReportPrs::class, 'report_prs_gas'])->name('ch.report_prs_gas'); //
+ 
 
 
 });
