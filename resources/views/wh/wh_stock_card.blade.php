@@ -141,15 +141,15 @@
                                                 @foreach ($stock_card_recieve as $item)
                                                 @php $i++; @endphp   
                                                         <tr>
-                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="6%">{{DateThai($item->recieve_date)}}</td>
+                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="6%"><span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">{{DateThai($item->recieve_date)}}</span></td>
                                                             <td class="text-start" style="border: 1px solid rgb(250, 232, 221);font-size: 12px;"><span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">{{$item->supplies_namesub}}</span></td>
-                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="6%">{{$item->recieve_po_sup}}</td>
-                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">{{$item->one_price}}</td>
-                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">{{$item->qty}}</td> 
+                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="6%"><span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">{{$item->recieve_po_sup}}</span></td>
+                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%"><span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">{{$item->one_price}}</span></td>
+                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%"><span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">{{$item->qty}}</span></td> 
                                                             <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">-</td> 
-                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">{{$item->total_allqty}}</td> 
-                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">{{number_format($item->total_allprice, 2)}}</td> 
-                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="10%">{{$item->lot_no}}</td> 
+                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%"><span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">{{$item->total_allqty}}</span></td> 
+                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%"><span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">{{number_format($item->total_allprice, 2)}}</span></td> 
+                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="10%"><span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">LOT: {{$item->lot_no}}</span></td> 
                                                         </tr>                                                 
                                                         @php
                                                             $datashow2 = DB::select(
@@ -177,7 +177,7 @@
                                                                     <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">{{$item2->qty_pay}}</td> 
                                                                     <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">{{$item2->total_stock}}</td> 
                                                                     <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">{{number_format($item2->total_stock_price, 2)}}</td> 
-                                                                    <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="10%">{{$item2->lot_no}}</td> 
+                                                                    <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="10%">LOT: {{$item2->lot_no}}</td> 
                                                                 </tr> 
                                                         @endforeach
 
