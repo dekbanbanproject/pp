@@ -147,7 +147,13 @@
                                                             <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%"><span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">{{$item->one_price}}</span></td>
                                                             <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%"><span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">{{$item->qty}}</span></td> 
                                                             <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">-</td> 
-                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%"><span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">{{$item->total_allqty}}</span></td> 
+                                                            <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">
+                                                                {{-- @if ($item->total_allqty = '0')                                                                
+                                                                    <span class="badge" style="background-color: rgb(252, 27, 83);font-size: 12px;">{{$item->total_allqty}}</span>
+                                                                @else --}}
+                                                                    <span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">{{$item->total_allqty}}</span>
+                                                                {{-- @endif  --}}
+                                                            </td> 
                                                             <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%"><span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">{{number_format($item->total_allprice, 2)}}</span></td> 
                                                             <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="10%"><span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">LOT: {{$item->lot_no}}</span></td> 
                                                         </tr>                                                 
@@ -175,8 +181,22 @@
                                                                     <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">{{$item2->one_price}}</td>
                                                                     <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">-</td> 
                                                                     <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">{{$item2->qty_pay}}</td> 
-                                                                    <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">{{$item2->total_stock}}</td> 
-                                                                    <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">{{number_format($item2->total_stock_price, 2)}}</td> 
+                                                                    
+                                                                    <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">
+                                                                        @if ($item2->total_stock == '0')                                                                
+                                                                            <span class="badge" style="background-color: rgb(252, 27, 83);font-size: 12px;">{{$item2->total_stock}}</span>
+                                                                        @else
+                                                                            {{$item2->total_stock}}
+                                                                        @endif 
+                                                                    </td> 
+                                                                    <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">
+                                                                        @if ($item2->total_stock_price == '0')                                                                
+                                                                            <span class="badge" style="background-color: rgb(252, 27, 83);font-size: 12px;">{{number_format($item2->total_stock_price, 2)}}</span>
+                                                                        @else
+                                                                            {{number_format($item2->total_stock_price, 2)}}
+                                                                        @endif 
+                                                                        
+                                                                    </td> 
                                                                     <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="10%">LOT: {{$item2->lot_no}}</td> 
                                                                 </tr> 
                                                         @endforeach
