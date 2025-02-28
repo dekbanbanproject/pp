@@ -3945,8 +3945,16 @@ Route::match(['get','post'],'env_trash_parameter_switchactive',[App\Http\Control
   Route::match(['get', 'post'], 'dental_detail_patient', [App\Http\Controllers\DentalController::class, 'dental_detail_patient'])->name('den.dental_detail_patient'); //
   Route::match(['get', 'post'], 'dental_report_appointment', [App\Http\Controllers\DentalController::class, 'dental_report_appointment'])->name('den.dental_report_appointment'); //
 
-  //********************* */ CHECK UP  ***********************************
-  Route::match(['get', 'post'], 'checkup_main', [App\Http\Controllers\CheckupController::class, 'checkup_main'])->name('ch.checkup_main'); //
+ //********************* */ CHECK UP  ***********************************
+ Route::match(['get', 'post'], 'checkup_main', [App\Http\Controllers\CheckupController::class, 'checkup_main'])->name('ch.checkup_main'); //
+ Route::match(['get', 'post'], 'checkup_report', [App\Http\Controllers\CheckupController::class, 'checkup_report'])->name('ch.checkup_report'); //
+ Route::match(['get', 'post'], 'checkup_report_detail/{hn}/{vstdate}', [App\Http\Controllers\CheckupController::class, 'checkup_report_detail'])->name('ch.checkup_report_detail'); //
+
+
+ //********************* */ report_prs  ***********************************
+ Route::match(['get', 'post'], 'report_prs', [App\Http\Controllers\ReportPrs::class, 'report_prs'])->name('ch.report_prs'); //
+ Route::match(['get', 'post'], 'report_prs_air/{id}', [App\Http\Controllers\ReportPrs::class, 'report_prs_air'])->name('ch.report_prs_air'); //
+ Route::match(['get', 'post'], 'report_prs_gas/{id}', [App\Http\Controllers\ReportPrs::class, 'report_prs_gas'])->name('ch.report_prs_gas'); //
 
 
   //********************* */ report_prs  ***********************************
