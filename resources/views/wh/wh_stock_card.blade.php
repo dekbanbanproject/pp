@@ -119,10 +119,13 @@
                                         <table class="table table-sm table-striped table-bordered" style="width: 100%;">
                                                 <thead> 
                                                     <tr style="font-size: 11px;height: 11px;color:rgb(65, 63, 63)" class="text-center">                            
-                                                    <th rowspan="2" style="border: 1px solid rgb(250, 214, 159);width: 6%;background-color: rgb(252, 237, 219);color:#252424">ว/ด/ป</th>
+                                                    <th rowspan="2" style="border: 1px solid rgb(250, 214, 159);width: 6%;background-color: rgb(252, 237, 219);color:#252424">
+                                                        <span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">ว/ด/ป(รับ)</span>
+                                                         ||  ว/ด/ป(จ่าย)
+                                                    </th>
                                                     <th rowspan="2" style="border: 1px solid rgb(250, 214, 159);width: 12%;background-color: rgb(252, 237, 219);color:#252424">
                                                         <span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">รับจาก</span>
-                                                         /จ่ายให้
+                                                         || จ่ายให้
                                                         </th>
                                                     <th rowspan="2" style="border: 1px solid rgb(250, 214, 159);width: 6%;background-color: rgb(252, 237, 219);color:#252424">เลขที่เอกสาร</th> 
                                                     <th rowspan="2" style="border: 1px solid rgb(250, 214, 159);width: 4%;background-color: rgb(252, 237, 219);color:#252424">ราคาต่อหน่วย</th>
