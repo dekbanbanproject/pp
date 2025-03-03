@@ -1391,7 +1391,8 @@ class WhController extends Controller
         //     WHERE a.active ="Y" AND e.stock_year ="'.$bg_yearnow.'"
         //     GROUP BY e.pro_id
         // ');
-        // $data['wh_recieve_sub']      = DB::select('SELECT * FROM wh_recieve_sub WHERE wh_recieve_id = "'.$id.'"');
+        $wh_request_subpay           = DB::select('SELECT * FROM wh_request_subpay WHERE wh_request_id = "'.$id.'"');
+        // dd($wh_request_subpay);
         $data['wh_request_subpay']      = DB::select('SELECT * FROM wh_request_subpay WHERE wh_request_id = "'.$id.'"');
         $year                        = substr(date("Y"),2) + 43;
         $mounts                      = date('m');
