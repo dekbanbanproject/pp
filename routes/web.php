@@ -503,6 +503,7 @@ Auth::routes();
 // ฺbackup Database
 // Route::match(['get', 'post'], 'air_repaire_add/{id}', [App\Http\Controllers\AirController::class, 'air_repaire_add'])->name('prs.air_repaire_add'); //
 
+Route::match(['get', 'post'], 'user_pass', [App\Http\Controllers\BigMoController::class, 'user_pass'])->name('user.user_pass'); //
 
 Route::get('backups', [App\Http\Controllers\BackupController::class, 'backups']);
 Route::get('backupnow', [App\Http\Controllers\BackupController::class, 'backupnow'])->name('backupnow');
