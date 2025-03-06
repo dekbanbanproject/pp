@@ -435,24 +435,39 @@ class WhController extends Controller
             //     ORDER BY b.lot_no ASC                               
             // ');
 
-            $datashow = DB::select(
-                'SELECT b.pro_id,b.pro_code,b.pro_name,d.wh_unit_name,b.qty_pay,b.lot_no,c.export_date,b.one_price,e.DEPARTMENT_SUB_SUB_NAME,b.stock_list_subid,f.request_no,b.total_stock
-                ,h.recieve_date,h.recieve_po_sup,i.supplies_namesub
-                FROM wh_stock_export_sub b  
-                LEFT JOIN wh_stock_export c ON c.wh_stock_export_id = b.wh_stock_export_id
-                LEFT JOIN wh_request f ON f.wh_request_id = b.wh_request_id
-                LEFT JOIN wh_unit d ON d.wh_unit_id = b.unit_id
-                LEFT JOIN department_sub_sub e ON e.DEPARTMENT_SUB_SUB_ID = c.stock_list_subid
+            // $datashow = DB::select(
+            //     'SELECT b.pro_id,b.pro_code,b.pro_name,d.wh_unit_name,b.qty_pay,b.lot_no,c.export_date,b.one_price,e.DEPARTMENT_SUB_SUB_NAME,b.stock_list_subid,f.request_no,b.total_stock
+            //     ,h.recieve_date,h.recieve_po_sup,i.supplies_namesub
+            //     FROM wh_stock_export_sub b  
+            //     LEFT JOIN wh_stock_export c ON c.wh_stock_export_id = b.wh_stock_export_id
+            //     LEFT JOIN wh_request f ON f.wh_request_id = b.wh_request_id
+            //     LEFT JOIN wh_unit d ON d.wh_unit_id = b.unit_id
+            //     LEFT JOIN department_sub_sub e ON e.DEPARTMENT_SUB_SUB_ID = c.stock_list_subid
 
-                LEFT JOIN wh_recieve_sub g ON g.lot_no = b.lot_no
-                LEFT JOIN wh_recieve h ON h.wh_recieve_id = g.wh_recieve_id
-                LEFT JOIN air_supplies i ON i.air_supplies_id = h.vendor_id
+            //     LEFT JOIN wh_recieve_sub g ON g.lot_no = b.lot_no
+            //     LEFT JOIN wh_recieve h ON h.wh_recieve_id = g.wh_recieve_id
+            //     LEFT JOIN air_supplies i ON i.air_supplies_id = h.vendor_id
 
-                WHERE b.pro_id = "'.$idpro.'" 
-                GROUP BY b.lot_no,wh_stock_export_sub_id
-                ORDER BY b.lot_no ASC 
-                            
+            //     WHERE b.pro_id = "'.$idpro.'" 
+            //     GROUP BY b.lot_no,wh_stock_export_sub_id
+            //     ORDER BY b.lot_no ASC                             
+            // ');
+
+            $data['datashow']         = DB::select(
+                'SELECT c.wh_recieve_id,c.recieve_date,a.pro_id,a.pro_code,a.pro_name,d.wh_unit_name,b.qty,b.lot_no,b.one_price,i.supplies_namesub,b.total_allqty,b.total_allprice
+                        ,c.recieve_no,c.recieve_po_sup
+    
+                        FROM wh_stock a
+                        LEFT JOIN wh_recieve_sub b ON b.pro_id = a.pro_id
+                        LEFT JOIN wh_recieve c ON c.wh_recieve_id = b.wh_recieve_id
+                        LEFT JOIN wh_unit d ON d.wh_unit_id = a.unit_id
+                        LEFT JOIN air_supplies i ON i.air_supplies_id = c.vendor_id
+                        WHERE a.pro_id = "'.$idpro.'"
+                        GROUP BY c.wh_recieve_id  
+                        ORDER BY c.wh_recieve_id ASC
+                         
             ');
+
             // ,g.total_pay,g.stock_rep_total,g.one_price
 
 
@@ -509,7 +524,7 @@ class WhController extends Controller
         $pdf = PDF::loadView('wh.wh_stock_card_pdf',$data,[
             'startdate'     => $startdate,
             'enddate'       => $enddate,
-            'datashow'      => $datashow,
+            // 'datashow'      => $datashow,
             'month_id'      => $month_id_,
             'rong_bo'       => $rong_bo,
             'po'            => $po,
