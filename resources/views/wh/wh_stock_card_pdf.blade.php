@@ -109,7 +109,7 @@
     </div> --}}
    
     @php
-      $row_in_table = 2;
+      $row_in_table = 12;
       $row2_in_table = 20;
     @endphp
     @forelse ($datashow as $item)
@@ -210,12 +210,20 @@
                                           GROUP BY b.lot_no,b.wh_stock_export_sub_id
                                           ORDER BY b.lot_no ASC  
                                   ');
+
+                                  $count = 1;
                               @endphp
-
+ 
                               @foreach ($datashow2 as $item2) 
-
-                                   
-
+                                    {{--                              
+                                    @if ($count === 15) 
+                                              @php    
+                                                  // break;                                                      
+                                                  $count += 1;
+                                                  // continue;
+                                                  break;   
+                                                @endphp 
+                                    @endif --}}
                                             <tr>
                                                 <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="6%">{{DateThai($item2->export_date)}}</td>
                                                 <td class="text-start" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;">{{$item2->DEPARTMENT_SUB_SUB_NAME}}</td>
@@ -240,19 +248,14 @@
                                                 </td> 
                                                 <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="10%">LOT: {{$item2->lot_no}}</td> 
                                             </tr> 
-
-                                    
-
-
+                                
+                                            @php    
+                                                                                              
+                                            $count += 1;
+                                          @endphp
+                                     
                               @endforeach
-                      
-                                  {{-- <tr style="font-size: 11px;height: 11px;">                                 
-                                      
-                                        <td colspan="7" style="border: 1px solid black;" class="text-center">&nbsp;</td>
-                                        <td colspan="5" style="border: 1px solid black;" class="text-center">&nbsp;</td>  
-                                  </tr>    --}}
-                        
-
+                       
                                                     
 
           @if ($loop->last || $loop->iteration % $row_in_table == 0)
