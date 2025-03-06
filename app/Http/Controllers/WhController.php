@@ -455,8 +455,7 @@ class WhController extends Controller
 
             $data['datashow']         = DB::select(
                 'SELECT c.wh_recieve_id,c.recieve_date,a.pro_id,a.pro_code,a.pro_name,d.wh_unit_name,b.qty,b.lot_no,b.one_price,i.supplies_namesub,b.total_allqty,b.total_allprice
-                        ,c.recieve_no,c.recieve_po_sup
-    
+                        ,c.recieve_no,c.recieve_po_sup    
                         FROM wh_stock a
                         LEFT JOIN wh_recieve_sub b ON b.pro_id = a.pro_id
                         LEFT JOIN wh_recieve c ON c.wh_recieve_id = b.wh_recieve_id

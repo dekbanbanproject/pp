@@ -89,7 +89,7 @@
  
   <div class="container-fluid text-center">
   
-    <div class="row mt-2">
+    {{-- <div class="row mt-2">
       <div class="col-md-12">
         <table style="width: 100%;">
           <tr>
@@ -106,15 +106,15 @@
           </tr> 
         </table>
       </div>
-    </div>
+    </div> --}}
    
     @php
-      $row_in_table = 10;
-      $row2_in_table = 10;
+      $row_in_table = 2;
+      $row2_in_table = 20;
     @endphp
     @forelse ($datashow as $item)
         @if ($loop->iteration % $row_in_table == 1)
-              <!-- <div class="row mt-2">
+               <div class="row mt-2">
                 <div class="col-md-12">
                   <table style="width: 100%;">
                     <tr>
@@ -131,7 +131,7 @@
                     </tr> 
                   </table>
                 </div>
-              </div> -->
+              </div>  
   
               <div class="row mt-2">
                   <div class="col-xl-12">
