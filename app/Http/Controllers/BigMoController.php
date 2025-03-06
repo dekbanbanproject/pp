@@ -209,6 +209,7 @@ public function password_update(Request $request)
     
 }
 
+
 public function user_pass(Request $request)
 {   
     $data['status'] = Status::get();

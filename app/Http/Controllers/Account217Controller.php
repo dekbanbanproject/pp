@@ -324,10 +324,11 @@ class Account217Controller extends Controller
 
 
 
-                ,sum(if(op.income="02",sum_price,0)) +
+                ,(sum(if(op.income="02",sum_price,0)) +
                 sum(if(op.icode IN("1560016","1540073","1530005"),sum_price,0))+
                 sum(if(op.icode IN ("3001412","3001417"),sum_price,0)) +
-                sum(if(op.icode IN ("3010829","3011068","3010864","3010861","3010862","3010863","3011069","3011012","3011070"),sum_price,0)) as debit
+                sum(if(op.icode IN ("3010829","3011068","3010864","3010861","3010862","3010863","3011069","3011012","3011070"),sum_price,0)) - a.rcpt_money)
+                 as debit
 
                 ,(SELECT SUM(opp.sum_price) FROM opitemrece opp LEFT JOIN nondrugitems nn ON nn.icode = opp.icode WHERE opp.an = a.an AND nn.nhso_adp_code IN("5307","5402","5403","5406","5705","72940","5601","9104","9104","4805")) as nonpay
 
@@ -374,7 +375,41 @@ class Account217Controller extends Controller
                 $check = Acc_debtor::where('an', $value->an)->where('account_code', '1102050101.217')->count();
                 if ($check == '0') {
                     if ($value->debit_toa > '0') {
-                        # code...
+                        Acc_debtor::insert([
+                            'hn'                 => $value->hn,
+                            'an'                 => $value->an,
+                            'vn'                 => $value->vn,
+                            'cid'                => $value->cid,
+                            'ptname'             => $value->ptname,
+                            'pttype'             => $value->pttype,
+                            'hospmain'           => $value->hospmain,
+                            'vstdate'            => $value->vstdate,
+                            'rxdate'             => $value->regdate,
+                            'dchdate'            => $value->dchdate,
+                            'acc_code'           => $value->code,
+                            'account_code'       => $value->account_code,
+                            'account_name'       => $value->account_name,
+                            'income_group'       => $value->income_group,
+                            'income'             => $value->income,
+                            'uc_money'           => $value->uc_money,
+                            'discount_money'     => $value->discount_money,
+                            'rcpt_money'         => $value->rcpt_money,
+                            'debit'              => $value->debit,
+                            'debit_drug'         => $value->debit_drug,
+                            'debit_instument'    => $value->debit_instument,
+                            'debit_toa'          => $value->debit_toa,
+                            'debit_refer'        => $value->debit_refer,
+                            // 'debit_total'        => $value->uc_money,
+                            // 'debit_total'        => $value->debit-$value->nonpay,
+                            'debit_total'         => ($value->income)-($value->rcpt_money+$value->discount_money),
+                            'debit_ucep'         => $value->debit_ucep,
+                            'max_debt_amount'    => $value->max_debt_amount,
+                            'nonpay'             => $value->nonpay,
+                            'rw'                 => $value->rw,
+                            'adjrw'              => $value->adjrw,
+                            'total_adjrw_income' => $value->total_adjrw_income,
+                            'acc_debtor_userid'  => Auth::user()->id
+                        ]);
                     } else {
                         Acc_debtor::insert([
                             'hn'                 => $value->hn,
@@ -440,7 +475,8 @@ class Account217Controller extends Controller
                             'debit_instument'    => $value->debit_instument,
                             'debit_toa'          => $value->debit_toa,
                             'debit_refer'        => $value->debit_refer,
-                            'debit_total'        => $value->uc_money,
+                            // 'debit_total'        => $value->uc_money,
+                            'debit_total'        => ($value->income)-($value->rcpt_money+$value->discount_money),
                             'debit_ucep'         => $value->debit_ucep,
                             'max_debt_amount'    => $value->max_debt_amount,
                             'nonpay'             => $value->nonpay,

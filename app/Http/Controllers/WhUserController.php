@@ -496,9 +496,10 @@ class WhUserController extends Controller
                     LEFT JOIN wh_stock_list s ON s.stock_list_id = r.stock_list_id
                     LEFT JOIN users u ON u.id = r.user_request
                     WHERE r.stock_list_subid IN(SELECT stock_list_subid FROM wh_config_store WHERE user_id = "'.$userid.'")
-                    AND r.active NOT IN("PAYNOW","CONFIRMPAYNOW","ADDPAYNOW")
+                   
                     ORDER BY r.wh_request_id DESC LIMIT 50
                 ');
+                // AND r.active NOT IN("PAYNOW","CONFIRMPAYNOW","ADDPAYNOW")
                 $data['wh_count']           = DB::table('wh_request')->where('stock_list_subid','=',$dep_subsubtrueid)->whereNotIn('active',['REPEXPORT'])->count();
                 // ="'.$dep_subsubtrueid.'" AND r.user_request
                 // $datawh_count                  = DB::select('SELECT COUNT(wh_request_id) as Cwh_request_id FROM wh_request WHERE active ="REPEXPORT" AND user_request IN(SELECT user_id FROM wh_config_store WHERE user_id = "'.$userid.'")');
@@ -516,7 +517,7 @@ class WhUserController extends Controller
                     FROM wh_request r
                     LEFT JOIN wh_stock_list s ON s.stock_list_id = r.stock_list_id
                     LEFT JOIN users u ON u.id = r.user_request
-                    WHERE r.stock_list_subid ="'.$dep_subsubtrueid.'" AND r.active NOT IN("PAYNOW","CONFIRMPAYNOW","ADDPAYNOW")
+                    WHERE r.stock_list_subid ="'.$dep_subsubtrueid.'" 
                     ORDER BY r.wh_request_id DESC LIMIT 50
                 ');
                 $data['wh_count']           = DB::table('wh_request')->where('stock_list_subid','=',$dep_subsubtrueid)->whereNotIn('active',['REPEXPORT'])->count();
@@ -535,7 +536,7 @@ class WhUserController extends Controller
                     LEFT JOIN wh_stock_list s ON s.stock_list_id = r.stock_list_id
                     LEFT JOIN users u ON u.id = r.user_request
                     WHERE r.stock_list_subid IN(SELECT stock_list_subid FROM wh_config_store WHERE user_id = "'.$userid.'")
-                    AND r.request_date BETWEEN "'.$startdate.'" AND "'.$enddate.'" AND r.active NOT IN("PAYNOW","CONFIRMPAYNOW","ADDPAYNOW")
+                    AND r.request_date BETWEEN "'.$startdate.'" AND "'.$enddate.'" 
                     ORDER BY r.wh_request_id DESC
                 ');
                 // $datawh_count                  = DB::select('SELECT COUNT(wh_request_id) as Cwh_request_id FROM wh_request WHERE active ="REPEXPORT" AND user_request = "'.$userid.'"');
@@ -553,7 +554,7 @@ class WhUserController extends Controller
                     FROM wh_request r
                     LEFT JOIN wh_stock_list s ON s.stock_list_id = r.stock_list_id
                     LEFT JOIN users u ON u.id = r.user_request
-                    WHERE r.stock_list_subid ="'.$dep_subsubtrueid.'" AND r.active NOT IN("PAYNOW","CONFIRMPAYNOW","ADDPAYNOW")
+                    WHERE r.stock_list_subid ="'.$dep_subsubtrueid.'" 
                     AND r.request_date BETWEEN "'.$startdate.'" AND "'.$enddate.'"
                     ORDER BY r.wh_request_id DESC
                 ');

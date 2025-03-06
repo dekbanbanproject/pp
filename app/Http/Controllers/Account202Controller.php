@@ -915,6 +915,7 @@ class Account202Controller extends Controller
                             }
                         } else {
                             if ($value->debit_toa > 0 ) {
+                                
                             } else {
 
                                 if ($value->debit > 0) {
