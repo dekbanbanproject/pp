@@ -476,9 +476,9 @@ class Account503Controller extends Controller
                         'debit_total'        => $value->toklong,
                         'ct_price'           => $value->ct_chest_with+$value->debit_ct+$value->debit_drugnew,
                         'dx0'                => $value->dx0,
-                        'cc'                 => $value->cc,
+                        // 'cc'                 => $value->cc,
                         'date_pull'          => $datetimenow,
-                        'active_status'      => $value->active_status,
+                        // 'active_status'      => $value->active_status,
                         'referin_no'         => $value->referin_no,
                         'acc_debtor_userid'  => Auth::user()->id
                     ]);
@@ -506,9 +506,9 @@ class Account503Controller extends Controller
                         'debit_total'        => $value->toklong,
                         'pdx'                => $value->pdx,
                         'dx0'                => $value->dx0,
-                        'cc'                 => $value->cc,
+                        // 'cc'                 => $value->cc,
                         'date_pull'          => $datetimenow,
-                        'active_status'      => $value->active_status,
+                        // 'active_status'      => $value->active_status,
                         'referin_no'         => $value->referin_no,
                         'acc_debtor_userid'  => Auth::user()->id
                     ]);

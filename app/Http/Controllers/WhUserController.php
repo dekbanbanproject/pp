@@ -722,6 +722,17 @@ class WhUserController extends Controller
         // $data_edit             = DB::table('wh_request')->where('wh_request_id','=',$id)->first();
         // $data['stock_name']    = $data_main->stock_list_name;
 
+        // $subsubid         =  Auth::user()->dep_subsubtrueid;
+        // Wh_request::insert([
+            // 'year'                 => $request->bg_yearnow,
+            // 'request_date'         => $request->request_date,
+            // 'request_time'         => $request->request_time,
+            // 'request_no'           => $request->request_no,
+            // 'stock_list_id'        => $request->stock_list_id,
+            // 'stock_list_subid'     => $subsubid,
+            // 'user_request'         => Auth::user()->id
+        // ]);
+
         return view('wh_user.wh_request_add', $data,[
             'startdate'   => $startdate,
             'enddate'     => $enddate,
@@ -814,7 +825,6 @@ class WhUserController extends Controller
         $bgs_year                   = DB::table('budget_year')->where('years_now','Y')->first();
         $bg_yearnow                 = $bgs_year->leave_year_id;
         $data['air_supplies']       = Air_supplies::where('active','=','Y')->get();
-
 
         $data_edit                  = DB::table('wh_request')->where('wh_request_id','=',$id)->first();
         $data['wh_request_id']      = $data_edit->wh_request_id;

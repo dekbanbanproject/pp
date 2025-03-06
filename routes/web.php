@@ -983,11 +983,17 @@ Route::get('home_supplies_excel', [App\Http\Controllers\AirController::class, 'h
   Route::match(['get', 'post'], 'wh_sub_main_rprint/{id}', [App\Http\Controllers\WhUserController::class, 'wh_sub_main_rprint'])->name('wh.wh_sub_main_rprint'); //
   Route::match(['get', 'post'], 'wh_sub_main_detail', [App\Http\Controllers\WhUserController::class, 'wh_sub_main_detail'])->name('wh.wh_sub_main_detail'); //
   Route::match(['get', 'post'], 'wh_request', [App\Http\Controllers\WhUserController::class, 'wh_request'])->name('wh.wh_request'); //
+
+  Route::match(['get', 'post'], 'wh_request_addnew', [App\Http\Controllers\WhUserController::class, 'wh_request_addnew'])->name('wh.wh_request_addnew'); //
+
+
   Route::match(['get', 'post'], 'wh_request_add', [App\Http\Controllers\WhUserController::class, 'wh_request_add'])->name('wh.wh_request_add'); //
   Route::match(['get', 'post'], 'wh_request_save', [App\Http\Controllers\WhUserController::class, 'wh_request_save'])->name('wh.wh_request_save'); //
   Route::match(['get', 'post'], 'wh_request_edit/{id}', [App\Http\Controllers\WhUserController::class, 'wh_request_edit'])->name('wh.wh_request_edit'); //
   Route::match(['get', 'post'], 'wh_request_update', [App\Http\Controllers\WhUserController::class, 'wh_request_update'])->name('wh.wh_request_update'); //
+
   Route::match(['get', 'post'], 'wh_request_addsub/{id}', [App\Http\Controllers\WhUserController::class, 'wh_request_addsub'])->name('wh.wh_request_addsub'); //
+  
   Route::match(['get', 'post'], 'wh_request_addsubdetail', [App\Http\Controllers\WhUserController::class, 'wh_request_addsubdetail'])->name('wh.wh_request_addsubdetail'); //
   Route::match(['get', 'post'], 'wh_request_addsubpic/{id}', [App\Http\Controllers\WhUserController::class, 'wh_request_addsubpic'])->name('wh.wh_request_addsubpic'); //
   Route::match(['get', 'post'], 'wh_request_addsubpic_save', [App\Http\Controllers\WhUserController::class, 'wh_request_addsubpic_save'])->name('wh.wh_request_addsubpic_save'); //

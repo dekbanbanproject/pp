@@ -437,7 +437,7 @@ class WhController extends Controller
 
             $datashow = DB::select(
                 'SELECT b.pro_id,b.pro_code,b.pro_name,d.wh_unit_name,b.qty_pay,b.lot_no,c.export_date,b.one_price,e.DEPARTMENT_SUB_SUB_NAME,b.stock_list_subid,f.request_no,b.total_stock
-                ,h.recieve_date,h.recieve_po_sup,i.supplies_namesub,g.total_pay,g.stock_rep_total,g.one_price
+                ,h.recieve_date,h.recieve_po_sup,i.supplies_namesub
                 FROM wh_stock_export_sub b  
                 LEFT JOIN wh_stock_export c ON c.wh_stock_export_id = b.wh_stock_export_id
                 LEFT JOIN wh_request f ON f.wh_request_id = b.wh_request_id
@@ -453,6 +453,7 @@ class WhController extends Controller
                 ORDER BY b.lot_no ASC 
                             
             ');
+            // ,g.total_pay,g.stock_rep_total,g.one_price
 
 
             // $datashow         = DB::select(
