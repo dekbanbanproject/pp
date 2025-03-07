@@ -96,7 +96,7 @@
  
    
     @php
-      $row_in_table = 15;
+      $row_in_table = 10;
       $row2_in_table = 20;
     @endphp
 
@@ -163,8 +163,7 @@
                               </thead>
                               <tbody>    
         @endif        
-       
-        
+               
                               <tr>     
                                     <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="5%">{{DateThai($item->recieve_date)}}</td>
                                     <td class="text-start" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;">&nbsp;รับจาก&nbsp;{{$item->supplies_namesub}}</td>
@@ -177,10 +176,9 @@
                                     <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="10%">LOT: {{$item->lot_no}}</td> 
                               </tr> 
        
-
-                          @if ($loop->last)
+                          {{-- @if ($loop->last)
                               <p style="page-break-after: always;"></p>     
-                          @endif
+                          @endif --}}
               
                               @php
                                   $datashow2 = DB::select(
@@ -202,8 +200,7 @@
                               @foreach ($datashow2 as $item2) 
                                   @php $count++ @endphp   
          
-  
-                                  
+                                    
                                             <tr> 
                                                 <td class="text-center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="5%">{{DateThai($item2->export_date)}}</td>
                                                 <td class="text-start" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;">&nbsp;จ่ายให้&nbsp;{{$item2->DEPARTMENT_SUB_SUB_NAME}}</td>
