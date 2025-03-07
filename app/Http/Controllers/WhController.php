@@ -417,9 +417,23 @@ class WhController extends Controller
         $pro_id                = $data_main_stc->pro_id;
         $data['pro_code']      = $data_main_stc->pro_code;
         $data['pro_name']      = $data_main_stc->pro_name;
+        $pro_type              = $data_main_stc->pro_id;
 
         $data_main             = DB::table('wh_stock_list')->where('stock_list_id','=',$stock_list_id)->first();
         $data['stock_name']    = $data_main->stock_list_name;
+
+        $pro_                  = DB::table('wh_product')->where('pro_id','=',$pro_id)
+                                ->leftjoin('wh_type','wh_type.wh_type_id','=','wh_product.pro_type')
+                                ->leftjoin('wh_unit','wh_unit.wh_unit_id','=','wh_product.unit_id')
+                                ->first();
+        $data['protype']       = $pro_->wh_type_name;
+        $data['pro_highly']    = $pro_->pro_highly;
+        $data['pro_atleast']   = $pro_->pro_atleast;
+        $data['pro_detail']    = $pro_->pro_detail;
+        $data['wh_unit_name']  = $pro_->wh_unit_name;
+
+
+        
 
             // $datashow = DB::select(
             //     'SELECT a.pro_id,a.pro_code,a.pro_name,d.wh_unit_name,b.qty,b.lot_no,c.recieve_date,b.one_price,b.export_date,b.qty_pay,b.total_pay,b.stock_rep_total
@@ -533,6 +547,7 @@ class WhController extends Controller
             'idpro'         => $idpro,
             'idstore'       => $idstore,
         ])
+        // $pdf->page_text(65, 66, " {PAGE_NUM}",null, 10, array(255,0,0));
         ->setPaper('a4', 'landscape');
 
         $dom_pdf = $pdf->getDomPDF();

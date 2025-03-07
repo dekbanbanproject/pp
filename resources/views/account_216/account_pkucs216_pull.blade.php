@@ -124,7 +124,7 @@
                                   <input type="checkbox" id="myCheck" class="dcheckbox_ me-2">
                                   <button class="ladda-button me-2 btn-pill btn btn-sm btn-danger cardacc" onclick="uncheck()">Uncheck</button>
                                 @endif
-                                <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-warning cardacc Claim" data-url="{{url('account_pkucs216_claim')}}">
+                                {{-- <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-warning cardacc Claim" data-url="{{url('account_pkucs216_claim')}}">
                                     <img src="{{ asset('images/loading_white.png') }}" class="me-2 ms-2" height="18px" width="18px">
                                    ประมวลผล
                                </button>
@@ -139,7 +139,9 @@
                                 <a href="{{url('account_pkucs216_zip')}}" class="ladda-button me-2 btn-pill btn btn-sm btn-success cardacc">
                                     <img src="{{ asset('images/zipwhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
                                     Zip
-                                </a>
+                                </a> --}}
+
+                                
                                {{-- <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-warning cardacc ClaimCancel" data-url="{{url('account_claim_cancel')}}">
                                     <i class="fa-solid fa-spinner text-white me-2"></i>
                                     ไม่ใช้สิทธิ์

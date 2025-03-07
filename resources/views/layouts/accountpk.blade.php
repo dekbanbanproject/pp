@@ -248,6 +248,7 @@
             box-shadow: 0 0 30px rgb(250, 128, 124);
             border:solid 1px #fd134e;
         }
+        /* card_audit_4c */
         .card_audit_4c{
             border-radius: 2em 2em 2em 2em;
             box-shadow: 0 0 30px rgb(250, 128, 124);
@@ -261,12 +262,16 @@
         .dcheckbox_{
             width: 20px;
             height: 20px;
-            /* border-radius: 2em 2em 2em 2em; */
-            border: 10px solid rgb(250, 128, 124);
-            /* color: teal; */
-            /* border-color: teal; */
-            box-shadow: 0 0 10px rgb(247, 12, 71);
-            /* box-shadow: 0 0 10px teal; */
+            border-radius: 2em 2em 2em 2em;
+            box-shadow: 0 0 10px rgb(255, 82, 97);
+            border:solid 1px #fd134e;
+        }
+        .dcheckbox_s{
+            width: 20px;
+            height: 20px;
+            border-radius: 2em 2em 2em 2em; 
+            border:solid 1px #fd134e; 
+            box-shadow: 0 0 10px rgb(250, 128, 124); 
         }
         @keyframes colorShift {
             0% {
