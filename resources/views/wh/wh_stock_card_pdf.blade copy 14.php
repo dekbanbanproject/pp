@@ -90,17 +90,17 @@
           } */
 
 
-          @media print {
+          /* @media print {
             .page-break {
               page-break-after: always;
             }
-          }
+          } */
           /* @media print { */
             /* thead { 
               display: table-header-group;
             } */
           /* } */
-          /* @media print {
+          @media print {
               .headers {
                 position: fixed;
                 top: 0;
@@ -109,13 +109,13 @@
                 background: white;
                 border-bottom: 1px solid black;
               }
-            } */
+            }
 
-            /* @media print {
+            @media print {
               thead { 
                 display: table-header-group;
               }
-            } */
+            }
 
 
 
@@ -134,10 +134,8 @@
     @endphp
             @foreach($datashow as $key=>$item)  
 
-                <div style="page-break-after: always;">
-                  {{-- <p>{{ $loop->iteration . '/' . $loop->count }}</p> --}}
-                  {{-- <p> {{$loop->index}}</p>  --}}
-                  {{-- {{$loop->parent}} --}}
+        <div style="page-break-after: always;">
+           
                        <table style="width: 100%;">
                           <thead>  
                             <tr>
@@ -167,7 +165,8 @@
                             </tr> 
                           </thead>
                         </table>    
-                            
+          
+                  
 
                         <table style="width: 100%;">
                             <thead>                               
@@ -221,7 +220,7 @@
                                         ');
                                       
 
-                                        $counts = 1;
+                                        $count = 1;
                                     @endphp              
                                     @forelse ($datashow2 as $item2)  
                                                                                   
@@ -248,23 +247,14 @@
                                                   </td> 
                                                   <td align="center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="12%">LOT: {{$item2->lot_no}}</td> 
                                               </tr>  
-                                              @php $counts++; @endphp  
-
-                                              {{-- <p>{{ $loop->iteration . '/' . $loop->count }}</p> --}}
-                                              {{-- @if($loop->last)
-                                                  <p>Our last element of the array</p>
-                                              @endif --}}
-                                              @if ($loop->count === '12')
-                                              <p style="page-break-after: always;"></p>
-                                              @endif
-                                              
+                                              @php $count++; @endphp  
                                       @empty
                                     @endforelse 
                            
                             </tbody>
                         </table> 
       
-                </div>     
+        </div>     
    
         @endforeach
  
