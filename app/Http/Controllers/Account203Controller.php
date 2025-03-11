@@ -295,8 +295,8 @@ class Account203Controller extends Controller
                     LEFT OUTER JOIN opitemrece op on op.vn = v.vn
                     left outer join icd101 i on i.code IN(v.pdx,v.dx0,v.dx1,v.dx2,v.dx3,v.dx4,v.dx5)
                     WHERE v.vstdate BETWEEN "' . $startdate . '" AND "' . $enddate . '"
-                    AND v.pttype IN("W1","W2","50","71","72","73","74","75","76","77","82","87","88","90","91","98","99")
-                    AND v.hospmain IN("10970","10971","10972","10973","10974","10975","10976","10977","10702","10979","10980","10981","10983")
+                    AND v.pttype IN("W1","W2","50","71","72","73","74","75","76","77","82","87","88","89","90","91","98","99")
+                    AND v.hospmain IN("10970","10971","10972","10973","10974","10975","10976","10977","10702","10979","10980","10981","10982","10983")
                     AND (v.pdx not like "c%" and v.pdx not like "b24%" and v.pdx not like "n185%")
                     AND v.pdx NOT BETWEEN "d00" AND "d489"
                     AND (i.code  BETWEEN "E110" and "E149" or i.code  BETWEEN "I10" and "I150" or i.code  BETWEEN "J440" and "J449")
@@ -310,8 +310,10 @@ class Account203Controller extends Controller
                     LEFT OUTER JOIN patient p on p.hn = v.hn
                     LEFT OUTER JOIN opitemrece op on op.vn = v.vn
                     WHERE v.vstdate BETWEEN "' . $startdate . '" AND "' . $enddate . '"
-                    AND v.pttype IN("W1","W2","50","71","72","73","74","75","76","77","82","87","88","90","91","98","99")
-                    AND v.hospmain IN("10970","10971","10972","10973","10974","10975","10976","10977","10702","10979","10980","10981","10983")
+                  
+                    AND v.pttype IN("W1","W2","50","71","72","73","74","75","76","77","82","87","88","89","90","91","98","99")
+                    AND v.hospmain IN("10970","10971","10972","10973","10974","10975","10976","10977","10702","10979","10980","10981","10982","10983")
+                  
                     AND (v.pdx not like "c%" and v.pdx not like "b24%" and v.pdx not like "n185%")
                     AND v.pdx NOT BETWEEN "d00" AND "d489"
                     AND v.pdx NOT BETWEEN "E110" AND "E149" AND v.pdx NOT BETWEEN "J440" AND "J449" AND v.pdx NOT BETWEEN "I10" AND "I159"

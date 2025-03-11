@@ -100,7 +100,7 @@
               display: table-header-group;
             } */
           /* } */
-          @media print {
+          /* @media print {
               .headers {
                 position: fixed;
                 top: 0;
@@ -109,14 +109,16 @@
                 background: white;
                 border-bottom: 1px solid black;
               }
-            }
+            } */
 
-            @media print {
+            /* @media print {
               thead { 
                 display: table-header-group;
               }
+            } */
+            .page-break {
+                page-break-after: always;
             }
-
 
 
 </style>
@@ -132,11 +134,93 @@
       $num = 0;
       $countloop = 0;
     @endphp
-            @foreach($datashow as $key=>$item)  
 
-        <div style="page-break-after: always;">
-           
-                       {{-- <table style="width: 100%;">
+    
+          @foreach ($datashow as $main)
+          {{-- <table style="width: 100%;">
+            <thead>  
+              <tr>
+                <th width="20%"></th>
+                <th align="center" width="50%"><label for="" style="font-size:14px;"><b>บัญชีวัสดุ</b></label></th>
+                <th width="20%"></th>
+              </tr>  
+              <tr>                  
+                <th align="left" width="10%"><label for="" style="font-size:13px;"><b>แผ่นที่ ........</b></label></th>  
+                <th width="60%"></th>                   
+                <th align="right" width="30%"><label for="" style="font-size:13px;"><b>โรงพยาบาลภูเขียวเฉลิมพระเกียรติ</b></label></th>                  
+              </tr>  
+              <tr>                  
+                <th align="left" width="20%"><label for="" style="font-size:13px;"><b>ประเภท </b>{{$protype}}</label></th>  
+                <th align="center" width="60%"><label for="" style="font-size:13px;"><b>ชื่อหรือชนิดวัสดุ </b>{{$pro_name}}</label></th>           
+                <th align="right" width="20%"><label for="" style="font-size:13px;"><b>รหัส </b>{{$pro_code}}</label></th>         
+              </tr> 
+              <tr>               
+                <th align="left" width="30%"><label for="" style="font-size:13px;"><b>ขนาดหรือลักษณะ </b>{{$pro_detail}}</label></th>  
+                <th width="57%"></th>  
+                <th align="right" width="13%"><label for="" style="font-size:13px;"><b>จำนวนอย่างสูง </b>{{$pro_highly}}</label></th>         
+              </tr> 
+              <tr>               
+                  <th align="left" width="30%"><label for="" style="font-size:13px;"><b>หน่วยที่นับ </b>{{$wh_unit_name}}</label></th>  
+                  <th width="57%"></th>  
+                  <th align="right" width="13%"><label for="" style="font-size:13px;"><b>จำนวนอย่างต่ำ </b>{{$pro_atleast}}</label></th>         
+              </tr> 
+            </thead>
+          </table>    --}}
+              <table border="1" width="100%">
+                  <thead>
+                    <tr>
+                      <th width="20%"></th>
+                      <th align="center" width="50%"><label for="" style="font-size:14px;"><b>บัญชีวัสดุ</b></label></th>
+                      <th width="20%"></th>
+                    </tr>  
+                    <tr>                  
+                      <th align="left" width="10%"><label for="" style="font-size:13px;"><b>แผ่นที่ ........</b></label></th>  
+                      <th width="60%"></th>                   
+                      <th align="right" width="30%"><label for="" style="font-size:13px;"><b>โรงพยาบาลภูเขียวเฉลิมพระเกียรติ</b></label></th>                  
+                    </tr>  
+                    
+                      <tr>
+                          <th>#</th>
+                          <th>หมวดหมู่</th>
+                          <th>รายการ</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      @php
+                          $datashow2 = DB::select(
+                                  'SELECT b.pro_id,b.pro_code,b.pro_name,d.wh_unit_name,b.qty_pay,b.lot_no,c.export_date,b.one_price
+                                  ,e.DEPARTMENT_SUB_SUB_NAME,b.stock_list_subid,f.request_no,b.total_stock,b.total_stock_price                                                                
+                                  FROM wh_stock_export_sub b  
+                                  LEFT JOIN wh_stock_export c ON c.wh_stock_export_id = b.wh_stock_export_id
+                                  LEFT JOIN wh_request f ON f.wh_request_id = b.wh_request_id
+                                  LEFT JOIN wh_unit d ON d.wh_unit_id = b.unit_id
+                                  LEFT JOIN department_sub_sub e ON e.DEPARTMENT_SUB_SUB_ID = c.stock_list_subid 
+                                  WHERE b.lot_no = "'.$main->lot_no.'" 
+                                  GROUP BY b.lot_no,b.wh_stock_export_sub_id
+                                  ORDER BY b.lot_no ASC  
+                          ');   
+                          $counts = 1;
+                      @endphp 
+                      @foreach ($datashow2 as $item)
+                          <tr>
+                              <td>{{ $loop->parent->iteration }}.{{ $loop->iteration }}</td>
+                              <td>{{$item->DEPARTMENT_SUB_SUB_NAME}}</td>
+                              <td>{{$item->lot_no}}</td>
+                          </tr>
+                      @endforeach
+                  </tbody>
+              </table>
+
+              @if ($loop->iteration % 2 == 0)
+                  <div class="page-break"></div> <!-- ขึ้นหน้าใหม่ทุก 2 หมวด -->
+              @endif
+          @endforeach
+
+            {{-- @foreach($datashow as $key=>$item)  
+
+             
+
+                       <table style="width: 100%;">
                           <thead>  
                             <tr>
                               <th width="20%"></th>
@@ -164,51 +248,19 @@
                                 <th align="right" width="13%"><label for="" style="font-size:13px;"><b>จำนวนอย่างต่ำ </b>{{$pro_atleast}}</label></th>         
                             </tr> 
                           </thead>
-                        </table>     --}}
-          
-                  
+                        </table>    
+                            
 
                         <table style="width: 100%;">
-                            <thead> 
-                                  <tr>
-                                        <th colspan="3"></th>                                  
-                                        <th align="left" colspan="6" ><label for="" style="font-size:14px;"><b>บัญชีวัสดุ</b></label></th>                                         
-                                  </tr>  
-                                  <tr>                  
-                                        <th align="left" colspan="3"><label for="" style="font-size:13px;"><b>แผ่นที่ </b></label></th> 
-                                        <th align="right" colspan="6"><label for="" style="font-size:13px;"><b>โรงพยาบาลภูเขียวเฉลิมพระเกียรติ</b></label></th>                  
-                                  </tr>  
-                                  <tr>                  
-                                        <th align="left" colspan="2"><label for="" style="font-size:13px;"><b>ประเภท {{$protype}}</b></label></th> 
-                                        <th align="left" colspan="5"><label for="" style="font-size:13px;"><b>ชื่อหรือชนิดวัสดุ {{$pro_name}}</b></label></th> 
-                                        <th align="right" colspan="2"><label for="" style="font-size:13px;"><b>รหัส {{$pro_code}}&nbsp;&nbsp;</b></label></th>                  
-                                  </tr> 
-                                  <tr>                  
-                                        <th align="left" colspan="3"><label for="" style="font-size:13px;"><b>ขนาดหรือลักษณะ {{$pro_detail}}</b></label></th>                                      
-                                        <th align="right" colspan="6"><label for="" style="font-size:13px;">                                         
-                                          @if ($pro_highly =='' || $pro_highly =='0')
-                                            <b>จำนวนอย่างสูง 00&nbsp;&nbsp;</b>
-                                          @else
-                                            <b>จำนวนอย่างสูง {{$pro_highly}}</b>
-                                          @endif                                        
-                                        </label></th>                  
-                                  </tr>    
-                                  <tr>                  
-                                    <th align="left" colspan="3"><label for="" style="font-size:13px;"><b>หน่วยที่นับ {{$wh_unit_name}}</b></label></th>                                      
-                                    <th align="right" colspan="6"><label for="" style="font-size:13px;">                                     
-                                      @if ($pro_atleast =='' || $pro_atleast =='0')
-                                        <b>จำนวนอย่างต่ำ 00&nbsp;&nbsp;</b>
-                                      @else
-                                        <b>จำนวนอย่างต่ำ {{$pro_atleast}}</b>
-                                      @endif 
-                                    </label></th>                  
-                              </tr>                         
+                            <thead>                               
                                   <tr style="font-size: 11px;height: 11px;color:rgb(65, 63, 63)" class="text-center">    
+                                  
                                       <th rowspan="2" style="border: 1px solid rgb(250, 214, 159);width: 5%;background-color: rgb(252, 237, 219);color:#252424">
                                         ว/ด/ป 
                                       </th>
                                       <th rowspan="2" style="border: 1px solid rgb(250, 214, 159);width: 12%;background-color: rgb(252, 237, 219);color:#252424">
-                                        รับจาก || จ่ายให้                                        
+                                        รับจาก || จ่ายให้
+                                          <!-- <span class="badge" style="background-color: rgb(7, 192, 152);font-size: 12px;">รับจาก</span>|| จ่ายให้ -->                                          
                                       </th>
                                       <th rowspan="2" style="border: 1px solid rgb(250, 214, 159);width: 5%;background-color: rgb(252, 237, 219);color:#252424">เลขที่เอกสาร</th> 
                                       <th rowspan="2" style="border: 1px solid rgb(250, 214, 159);width: 4%;background-color: rgb(252, 237, 219);color:#252424">ราคาต่อหน่วย</th>
@@ -235,7 +287,8 @@
                                         <td align="center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">{{$item->total_allqty}}</td> 
                                         <td align="center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="4%">{{number_format($item->total_allprice, 2)}}</td> 
                                         <td align="center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="12%">LOT: {{$item->lot_no}}</td> 
-                                  </tr>                                                      
+                                  </tr>  
+
                                     @php
                                         $datashow2 = DB::select(
                                                 'SELECT b.pro_id,b.pro_code,b.pro_name,d.wh_unit_name,b.qty_pay,b.lot_no,c.export_date,b.one_price
@@ -248,10 +301,9 @@
                                                 WHERE b.lot_no = "'.$item->lot_no.'" 
                                                 GROUP BY b.lot_no,b.wh_stock_export_sub_id
                                                 ORDER BY b.lot_no ASC  
-                                        ');
-                                      
+                                        ');                                      
 
-                                        $count = 1;
+                                        $counts = 1;
                                     @endphp              
                                     @forelse ($datashow2 as $item2)  
                                                                                   
@@ -278,26 +330,30 @@
                                                   </td> 
                                                   <td align="center" style="border: 1px solid rgb(250, 232, 221);font-size: 11px;" width="12%">LOT: {{$item2->lot_no}}</td> 
                                               </tr>  
-                                              @php $count++; @endphp  
+                                             
+                                              @php $counts++; @endphp  
+                                             
                                       @empty
                                     @endforelse 
                            
                             </tbody>
-
-
                         </table> 
-      
-        </div>     
+
+                        @if ($loop->iteration % 1 == 0)
+                        <div class="page-break"></div> <!-- ขึ้นหน้าใหม่ทุก 2 หมวด -->
+                    @endif
+
+                        
    
-        @endforeach
+        @endforeach --}}
  
 
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> --}}
-<script type="text/php">
+{{-- <script type="text/php">
   if ( isset($pdf) ) {
-      $pdf->page_text(65, 65, " {PAGE_NUM}",null, 10, array(255,0,0));
+      $pdf->page_text(65, 66, " {PAGE_NUM}",null, 10, array(255,0,0));
   }
-</script>
+</script> --}}
 {{-- <script type="text/php">
   if ( isset($pdf) ) {
       $pdf->page_text(710, 20, "แผ่นที่: {PAGE_NUM} หน้าที่ {PAGE_NUM}",null, 10, array(255,0,0));
