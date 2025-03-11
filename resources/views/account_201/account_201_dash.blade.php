@@ -163,10 +163,9 @@
                                             $y = $item->year;
                                                 $ynew = $y + 543;
                                             // ลูกหนี้ทั้งหมด
-                                            $datas = DB::select('
-                                                SELECT count(DISTINCT vn) as Can
-                                                    ,SUM(debit_total) as sumdebit
-                                                    from acc_debtor
+                                            $datas = DB::select(
+                                                'SELECT count(DISTINCT vn) as Can ,SUM(debit_total) as sumdebit
+                                                    FROM acc_debtor
                                                     WHERE account_code="1102050101.201"
                                                     AND stamp = "N" AND debit_total > 0
                                                     AND month(vstdate) = "'.$item->months.'"

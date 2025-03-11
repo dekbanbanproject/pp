@@ -76,8 +76,8 @@ class WhUserController extends Controller
         $maxnumber     = DB::table('wh_request')->max('wh_request_id');
         if ($maxnumber != '' ||  $maxnumber != null) {
             $refmax = DB::table('wh_request')->where('wh_request_id', '=', $maxnumber)->first();
-            if ($refmax->request_no != '' ||  $refmax->request_no != null) {
-                $maxref = substr($refmax->request_no, -7) + 1;
+            if ($refmax->wh_request_id != '' ||  $refmax->wh_request_id != null) {
+                $maxref = substr($refmax->wh_request_id, -7) + 1;
             } else {
                 $maxref = 1;
             }
@@ -743,16 +743,51 @@ class WhUserController extends Controller
     {
         // $year                = date('Y')+ 543;
         // $ynew             = substr($request->bg_yearnow,2,2);
+        $year = date('Y');
+        $bgs_year      = DB::table('budget_year')->where('years_now','Y')->first();
+        $bg_yearnow    = $bgs_year->leave_year_id;
+        $maxnumber     = DB::table('wh_request')->max('wh_request_id');
+        if ($maxnumber != '' ||  $maxnumber != null) {
+            $refmax = DB::table('wh_request')->where('wh_request_id', '=', $maxnumber)->first();
+            if ($refmax->wh_request_id != '' ||  $refmax->wh_request_id != null) {
+                $maxref = substr($refmax->wh_request_id, -7) + 1;
+            } else {
+                $maxref = 1;
+            }
+            $ref = str_pad($maxref, 8, "0", STR_PAD_LEFT);
+        } else {
+            $ref = '00000001';
+        }
+        $ye = date('Y') + 543;
+        $y = substr($ye, -4);
+        $ynew   = substr($bg_yearnow,2,2);
+        $refnumber = $ynew.''.$ref;
+
         $subsubid         =  Auth::user()->dep_subsubtrueid;
-        Wh_request::insert([
-            'year'                 => $request->bg_yearnow,
-            'request_date'         => $request->request_date,
-            'request_time'         => $request->request_time,
-            'request_no'           => $request->request_no,
-            'stock_list_id'        => $request->stock_list_id,
-            'stock_list_subid'     => $subsubid,
-            'user_request'         => Auth::user()->id
-        ]);
+        $check            = DB::table('wh_request')->where('request_no', '=', $request->request_no)->count();
+        if ($check > 0) {
+            Wh_request::insert([
+                'year'                 => $request->bg_yearnow,
+                'request_date'         => $request->request_date,
+                'request_time'         => $request->request_time,
+                'request_no'           => $refnumber,
+                'stock_list_id'        => $request->stock_list_id,
+                'stock_list_subid'     => $subsubid,
+                'user_request'         => Auth::user()->id
+            ]);
+        } else {
+            Wh_request::insert([
+                'year'                 => $request->bg_yearnow,
+                'request_date'         => $request->request_date,
+                'request_time'         => $request->request_time,
+                'request_no'           => $request->request_no,
+                'stock_list_id'        => $request->stock_list_id,
+                'stock_list_subid'     => $subsubid,
+                'user_request'         => Auth::user()->id
+            ]);
+        }
+        
+       
         return response()->json([
             'status'    => '200'
         ]);
