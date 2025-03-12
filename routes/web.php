@@ -1956,6 +1956,11 @@ Route::get('home_supplies_excel', [App\Http\Controllers\AirController::class, 'h
   Route::match(['get', 'post'], 'upstm_ucsopd', [App\Http\Controllers\AccountSTMController::class, 'upstm_ucsopd'])->name('acc.upstm_ucsopd'); //
   Route::match(['get', 'post'], 'upstm_ucsopdsave', [App\Http\Controllers\AccountSTMController::class, 'upstm_ucsopdsave'])->name('acc.upstm_ucsopdsave'); //
   Route::match(['get', 'post'], 'upstm_ucsopdsend', [App\Http\Controllers\AccountSTMController::class, 'upstm_ucsopdsend'])->name('acc.upstm_ucsopdsend'); //
+
+  Route::match(['get', 'post'], 'upstm_ucsopd_imc', [App\Http\Controllers\AccountSTMController::class, 'upstm_ucsopd_imc'])->name('acc.upstm_ucsopd_imc'); //
+  Route::match(['get', 'post'], 'upstm_ucsopd_imcsave', [App\Http\Controllers\AccountSTMController::class, 'upstm_ucsopd_imcsave'])->name('acc.upstm_ucsopd_imcsave'); //
+  Route::match(['get', 'post'], 'upstm_ucsopd_imcsend', [App\Http\Controllers\AccountSTMController::class, 'upstm_ucsopd_imcsend'])->name('acc.upstm_ucsopd_imcsend'); //
+
   Route::match(['get', 'post'], 'upstm_ucs_opd', [App\Http\Controllers\AccountPKController::class, 'upstm_ucs_opd'])->name('acc.upstm_ucs_opd'); //
   Route::match(['get', 'post'], 'upstm_ucs_detail_opd/{id}', [App\Http\Controllers\AccountPKController::class, 'upstm_ucs_detail_opd'])->name('acc.upstm_ucs_detail_opd'); //
   Route::match(['get', 'post'], 'upstm_ucs_detail_opd_216/{id}', [App\Http\Controllers\AccountPKController::class, 'upstm_ucs_detail_opd_216'])->name('acc.upstm_ucs_detail_opd_216'); //

@@ -77,6 +77,7 @@ use App\Imports\ImportAcc_stm_ofcexcel_import;
 use App\Imports\ImportAcc_stm_lgoexcel_import;
 use App\Models\Acc_1102050101_217_stam;
 use App\Models\Acc_opitemrece_stm;
+use App\Models\Acc_stm_imcexcel;
 
 use SplFileObject;
 use PHPExcel;
@@ -1278,6 +1279,180 @@ class AccountSTMController extends Controller
             Acc_stm_ucs_excel::truncate();
         return redirect()->back();
     }
+
+    
+    public function upstm_ucsopd_imc(Request $request)
+    {
+        $datenow = date('Y-m-d');
+        $startdate = $request->startdate;
+        $enddate = $request->enddate;
+        $datashow = DB::connection('mysql')->select('
+            SELECT rep_no,vstdate,SUM(berg_price_totalberg) as Sumprice,STMdoc,month(vstdate) as months
+            FROM acc_stm_imcexcel
+            WHERE chod_chery <> ""
+            GROUP BY cid,vstdate
+            ');
+        $countc = DB::table('acc_stm_imcexcel')->count(); 
+
+        return view('account_pk.upstm_ucsopd_imc',[
+            'startdate'     =>     $startdate,
+            'enddate'       =>     $enddate,
+            'datashow'      =>     $datashow,
+            'countc'        =>     $countc
+        ]);
+    }
+
+    function upstm_ucsopd_imcsave(Request $request)
+    {  
+        $the_file = $request->file('file_stm'); 
+        $file_ = $request->file('file_stm')->getClientOriginalName(); //ชื่อไฟล์
+ 
+                // Cheet 2
+                $spreadsheet = IOFactory::load($the_file->getRealPath()); 
+                $sheet        = $spreadsheet->setActiveSheetIndex(2);
+                $row_limit    = $sheet->getHighestDataRow();
+                $column_limit = $sheet->getHighestDataColumn();
+                $row_range    = range('9',$row_limit );
+                // $column_range = range('AQ',$column_limit );
+                $startcount = '15';
+                $data = array();
+                foreach ($row_range as $row ) {
+                    $vst = $sheet->getCell( 'K' . $row )->getValue();  
+                    $day = substr($vst,0,2);
+                    $mo = substr($vst,3,2);
+                    $year = substr($vst,6,4);
+                    $vstdate = $year.'-'.$mo.'-'.$day;
+
+                    $reg = $sheet->getCell( 'J' . $row )->getValue(); 
+                    $regday = substr($reg, 0, 2);
+                    $regmo = substr($reg, 3, 2);
+                    $regyear = substr($reg, 6, 4);
+                    $date_send = $regyear.'-'.$regmo.'-'.$regday;
+
+                    $o = $sheet->getCell( 'O' . $row )->getValue();
+                    $del_o = str_replace(",","",$o);
+                    $p = $sheet->getCell( 'P' . $row )->getValue();
+                    $del_p = str_replace(",","",$p);
+                    $q = $sheet->getCell( 'Q' . $row )->getValue();
+                    $del_q = str_replace(",","",$q);
+                    $t= $sheet->getCell( 'T' . $row )->getValue();
+                    $del_t = str_replace(",","",$t);
+                    $u = $sheet->getCell( 'U' . $row )->getValue();
+                    $del_u= str_replace(",","",$u);
+                    $v = $sheet->getCell( 'V' . $row )->getValue();
+                    $del_v = str_replace(",","",$v);
+                    $w = $sheet->getCell( 'W' . $row )->getValue();
+                    $del_w = str_replace(",","",$w);
+                   
+ 
+                    $data[] = [
+                        'rep_no'                   =>$sheet->getCell( 'B' . $row )->getValue(),
+                        'tran_id'                  =>$sheet->getCell( 'C' . $row )->getValue(),
+                        'hn'                       =>$sheet->getCell( 'D' . $row )->getValue(),
+                        'an'                       =>$sheet->getCell( 'E' . $row )->getValue(),
+                        'cid'                      =>$sheet->getCell( 'F' . $row )->getValue(),
+                        'ptname'                   =>$sheet->getCell( 'G' . $row )->getValue(),
+                        'pttype'                   =>$sheet->getCell( 'H' . $row )->getValue(), 
+                        'hmain_op'                 =>$sheet->getCell( 'I' . $row )->getValue(),                                                
+                        'date_send'                =>$date_send,
+                        'vstdate'                  =>$vstdate, 
+                        'berg_no'                  =>$sheet->getCell( 'L' . $row )->getValue(),
+                        'berg_name'                =>$sheet->getCell( 'M' . $row )->getValue(),
+                        'berg_qty'                 =>$sheet->getCell( 'N' . $row )->getValue(),
+                        'berg_price'               =>$del_o ,
+                        'berg_price_pedan'         =>$del_p,
+                        'berg_price_totalberg'     =>$del_q,
+                        'pscode'                   =>$sheet->getCell( 'R' . $row )->getValue(),
+                        'percent'                  =>$sheet->getCell( 'S' . $row )->getValue(),
+                        'chod_chery'               =>$del_t,  
+                        'nochod_chery'             => $del_u,
+                        'pay_plus'                 => $del_v,
+                        'price_back'               => $del_w,
+                        'status'                   =>$sheet->getCell( 'X' . $row )->getValue(),
+                        'comment'                  =>$sheet->getCell( 'Y' . $row )->getValue(),  
+                        'comment_orther'           =>$sheet->getCell( 'Z' . $row )->getValue(),
+                        'nhso_adp_code'            =>$sheet->getCell( 'AA' . $row )->getValue(),
+                        'nhso_adp_name'            =>$sheet->getCell( 'AB' . $row )->getValue(),
+                        'hmain'                    =>$sheet->getCell( 'AC' . $row )->getValue(),
+                        'STMDoc'                   =>$file_ 
+                    ];
+                    $startcount++; 
+
+                }
+                // DB::table('acc_stm_ucs_excel')->insert($data); 
+
+                $for_insert = array_chunk($data, length:1000);
+                foreach ($for_insert as $key => $data_) {
+                    Acc_stm_imcexcel::insert($data_); 
+                }
+                // Acc_stm_ucs_excel::insert($data);  
+ 
+            return redirect()->back();
+            
+    }
+
+    public function upstm_ucsopd_imcsend(Request $request)
+    {
+        try{
+            $data_ = DB::connection('mysql')->select('SELECT * FROM acc_stm_imcexcel WHERE chod_chery <> ""');
+            foreach ($data_ as $key => $value) {
+                if ($value->cid != '') {
+                    $check = Acc_stm_ucs::where('tranid','=',$value->tran_id)->count();
+                    if ($check > 0) {
+                    } else {
+                        $add = new Acc_stm_ucs();  
+                        $add->rep                   = $value->rep_no;
+                        $add->tranid                = $value->tran_id;
+                        $add->hn                    = $value->hn;
+                        $add->an                    = $value->an;
+                        $add->cid                   = $value->cid;
+                        $add->fullname              = $value->ptname;
+                        $add->vstdate               = $value->vstdate; 
+                        $add->maininscl             = $value->pttype;
+                        $add->hmain_op              = $value->hmain_op;
+                        $add->repno                 = $value->berg_no;
+                        $add->berg_name             = $value->berg_name;
+                        $add->berg_qty              = $value->berg_qty; 
+                        $add->debit                 = $value->berg_price;
+                        $add->berg_price_pedan      = $value->berg_price_pedan;
+                        $add->berg_price_totalberg  = $value->berg_price_totalberg;
+                        $add->ps1                   = $value->pscode;
+                        $add->ps2                   = $value->percent;
+                        $add->total_approve         = $value->chod_chery;
+                        $add->nochod_chery          = $value->nochod_chery;
+                        $add->pay_plus              = $value->pay_plus;
+                        $add->price_back            = $value->price_back;
+                        $add->status                = $value->status; 
+                        $add->comment               = $value->comment;
+                        $add->comment_orther        = $value->comment_orther;
+                        $add->nhso_adp_code         = $value->nhso_adp_code;
+                        $add->nhso_adp_name         = $value->nhso_adp_name;
+                        $add->hmain                 = $value->hmain; 
+                        $add->STMdoc                = $value->STMDoc;
+                        $add->save();                      
+                    } 
+    
+                        Acc_1102050101_216::where('cid',$value->cid)->where('vstdate',$value->vstdate)
+                            ->update([                            
+                                'tran_id_imc'          => $value->tran_id,
+                                'berg_no'              => $value->berg_no,
+                                'chod_chery_imc'       => $value->chod_chery,
+                                'STMdoc_imc'           => $value->STMDoc, 
+                        ]);
+                      
+                } else {
+                }
+            }
+            } catch (Exception $e) {
+                $error_code = $e->errorInfo[1];
+                return back()->withErrors('There was a problem uploading the data!');
+            }
+            Acc_stm_imcexcel::truncate();
+        return redirect()->back();
+    }
+
+
+
     
     function upstm_ucsopdsave_____(Request $request)
     { 

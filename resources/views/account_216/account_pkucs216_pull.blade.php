@@ -198,15 +198,17 @@
                                             <th class="text-center" width="3%">hmain</th>
                                       
                                             <th class="text-center" width="4%">income</th>
+                                            <th class="text-center" width="4%">ชำระเงิน</th>
                                             <th class="text-center" width="4%">ลูกหนี้</th>
                                             <th class="text-center" width="4%">imc</th>
                                             <th class="text-center" width="4%">inst</th>
                                             <th class="text-center" width="4%">drug</th>
+                                            <th class="text-center" width="4%">refer</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $i = 1;
-                                            $total1 = 0; $total2 = 0; $total3 = 0; $total4 = 0; $total5 = 0; $total6 = 0; $total7 = 0;
+                                            $total1 = 0; $total2 = 0; $total3 = 0; $total4 = 0; $total5 = 0; $total6 = 0; $total7 = 0;$total8 = 0;$total9 = 0;
                                         ?>
                                         @foreach ($acc_debtor as $item)
                                         <?php
@@ -270,13 +272,14 @@
                                                 <td class="text-center" style="color:rgb(216, 95, 14)" width="3%">{{ $item->subinscl }}</td>
                                                 <td class="text-center" style="color:rgb(8, 122, 167)" width="3%">{{ $item->hospmain }}</td>   
                                                 <td class="text-center" style="color:rgb(4, 74, 155)" width="4%">{{ number_format($item->income, 2) }}</td>
+                                                <td class="text-center" style="color:rgb(6, 190, 120)" width="4%">{{ number_format($item->rcpt_money, 2) }}</td>
                                                 <td class="text-center" style="color:rgb(247, 81, 39)" width="4%">{{ number_format($item->debit_total, 2) }}</td>
                                                 <td class="text-center" style="color:rgb(119, 39, 247)" width="4%">{{ number_format($item->debit_imc+$item->debit_imc_adpcode, 2) }}</td>
                                                 <td class="text-center" style="color:rgb(119, 39, 247)" width="4%">{{ number_format($item->debit_instument, 2) }}</td>
                                                 <td class="text-center" style="color:rgb(119, 39, 247)" width="4%">{{ number_format($item->debit_drug, 2) }}</td>
+                                                <td class="text-center" style="color:rgb(119, 39, 247)" width="4%">{{ number_format($item->debit_refer, 2) }}</td>
                                                 {{-- <td class="text-end" width="5%">{{ number_format($item->debit_drug, 2) }}</td>  --}}
-                                                {{-- <td class="text-end" width="5%">{{ number_format($item->debit_toa, 2) }}</td>  --}}
-                                                {{-- <td class="text-end" width="5%">{{ number_format($item->debit_refer, 2) }}</td>  --}}
+                                                {{-- <td class="text-end" width="5%">{{ number_format($item->debit_toa, 2) }}</td>  --}} 
                                                 {{-- <td class="text-end" width="5%" style="color:rgb(129, 54, 250)">{{ number_format($item->debit_walkin, 2) }}</td>  --}}
                                             </tr>
 
@@ -290,16 +293,20 @@
                                                     $total5 = $total5 + $item->debit_toa;
                                                     $total6 = $total6 + $item->debit_refer;
                                                     $total7 = $total7 + $item->debit_drug;
+                                                    $total8 = $total8 + $item->debit_refer;
+                                                    $total9 = $total9 + $item->rcpt_money;
                                             ?>
                                         @endforeach
                                     </tbody>
                                     <tr style="background-color: #f3fca1">
                                         <td colspan="13" class="text-end" style="background-color: #fca1a1"></td>
                                         <td class="text-center" style="background-color: #47A4FA"><label for="" style="color: #07c293">{{ number_format($total1, 2) }}</label></td>
+                                        <td class="text-center" style="background-color: #47A4FA"><label for="" style="color: #07c293">{{ number_format($total9, 2) }}</label></td>
                                         <td class="text-center" style="background-color: #e25411" ><label for="" style="color: #07c293">{{ number_format($total2, 2) }}</label></td>
                                         <td class="text-center" style="background-color: #8908df"><label for="" style="color: #07c293">{{ number_format($total3, 2) }}</label> </td>
                                         <td class="text-center" style="background-color: #8908df"><label for="" style="color: #07c293">{{ number_format($total4, 2) }}</label></td> 
                                         <td class="text-center" style="background-color: #8908df"><label for="" style="color: #07c293">{{ number_format($total7, 2) }}</label></td> 
+                                        <td class="text-center" style="background-color: #8908df"><label for="" style="color: #07c293">{{ number_format($total8, 2) }}</label></td> 
                                     </tr>
                                 </table>
                             </div>

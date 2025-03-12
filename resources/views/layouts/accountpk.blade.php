@@ -1138,6 +1138,7 @@ if (Auth::check()) {
                                                 <a href="{{ url('tree_document') }}" class="dropdown-item">Document</a>
                                                 <a href="{{ url('stm_oneid_opd') }}" class="dropdown-item">UCS(ONEID-OPD)</a>
                                                 <a href="{{ url('upstm_ucsopd') }}" class="dropdown-item">UCS(Excel-OPD)</a>
+                                                <a href="{{ url('upstm_ucsopd_imc') }}" class="dropdown-item">UCS(Excel-OPD-IMC)</a>
                                                 <a href="{{ url('upstm_ucs') }}" class="dropdown-item">UCS(Excel-IPD)OK</a>
                                                 <a href="{{ url('upstm_ofcexcel') }}" class="dropdown-item">OFC(Excel)OK</a>
                                                 <a href="{{ url('upstm_bkkexcel') }}" class="dropdown-item">BKK(Excel)OK</a>

@@ -3406,7 +3406,7 @@ class AccountPKController extends Controller
         $enddate = $request->enddate;
         $datashow = DB::connection('mysql')->select('
                 SELECT a.an,a.vn,a.hn,a.vstdate,a.dchdate,a.cid,a.ptname,a.pttype,a.income,a.debit,a.debit_total,b.STMdoc,b.ip_paytrue,b.total_approve,b.projectcode
-                ,b.hc_drug+ b.hc+ b.ae+ b.ae_drug + b.inst+ b.dmis_money2 + b.dmis_drug  as total_216
+                ,b.hc_drug+ b.hc+ b.ae+ b.ae_drug + b.inst+ b.dmis_money2 + b.dmis_drug  as total_216,a.chod_chery_imc
                 from acc_1102050101_216 a
                 LEFT JOIN acc_stm_ucs b ON b.cid = a.cid AND b.vstdate = a.vstdate
                 where b.STMdoc = "'.$id.'"
