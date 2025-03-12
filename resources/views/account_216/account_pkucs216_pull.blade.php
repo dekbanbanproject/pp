@@ -116,41 +116,41 @@
                         <div class="row mb-3">
                             <div class="col-md-7 text-start">
                                 @if ($activeclaim == 'Y')
-                                  <button class="ladda-button me-2 btn-pill btn btn-sm btn-info cardacc" onclick="check()">Check</button>
+                                  <button class="ladda-button me-2 btn-pill btn btn-sm btn-info cardacc" onclick="check()">เปิดฟังก์ชัน</button>
                                   <input type="checkbox" id="myCheck" class="dcheckbox_ me-2" checked>
-                                  <button class="ladda-button me-2 btn-pill btn btn-sm btn-danger cardacc" onclick="uncheck()">Uncheck</button>
+                                  <button class="ladda-button me-2 btn-pill btn btn-sm btn-danger cardacc" onclick="uncheck()">ปิดฟังก์ชัน</button>
                                 @else
-                                  <button class="ladda-button me-2 btn-pill btn btn-sm btn-info cardacc" onclick="check()">Check</button>
+                                  <button class="ladda-button me-2 btn-pill btn btn-sm btn-info cardacc" onclick="check()">เปิดฟังก์ชัน</button>
                                   <input type="checkbox" id="myCheck" class="dcheckbox_ me-2">
-                                  <button class="ladda-button me-2 btn-pill btn btn-sm btn-danger cardacc" onclick="uncheck()">Uncheck</button>
+                                  <button class="ladda-button me-2 btn-pill btn btn-sm btn-danger cardacc" onclick="uncheck()">ปิดฟังก์ชัน</button>
                                 @endif
-                            <!-- <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-warning cardacc Claim" data-url="{{url('account_pkucs216_claim')}}">
-                                    <img src="{{ asset('images/loading_white.png') }}" class="me-2 ms-2" height="18px" width="18px">
-                                   ประมวลผล
-                               </button>
-                               <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-primary cardacc ClaimCancel" data-url="{{url('account_claim_cancel')}}">
-                                <img src="{{ asset('images/loading_white.png') }}" class="me-2 ms-2" height="18px" width="18px">
-                                    ไม่ใช้สิทธิ์
-                                </button>
-                                <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-success cardacc" id="Apifdh">
-                                    <img src="{{ asset('images/Apiwhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
-                                    API FDH
-                                </button>
-                                <a href="{{url('account_pkucs216_zip')}}" class="ladda-button me-2 btn-pill btn btn-sm btn-success cardacc">
-                                    <img src="{{ asset('images/zipwhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
-                                    Zip
-                                </a> -->
+                                <!-- <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-warning cardacc Claim" data-url="{{url('account_pkucs216_claim')}}">
+                                        <img src="{{ asset('images/loading_white.png') }}" class="me-2 ms-2" height="18px" width="18px">
+                                    ประมวลผล
+                                    </button>
+                                    <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-primary cardacc ClaimCancel" data-url="{{url('account_claim_cancel')}}">
+                                        <img src="{{ asset('images/loading_white.png') }}" class="me-2 ms-2" height="18px" width="18px">
+                                            ไม่ใช้สิทธิ์
+                                        </button>
+                                        <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-success cardacc" id="Apifdh">
+                                            <img src="{{ asset('images/Apiwhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
+                                            API FDH
+                                        </button>
+                                        <a href="{{url('account_pkucs216_zip')}}" class="ladda-button me-2 btn-pill btn btn-sm btn-success cardacc">
+                                            <img src="{{ asset('images/zipwhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
+                                            Zip
+                                        </a> -->
 
-                                
-                              <!-- <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-warning cardacc ClaimCancel" data-url="{{url('account_claim_cancel')}}">
-                                    <i class="fa-solid fa-spinner text-white me-2"></i>
-                                    ไม่ใช้สิทธิ์
-                                </button>
-                               <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-success cardacc" id="Apifdh">
-                                    <img src="{{ asset('images/Apiwhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
-                                    API FDH
-                                </button>
-                            -->
+                                        
+                                    <!-- <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-warning cardacc ClaimCancel" data-url="{{url('account_claim_cancel')}}">
+                                            <i class="fa-solid fa-spinner text-white me-2"></i>
+                                            ไม่ใช้สิทธิ์
+                                        </button>
+                                    <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-success cardacc" id="Apifdh">
+                                        <img src="{{ asset('images/Apiwhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
+                                        API FDH
+                                    </button>
+                                -->
                               </div>
                             <div class="col"></div>
                             <div class="col-md-4 text-end">
@@ -177,8 +177,8 @@
                                 <table id="example" class="table table-sm table-hover table-striped table-bordered dt-responsive nowrap" style=" border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr>
-                                            <th width="5%" class="text-center">ลำดับ</th>
-                                            <th width="5%" class="text-center"><input type="checkbox" class="dcheckbox_" name="stamp" id="stamp"> </th>
+                                            <th width="1%" class="text-center">ลำดับ</th>
+                                            <th width="2%" class="text-center"><input type="checkbox" class="dcheckbox_" name="stamp" id="stamp"> </th>
                                             <th class="text-center">ตั้งลูกหนี้</th>
                                             <th class="text-center">
                                                 <span class="bg-success badge">{{ $count_claim }}</span> เคลม
@@ -188,18 +188,20 @@
                                                 <span class="bg-success badge">{{ $count_no }}</span> Authen
                                                 <span class="bg-danger badge">{{ $count_null }}</span>
                                             </th>
+                                            <th class="text-center" width="3%">pdx</th>
                                             <th class="text-center">hn</th>
                                             <th class="text-center">cid</th>
                                             <th class="text-center">ptname</th>
                                             <th class="text-center">vstdate</th>
-                                            <th class="text-center" width="5%">pttype</th>
-                                            <th class="text-center" width="5%">spsch</th>
-                                            <th class="text-center" width="5%">hmain</th>
-                                            <th class="text-center" width="5%">pdx</th>
-                                            <th class="text-center" width="7%">income</th>
-                                            <th class="text-center" width="7%">ลูกหนี้</th>
-                                            <th class="text-center" width="7%">imc</th>
-                                            <th class="text-center" width="7%">inst</th>
+                                            <th class="text-center" width="3%">pttype</th>
+                                            <th class="text-center" width="3%">spsch</th>
+                                            <th class="text-center" width="3%">hmain</th>
+                                      
+                                            <th class="text-center" width="4%">income</th>
+                                            <th class="text-center" width="4%">ลูกหนี้</th>
+                                            <th class="text-center" width="4%">imc</th>
+                                            <th class="text-center" width="4%">inst</th>
+                                            <th class="text-center" width="4%">drug</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -220,58 +222,58 @@
                                                     $data_count = $val->vn;
                                                 }
                                             } else {
-                                                // $data_hn = '';
+                                                
                                             }
                                         ?>
 
                                             <tr id="tr_{{$item->acc_debtor_id}}">
-                                                <td class="text-center" width="5%">{{ $i++ }}</td>
+                                                <td class="text-center" width="1%">{{ $i++ }}</td>
                                                 @if ($activeclaim == 'Y')
                                                     @if ($item->debit_total == '' || $item->pdx =='' || $item->claim_code =='')
-                                                        <td class="text-center" width="5%">
+                                                        <td class="text-center" width="2%">
                                                             <input class="form-check-input" type="checkbox" id="flexCheckDisabled" disabled>
                                                         </td>
                                                     @else
-                                                        <td class="text-center" width="5%"><input type="checkbox" class="dcheckbox_ sub_chk" data-id="{{$item->acc_debtor_id}}"> </td>
+                                                        <td class="text-center" width="2%"><input type="checkbox" class="dcheckbox_ sub_chk" data-id="{{$item->acc_debtor_id}}"> </td>
                                                     @endif
                                                 @else
-                                                    <td class="text-center" width="5%"><input type="checkbox" class="dcheckbox_ sub_chk" data-id="{{$item->acc_debtor_id}}"> </td>
+                                                    <td class="text-center" width="2%"><input type="checkbox" class="dcheckbox_ sub_chk" data-id="{{$item->acc_debtor_id}}"> </td>
                                                 @endif
 
-                                                <td class="text-center" width="5%">
+                                                <td class="text-center" width="3%">
                                                     @if ($item->stamp =='N')
                                                         <img src="{{ asset('images/Cancel_new2.png') }}" height="23px" width="23px">
                                                     @else
                                                     <img src="{{ asset('images/check_trueinfo3.png') }}" height="23px" width="23px">
                                                     @endif
                                                 </td>
-                                                <td class="text-center" width="10%">
+                                                <td class="text-center" width="5%">
                                                     @if ($item->active_claim =='N')
                                                         <img src="{{ asset('images/Cancel_new2.png') }}" height="23px" width="23px">
                                                     @else
                                                     <img src="{{ asset('images/check_trueinfo3.png') }}" height="23px" width="23px">
                                                     @endif
                                                 </td>
-                                                <td class="text-start" width="10%">
+                                                <td class="text-start" width="5%">
                                                     @if ($item->claim_code != NULL)
                                                         <span class="bg-success badge text-start">{{ $item->claim_code }}</span>
                                                     @else
                                                         <span class="bg-warning badge text-start">-</span>
                                                     @endif
                                                 </td>
+                                                <td class="text-center" style="color:rgb(85, 14, 216)" width="3%">{{ $item->pdx }}</td>
                                                 <td class="text-start" width="5%">{{ $item->hn }}</td>
                                                 <td class="text-start" width="6%">{{ $item->cid }}</td>
-                                                <td class="text-start" >{{ $item->ptname }}</td>
-                                                <td class="text-center" width="5%">{{ $item->vstdate }}</td>
-                                                <td class="text-center" style="color:rgb(73, 147, 231)" width="5%">{{ $item->pttype }}</td>
-                                                <td class="text-center" style="color:rgb(216, 95, 14)" width="5%">{{ $item->subinscl }}</td>
-                                                <td class="text-center" style="color:rgb(8, 122, 167)" width="5%">{{ $item->hospmain }}</td>
-                                                <td class="text-center" style="color:rgb(85, 14, 216)" width="5%">{{ $item->pdx }}</td>
-
-                                                <td class="text-center" style="color:rgb(4, 74, 155)" width="5%">{{ number_format($item->income, 2) }}</td>
-                                                <td class="text-center" style="color:rgb(247, 81, 39)" width="5%">{{ number_format($item->debit_total, 2) }}</td>
-                                                <td class="text-center" style="color:rgb(119, 39, 247)" width="5%">{{ number_format($item->debit_imc, 2) }}</td>
-                                                <td class="text-center" style="color:rgb(119, 39, 247)" width="5%">{{ number_format($item->debit_instument, 2) }}</td>
+                                                <td class="text-start">{{ $item->ptname }}</td>
+                                                <td class="text-center" width="4%">{{ $item->vstdate }}</td>
+                                                <td class="text-center" style="color:rgb(73, 147, 231)" width="3%">{{ $item->pttype }}</td>
+                                                <td class="text-center" style="color:rgb(216, 95, 14)" width="3%">{{ $item->subinscl }}</td>
+                                                <td class="text-center" style="color:rgb(8, 122, 167)" width="3%">{{ $item->hospmain }}</td>   
+                                                <td class="text-center" style="color:rgb(4, 74, 155)" width="4%">{{ number_format($item->income, 2) }}</td>
+                                                <td class="text-center" style="color:rgb(247, 81, 39)" width="4%">{{ number_format($item->debit_total, 2) }}</td>
+                                                <td class="text-center" style="color:rgb(119, 39, 247)" width="4%">{{ number_format($item->debit_imc+$item->debit_imc_adpcode, 2) }}</td>
+                                                <td class="text-center" style="color:rgb(119, 39, 247)" width="4%">{{ number_format($item->debit_instument, 2) }}</td>
+                                                <td class="text-center" style="color:rgb(119, 39, 247)" width="4%">{{ number_format($item->debit_drug, 2) }}</td>
                                                 {{-- <td class="text-end" width="5%">{{ number_format($item->debit_drug, 2) }}</td>  --}}
                                                 {{-- <td class="text-end" width="5%">{{ number_format($item->debit_toa, 2) }}</td>  --}}
                                                 {{-- <td class="text-end" width="5%">{{ number_format($item->debit_refer, 2) }}</td>  --}}
@@ -287,19 +289,17 @@
                                                     // $total4 = $total4 + $item->debit_drug;
                                                     $total5 = $total5 + $item->debit_toa;
                                                     $total6 = $total6 + $item->debit_refer;
-                                                    // $total7 = $total7 + $item->debit_walkin;
+                                                    $total7 = $total7 + $item->debit_drug;
                                             ?>
                                         @endforeach
                                     </tbody>
                                     <tr style="background-color: #f3fca1">
                                         <td colspan="13" class="text-end" style="background-color: #fca1a1"></td>
-                                        <td class="text-center" style="background-color: #47A4FA"><label for="" style="color: #f51558">{{ number_format($total1, 2) }}</label></td>
-                                        <td class="text-center" style="background-color: #e25411" ><label for="" style="color: #f51558">{{ number_format($total2, 2) }}</label></td>
-                                        <td class="text-center" style="background-color: #8908df"><label for="" style="color: #f51558">{{ number_format($total3, 2) }}</label> </td>
-                                        <td class="text-center" style="background-color: #8908df"><label for="" style="color: #f51558">{{ number_format($total4, 2) }}</label></td>
-                                        {{-- <td class="text-center" style="background-color: #FC7373"><label for="" style="color: #FFFFFF">{{ number_format($total5, 2) }}</label></td> --}}
-                                        {{-- <td class="text-center" style="background-color: #FC7373"><label for="" style="color: #FFFFFF">{{ number_format($total6, 2) }}</label></td> --}}
-                                        {{-- <td class="text-center" style="background-color: #9037f5"><label for="" style="color: #FFFFFF">{{ number_format($total7, 2) }}</label></td> --}}
+                                        <td class="text-center" style="background-color: #47A4FA"><label for="" style="color: #07c293">{{ number_format($total1, 2) }}</label></td>
+                                        <td class="text-center" style="background-color: #e25411" ><label for="" style="color: #07c293">{{ number_format($total2, 2) }}</label></td>
+                                        <td class="text-center" style="background-color: #8908df"><label for="" style="color: #07c293">{{ number_format($total3, 2) }}</label> </td>
+                                        <td class="text-center" style="background-color: #8908df"><label for="" style="color: #07c293">{{ number_format($total4, 2) }}</label></td> 
+                                        <td class="text-center" style="background-color: #8908df"><label for="" style="color: #07c293">{{ number_format($total7, 2) }}</label></td> 
                                     </tr>
                                 </table>
                             </div>

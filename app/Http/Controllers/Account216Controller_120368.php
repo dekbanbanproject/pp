@@ -563,7 +563,6 @@ class Account216Controller extends Controller
                 ,sum(if(vp.pttype="W1",sum_price,0)) as debit_walkin
                 ,sum(if(op.icode IN("3003157","3003205","3003180","3003179"),sum_price,0)) as debit_thai
                 ,sum(if(op.icode IN("3010887","3010885","3010884"),sum_price,0)) as debit_imc
-                ,sum(if(s.nhso_adp_code IN("8221"),sum_price,0)) as debit_imc_adpcode
 
                 FROM ovst o
                 LEFT OUTER JOIN vn_stat v on v.vn=o.vn
@@ -583,20 +582,65 @@ class Account216Controller extends Controller
                 AND (o.an="" or o.an is null)
                 GROUP BY v.vn'
         );
-  
+        // (sum(if(vp.pttype="W1",sum_price,0))) +
+        // AND v.income-v.discount_money-v.rcpt_money <> 0
+        // ,sum(if(vp.pttype="W1",sum_price,0)) as debit_walkin
+
         foreach ($acc_debtor as $key => $value) {
             if ($value->debit_refer > 0 ) {
             } else {
                 if ($value->debit > 0 && $value->cid != '') {
-                
+
+                //     if ($value->debit_walkin > '0') {
+                //         $check = Acc_debtor::where('vn', $value->vn)->where('account_code', '1102050101.216')->count();
+                //         if ($check > 0) {
+                //             Acc_debtor::where('vn', $value->vn)->where('account_code', '1102050101.216')->update([
+                //                 'projectcode'        => 'WALKIN',
+                //                 'claim_code'         => $value->auth_code,
+                //                 'pdx'                => $value->pdx,
+                //                 'income'             => $value->income,
+                //                 'debit_total'        => $value->debit,
+                //                 'debit_walkin'       => $value->debit_walkin,
+                //                 'debit_imc'          => $value->debit_imc,
+                //                 'debit_thai'         => $value->debit_thai,
+                //             ]);
+                //         }else{
+                //             Acc_debtor::insert([
+                //                 'hn'                 => $value->hn,
+                //                 'an'                 => $value->an,
+                //                 'vn'                 => $value->vn,
+                //                 'cid'                => $value->cid,
+                //                 'ptname'             => $value->ptname,
+                //                 'pttype'             => $value->pttype,
+                //                 'vstdate'            => $value->vstdate,
+                //                 'acc_code'           => $value->acc_code,
+                //                 'account_code'       => $value->account_code,
+                //                 'account_name'       => $value->account_name,
+                //                 'projectcode'        => 'WALKIN',
+                //                 'claim_code'         => $value->auth_code,
+                //                 'pdx'                => $value->pdx,
+                //                 'income'             => $value->income,
+                //                 'uc_money'           => $value->uc_money,
+                //                 'discount_money'     => $value->discount_money,
+                //                 'rcpt_money'         => $value->rcpt_money,
+                //                 'debit'              => $value->debit,
+                //                 'debit_drug'         => $value->debit_drug,
+                //                 'debit_instument'    => $value->debit_instument,
+                //                 'debit_toa'          => $value->debit_toa,
+                //                 'debit_refer'        => $value->debit_refer,
+                //                 'debit_walkin'       => $value->debit_walkin,
+                //                 'debit_total'        => $value->debit,
+                //                 'debit_imc'          => $value->debit_imc,
+                //                 'debit_thai'          => $value->debit_thai,
+                //                 'max_debt_amount'    => $value->max_debt_amount,
+                //                 'acc_debtor_userid'  => Auth::user()->id
+                //             ]);
+                //         }
+                //     } else {
                         $check = Acc_debtor::where('vn', $value->vn)->where('account_code', '1102050101.216')->count();
                         if ($check > 0) {
-                            Acc_debtor::where('vn', $value->vn)->where('account_code', '1102050101.216')->update([
-                                'claim_code'         => $value->auth_code,
-                                'vsttime'            => $value->vsttime,
-                                'debit_imc_adpcode'  => $value->debit_imc_adpcode,
-                            ]);
-                   
+                            Acc_debtor::where('vn', $value->vn)->where('account_code', '1102050101.216')->update(['claim_code'=> $value->auth_code,'vsttime' => $value->vsttime]);
+                            // Acc_1102050101_216::where('vn', $value->vn)->update(['vsttime' => $value->vsttime]);
                         } else {
                             Acc_debtor::insert([
                                 'hn'                 => $value->hn,
@@ -625,13 +669,12 @@ class Account216Controller extends Controller
                                 'debit_walkin'       => $value->debit_walkin,
                                 'debit_total'        => $value->debit,
                                 'debit_imc'          => $value->debit_imc,
-                                'debit_imc_adpcode'  => $value->debit_imc_adpcode,
                                 'debit_thai'         => $value->debit_thai,
                                 'max_debt_amount'    => $value->max_debt_amount,
                                 'acc_debtor_userid'  => Auth::user()->id
                             ]);
                         }
-               
+                    // }
                 } else {
                 }
             }
@@ -733,7 +776,10 @@ class Account216Controller extends Controller
             'date_time'          => $datatime,
             'user_id'            => Auth::user()->id,
         ]);
- 
+
+        // LEFT OUTER JOIN pttype_eclaim e on e.code=ptt.pttype_eclaim_id
+        // $getdata =  DB::connection('mysql')->select('SELECT COUNT(vn), vn,hn,sum(debit_total) FROM acc_debtor WHERE vstdate BETWEEN "' . $startdate . '" AND "' . $enddate . '" AND account_code ="1102050101.216" GROUP BY hn HAVING COUNT(hn) > 1;');
+
         return response()->json([
             'status'    => '200'
         ]);
