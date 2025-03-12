@@ -993,7 +993,7 @@ Route::get('home_supplies_excel', [App\Http\Controllers\AirController::class, 'h
   Route::match(['get', 'post'], 'wh_request_update', [App\Http\Controllers\WhUserController::class, 'wh_request_update'])->name('wh.wh_request_update'); //
 
   Route::match(['get', 'post'], 'wh_request_addsub/{id}', [App\Http\Controllers\WhUserController::class, 'wh_request_addsub'])->name('wh.wh_request_addsub'); //
-  
+
   Route::match(['get', 'post'], 'wh_request_addsubdetail', [App\Http\Controllers\WhUserController::class, 'wh_request_addsubdetail'])->name('wh.wh_request_addsubdetail'); //
   Route::match(['get', 'post'], 'wh_request_addsubpic/{id}', [App\Http\Controllers\WhUserController::class, 'wh_request_addsubpic'])->name('wh.wh_request_addsubpic'); //
   Route::match(['get', 'post'], 'wh_request_addsubpic_save', [App\Http\Controllers\WhUserController::class, 'wh_request_addsubpic_save'])->name('wh.wh_request_addsubpic_save'); //
@@ -2106,6 +2106,7 @@ Route::get('home_supplies_excel', [App\Http\Controllers\AirController::class, 'h
   Route::match(['get', 'post'], 'account_201_stm_date/{startdate}/{enddate}', [App\Http\Controllers\Account201Controller::class, 'account_201_stm_date'])->name('acc.account_201_stm_date'); //
   Route::match(['get', 'post'], 'account_201_stmnull_date/{months}/{year}', [App\Http\Controllers\Account201Controller::class, 'account_201_stmnull_date'])->name('acc.account_201_stmnull_date'); //
   Route::match(['get', 'post'], 'account_201_destroy', [App\Http\Controllers\Account201Controller::class, 'account_201_destroy'])->name('acc.account_201_destroy'); //
+  Route::match(['get', 'post'], 'account_201_send', [App\Http\Controllers\Account201Controller::class, 'account_201_send'])->name('acc.account_201_send'); // 
 
   Route::match(['get', 'post'], 'acc_mareng_pull', [App\Http\Controllers\AccountMarengController::class, 'acc_mareng_pull'])->name('acc.acc_mareng_pull'); //
   Route::match(['get', 'post'], 'acc_mareng_pulldata', [App\Http\Controllers\AccountMarengController::class, 'acc_mareng_pulldata'])->name('acc.acc_mareng_pulldata'); //

@@ -1,6 +1,26 @@
 @extends('layouts.accountpk')
 @section('title', 'PK-OFFICE || ACCOUNT')
 @section('content')
+<script>
+    function TypeAdmin() {
+        window.location.href = '{{ route('index') }}';
+    }
+</script>
+<?php
+    if (Auth::check()) {
+        $type = Auth::user()->type;
+        $iduser = Auth::user()->id;
+    } else {
+        echo "<body onload=\"TypeAdmin()\"></body>";
+        exit();
+    }
+    $url = Request::url();
+    $pos = strrpos($url, '/') + 1;
+    $datenow = date('Y-m-d');
+    $ynow = date('Y') + 543;
+    $yb = date('Y') + 542;
+?>
+
     <style>
         #button {
             display: block;
@@ -132,8 +152,7 @@
                         <div class="table-responsive">
                             {{-- <table id="scroll-vertical-datatable" style="width: 100%;" id="example" class="table table-sm table-hover table-striped table-bordered"> --}}
                         <table id="datatable-buttons" class="table table-sm table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                            {{-- <table id="example" class="table table-striped table-bordered "
-                            style="border-collapse: collapse; border-spacing: 0; width: 100%;"> --}}
+                     
                             <thead>
                                 <tr>
                                     <th class="text-center">ลำดับ</th>

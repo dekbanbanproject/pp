@@ -46,6 +46,8 @@ use App\Models\Acc_stm_lgo;
 use App\Models\Acc_stm_lgoexcel;
 use App\Models\Check_sit_auto;
 use App\Models\Acc_stm_ucs_excel;
+use App\Models\Acc_debtor_log;
+use App\Models\Acc_1102050101_201send;
 
 use PDF;
 use setasign\Fpdi\Fpdi;
@@ -251,10 +253,11 @@ class Account201Controller extends Controller
     public function account_201_checksit(Request $request)
     {
         $datestart = $request->datestart;
-        $dateend = $request->dateend;
-        $date = date('Y-m-d');
-
-        $data_sitss = DB::connection('mysql')->select('SELECT vn,an,cid,vstdate,dchdate FROM acc_debtor WHERE account_code="1102050101.201" AND stamp = "N" GROUP BY vn');
+        $dateend   = $request->dateend;
+        $date      = date('Y-m-d');
+        $id        = $request->ids;
+        $data_sitss = Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))->get();
+        // $data_sitss = DB::connection('mysql')->select('SELECT vn,an,cid,vstdate,dchdate FROM acc_debtor WHERE account_code="1102050101.201" AND stamp = "N" GROUP BY vn');
        //  AND subinscl IS NULL
            //  LIMIT 30
         // WHERE vstdate = CURDATE()
@@ -339,27 +342,25 @@ class Account201Controller extends Controller
         $db_        = Orginfo::where('orginfo_id','=','1')->first();
         $db         = $db_->dbname;
         $datenow    = date('Y-m-d');
+        $datatime   = date('H:m:s');
         $startdate  = $request->datepicker;
         $enddate    = $request->datepicker2;
         $acc_debtor = DB::connection('mysql2')->select(
-            'SELECT v.vn,ifnull(o.an,"") as an,o.hn,pt.cid
-                ,concat(pt.pname,pt.fname," ",pt.lname) as ptname
-                ,o.vstdate,o.vsttime
-                ,v.hospmain,vp.max_debt_amount
-                ,ptt.pttype_eclaim_id ,v.pttype
-                ,e.code as acc_code ,e.ar_opd as account_code ,e.name as account_name
-                ,v.income,v.uc_money,v.discount_money,v.paid_money,v.rcpt_money
+            'SELECT v.vn,ifnull(o.an,"") as an,o.hn,pt.cid ,concat(pt.pname,pt.fname," ",pt.lname) as ptname ,o.vstdate,o.vsttime ,v.hospmain,vp.max_debt_amount
+                ,ptt.pttype_eclaim_id ,v.pttype ,e.code as acc_code ,e.ar_opd as account_code ,e.name as account_name ,v.income,v.uc_money,v.discount_money,v.paid_money,v.rcpt_money
 
-                ,sum(if(d.name like "CT%",sum_price,0)) as CT
-                ,if(op.icode IN ("3010058"),sum_price,0) as fokliad
+                ,sum(if(d.name like "CT%",sum_price,0)) as CT ,if(op.icode IN ("3010058"),sum_price,0) as fokliad 
                 ,sum(if(op.income="02",sum_price,0)) as debit_instument
                 ,sum(if(op.icode IN("1560016","1540073","1530005","1540048","1620015","1600012","1600015"),sum_price,0)) as debit_drug
                 ,sum(if(op.icode IN("3001412","3001417"),sum_price,0)) as debit_toa
                 ,sum(if(op.icode IN("3010829","3011068","3010864","3010861","3010862","3010863","3011069","3011012","3011070"),sum_price,0)) as debit_refer
                 ,v.income-v.discount_money-v.rcpt_money as debit
                 ,sum(if(op.icode IN("3003157","3003205","3003180","3003179"),sum_price,0)) as debit_thai
-                ,sum(if(op.icode IN("3010887","3010885","3010884"),sum_price,0)) as debit_imc
 
+                ,sum(if(op.icode IN("3010887","3010885","3010884"),sum_price,0)) as debit_imc
+                ,sum(if(d.nhso_adp_code IN("8221"),sum_price,0)) as debit_imc_adpcode
+                -- ,sum(if(d.nhso_adp_code IN("2505","2506","2507","2508","8202","8203","8204","8205","8206","8209","8218","8219","8220","8221","8222","8223","8224","8225","8226","8230","8231","8232","8233","8234","8235","8236","8706","8707","8711","8801","8901","8902","8904","9001"),sum_price,0)) as debit_imc_adpcode
+ 
                 FROM vn_stat v
                 LEFT OUTER JOIN ovst o on v.vn=o.vn
                 LEFT OUTER JOIN patient pt on pt.hn=v.hn
@@ -379,7 +380,12 @@ class Account201Controller extends Controller
 
         foreach ($acc_debtor as $key => $value) {
                     $check = Acc_debtor::where('vn', $value->vn)->where('account_code','1102050101.201')->count();
-                    if ($check == 0) {
+                    
+                    if ($check > 0) {
+                        Acc_debtor::where('vn', $value->vn)->where('account_code','1102050101.201')->update([
+                            'debit_imc_adpcode'  => $value->debit_imc_adpcode,
+                        ]);
+                    } else {
                         if ($value->debit > 0) {
                             Acc_debtor::insert([
                                 'bg_yearnow'         => $bg_yearnow,
@@ -406,19 +412,28 @@ class Account201Controller extends Controller
                                 'debit_toa'          => $value->debit_toa,
                                 'debit_refer'        => $value->debit_refer,
                                 'debit_imc'          => $value->debit_imc,
+                                'debit_imc_adpcode'  => $value->debit_imc_adpcode,
                                 'debit_thai'          => $value->debit_thai,
                                 // 'debit_total'        => $value->debit,
-                                'debit_total'        => $value->debit-$value->debit_instument-$value->debit_drug-$value->debit_refer,
+                                'debit_total'        => ($value->debit)-($value->debit_imc_adpcode+$value->debit_instument+$value->debit_drug+$value->debit_refer),
                                 'max_debt_amount'    => $value->max_debt_amount,
                                 'acc_debtor_userid'  => Auth::user()->id
                             ]);
-
                         } else {
                             # code...
                         }
                     }
+                     
 
         }
+
+        Acc_debtor_log::insert([
+            'account_code'       => '1102050101.201',
+            'make_gruop'         => 'ดึงลูกหนี้',
+            'date_save'          => $datenow,
+            'date_time'          => $datatime,
+            'user_id'            => Auth::user()->id,
+        ]);
 
             return response()->json([
 
@@ -427,6 +442,8 @@ class Account201Controller extends Controller
     }
     public function account_201_stam(Request $request)
     {
+        $datenow    = date('Y-m-d');
+        $datatime   = date('H:m:s');
         $id = $request->ids;
         $iduser = Auth::user()->id;
         $data = Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))->get();
@@ -479,6 +496,15 @@ class Account201Controller extends Controller
                 }
 
         }
+
+        Acc_debtor_log::insert([
+            'account_code'       => '1102050101.201',
+            'make_gruop'         => 'ตั้งลูกหนี้',
+            'date_save'          => $datenow,
+            'date_time'          => $datatime,
+            'user_id'            => Auth::user()->id,
+        ]);
+
         return response()->json([
             'status'    => '200'
         ]);
@@ -591,14 +617,102 @@ class Account201Controller extends Controller
 
     public function account_201_destroy(Request $request)
     {
+        $datenow    = date('Y-m-d');
+        $datatime   = date('H:m:s');
         $id = $request->ids;
         $data = Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))->get();
             Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))->delete();
+
+            Acc_debtor_log::insert([
+                'account_code'       => '1102050101.201',
+                'make_gruop'         => 'ลบลูกหนี้',
+                'date_save'          => $datenow,
+                'date_time'          => $datatime,
+                'user_id'            => Auth::user()->id,
+            ]);
 
         return response()->json([
             'status'    => '200'
         ]);
     }
+
+     // ********************* Send *******************************
+     public function account_201_send(Request $request)
+     {
+        $datenow    = date('Y-m-d');
+        $datatime   = date('H:m:s');
+         $id = $request->ids;
+         $iduser = Auth::user()->id;
+         $data = Acc_1102050101_201::whereIn('acc_1102050101_201_id',explode(",",$id))->get();
+         Acc_1102050101_201::whereIn('acc_1102050101_201_id',explode(",",$id))
+                     ->update([
+                         'sendactive' => 'Y'
+                     ]);
+         foreach ($data as $key => $value) {
+                 $date = date('Y-m-d H:m:s');
+              $check = Acc_1102050101_201send::where('vn', $value->vn)->count();
+                 // $check = Acc_debtor::where('vn', $value->vn)
+                 // ->where('debit_total','=','0')
+                 // ->count();
+                 if ($check > 0) {
+                    Acc_1102050101_201send::where('vn', $value->vn)->update([
+                         'hm'                => $value->hm,
+                     ]);
+                 } else {
+                    Acc_1102050101_201send::insert([
+                             'vn'                => $value->vn,
+                             'hn'                => $value->hn,
+                             'an'                => $value->an,
+                             'cid'               => $value->cid,
+                             'ptname'            => $value->ptname,
+                             'vstdate'           => $value->vstdate,
+                             'vsttime'           => $value->vsttime,
+                             'hm'                => $value->hm,
+                             'regdate'           => $value->regdate,
+                             'dchdate'           => $value->dchdate,
+                             'pttype'            => $value->pttype,
+                             'pttype_nhso'       => $value->pttype_spsch,
+                             'acc_code'          => $value->acc_code,
+                             'account_code'      => $value->account_code,
+                             'income'            => $value->income,
+                             'income_group'      => $value->income_group,
+                             'uc_money'          => $value->uc_money,
+                             'discount_money'    => $value->discount_money,
+                             'rcpt_money'        => $value->rcpt_money,
+                             'debit'             => $value->debit,
+                             'debit_drug'        => $value->debit_drug,
+                             'debit_instument'   => $value->debit_instument,
+                             'debit_refer'       => $value->debit_refer,
+                             'debit_toa'         => $value->debit_toa,
+                             'debit_total'       => $value->debit_total,
+                             
+                            'debit_imc'          => $value->debit_imc,
+                            'debit_imc_adpcode'  => $value->debit_imc_adpcode,
+                            'debit_thai'          => $value->debit_thai,
+
+                             'max_debt_amount'   => $value->max_debt_amount,
+                             'stm_rep'           => $value->stm_rep,
+                             'stm_money'         => $value->stm_money,
+                             'stm_rcpno'         => $value->stm_rcpno,
+                             'STMDoc'            => $value->STMDoc,
+                             'acc_debtor_userid' => $iduser
+                     ]);
+                 }
+ 
+         }
+
+         Acc_debtor_log::insert([
+            'account_code'       => '1102050101.201',
+            'make_gruop'         => 'ส่งลูกหนี้',
+            'date_save'          => $datenow,
+            'date_time'          => $datatime,
+            'user_id'            => Auth::user()->id,
+        ]);
+
+         return response()->json([
+             'status'    => '200'
+         ]);
+     }
 
 
 

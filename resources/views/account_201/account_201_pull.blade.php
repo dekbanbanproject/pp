@@ -79,7 +79,7 @@
             @csrf
         <div class="row">
             <div class="col-md-4">
-                <h5 class="card-title" style="color:rgb(10, 151, 85)">Detail 1102050101.201</h5>
+                <h5 class="card-title" style="color:rgb(248, 28, 83)">Detail 1102050101.201</h5>
                 <p class="card-title-desc">รายละเอียดข้อมูล ผัง 1102050101.201</p>
             </div>
             <div class="col"></div>
@@ -118,8 +118,13 @@
                             </div> --}}
                             <div class="col"></div>
                             <div class="col-md-3 text-end">
-                                <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-info cardacc" id="Check_sitipd">
+                                {{-- <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-info cardacc" id="Check_sitipd">
                                     <i class="fa-solid fa-user me-2"></i>
+                                    ตรวจสอบสิทธิ์
+                                </button> --}}
+
+                                <button type="button" class="ladda-button me-2 btn-pill btn btn-info btn-sm input_new Check_sit" data-url="{{url('account_201_checksit')}}">
+                                    <img src="{{ asset('images/Check_sitwhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
                                     ตรวจสอบสิทธิ์
                                 </button>
 
@@ -136,7 +141,7 @@
 
                         <p class="mb-0">
                             <div class="table-responsive">
-                                <table id="example" class="table table-sm table-hover table-sm dt-responsive nowrap" style=" border-spacing: 0; width: 100%;">
+                                <table id="example" class="table table-sm table-hover table-striped table-bordered dt-responsive nowrap" style=" border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr>
 
@@ -151,17 +156,18 @@
                                             <th class="text-center">pttype</th>
                                             <th class="text-center">spsch</th>
                                             <th class="text-center">income</th>
+                                            <th class="text-center">ชำระเงิน</th>
                                             <th class="text-center">ลูกหนี้</th>
                                             <th class="text-center">imc</th>
                                             <th class="text-center">ucep</th>
                                             <th class="text-center">ins</th>
                                             <th class="text-center">drug</th>
-                                            <th class="text-center">เลนส์</th>
+                                            {{-- <th class="text-center">เลนส์</th> --}}
                                             <th class="text-center">refer</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php $i = 1;$total1 = 0; $total2 = 0; $total3 = 0; $total4 = 0; $total5 = 0; $total6 = 0;$total7 = 0;$total8 = 0; ?>
+                                        <?php $i = 1;$total1 = 0; $total2 = 0; $total3 = 0; $total4 = 0; $total5 = 0; $total6 = 0;$total7 = 0;$total8 = 0;$total9 = 0; ?>
                                         @foreach ($acc_debtor as $item)
                                             <tr id="tr_{{$item->acc_debtor_id}}">
                                                 <td class="text-center" width="5%">{{ $i++ }}</td>
@@ -188,20 +194,21 @@
                                                 <td class="text-center" width="5%">{{ $item->vn }}</td>
                                                 <td class="text-center" width="5%">{{ $item->hn }}</td>
                                                 <td class="text-center" width="10%">{{ $item->cid }}</td>
-                                                <td class="p-2" >{{ $item->ptname }}</td>
+                                                <td class="text-start" >{{ $item->ptname }}</td>
                                                 <td class="text-center" width="10%">{{ $item->vstdate }}</td>
 
                                                 <td class="text-center" style="color:rgb(73, 147, 231)" width="5%">{{ $item->pttype }}</td>
                                                 <td class="text-center" style="color:rgb(216, 95, 14)" width="5%">{{ $item->subinscl }}</td>
 
                                                 <td class="text-center" width="10%">{{ number_format($item->income, 2) }}</td>
+                                                <td class="text-center" width="10%">{{ number_format($item->rcpt_money, 2) }}</td>
                                                 <td class="text-center" width="10%">{{ number_format($item->debit_total, 2) }}</td>
-                                                <td class="text-end" width="5%">{{ number_format($item->debit_imc, 2) }}</td>
-                                                <td class="text-end" width="5%">{{ number_format($item->debit_ucep, 2) }}</td>
-                                                <td class="text-end" width="5%">{{ number_format($item->debit_instument, 2) }}</td>
-                                                <td class="text-end" width="5%">{{ number_format($item->debit_drug, 2) }}</td>
-                                                <td class="text-end" width="5%">{{ number_format($item->debit_toa, 2) }}</td>
-                                                <td class="text-end" width="5%">{{ number_format($item->debit_refer, 2) }}</td>
+                                                <td class="text-center" width="5%">{{ number_format($item->debit_imc, 2) }}</td>
+                                                <td class="text-center" width="5%">{{ number_format($item->debit_ucep, 2) }}</td>
+                                                <td class="text-center" width="5%">{{ number_format($item->debit_instument, 2) }}</td>
+                                                <td class="text-center" width="5%">{{ number_format($item->debit_drug, 2) }}</td>
+                                                {{-- <td class="text-center" width="5%">{{ number_format($item->debit_toa, 2) }}</td> --}}
+                                                <td class="text-center" width="5%">{{ number_format($item->debit_refer, 2) }}</td>
 
                                             </tr>
                                             <?php
@@ -211,21 +218,23 @@
                                                     $total4 = $total4 + $item->debit_ucep;
                                                     $total5 = $total5 + $item->debit_instument;
                                                     $total6 = $total6 + $item->debit_drug;
-                                                    $total7 = $total7 + $item->debit_toa;
+                                                    // $total7 = $total7 + $item->debit_toa;
                                                     $total8 = $total8 + $item->debit_refer;
+                                                    $total9 = $total9 + $item->rcpt_money;
                                             ?>
                                         @endforeach
                                     </tbody>
                                     <tr style="background-color: #f3fca1">
                                         <td colspan="10" class="text-end" style="background-color: #fca1a1"></td>
-                                        <td class="text-center" style="background-color: #0eccda"><label for="" style="color: #FFFFFF">{{ number_format($total1, 2) }}</label></td>
-                                        <td class="text-center" style="background-color: #47A4FA"><label for="" style="color: #FFFFFF">{{ number_format($total2, 2) }}</label></td>
-                                        <td class="text-center" style="background-color: #197cd8"><label for="" style="color: #FFFFFF">{{ number_format($total3, 2) }}</label></td>
-                                        <td class="text-center" style="background-color: #11cea5"><label for="" style="color: #FFFFFF">{{ number_format($total4, 2) }}</label></td>
-                                        <td class="text-center" style="background-color: #9d69fc"><label for="" style="color: #FFFFFF">{{ number_format($total5, 2) }}</label></td>
-                                        <td class="text-center" style="background-color: #87e211"><label for="" style="color: #FFFFFF">{{ number_format($total6, 2) }}</label></td>
-                                        <td class="text-center" style="background-color: #e09f12"><label for="" style="color: #FFFFFF">{{ number_format($total7, 2) }}</label></td>
-                                        <td class="text-center" style="background-color: #e09f12"><label for="" style="color: #FFFFFF">{{ number_format($total8, 2) }}</label></td>
+                                        <td class="text-center" style="background-color: #0eccda"><label for="" style="color: #069b8e">{{ number_format($total1, 2) }}</label></td>
+                                        <td class="text-center" style="background-color: #0eccda"><label for="" style="color: #069b8e">{{ number_format($total9, 2) }}</label></td>
+                                        <td class="text-center" style="background-color: #47A4FA"><label for="" style="color: #069b8e">{{ number_format($total2, 2) }}</label></td>
+                                        <td class="text-center" style="background-color: #197cd8"><label for="" style="color: #069b8e">{{ number_format($total3, 2) }}</label></td>
+                                        <td class="text-center" style="background-color: #11cea5"><label for="" style="color: #069b8e">{{ number_format($total4, 2) }}</label></td>
+                                        <td class="text-center" style="background-color: #9d69fc"><label for="" style="color: #069b8e">{{ number_format($total5, 2) }}</label></td>
+                                        <td class="text-center" style="background-color: #87e211"><label for="" style="color: #069b8e">{{ number_format($total6, 2) }}</label></td>
+                                        {{-- <td class="text-center" style="background-color: #e09f12"><label for="" style="color: #069b8e">{{ number_format($total7, 2) }}</label></td> --}}
+                                        <td class="text-center" style="background-color: #e09f12"><label for="" style="color: #069b8e">{{ number_format($total8, 2) }}</label></td>
                                     </tr>
                                 </table>
                             </div>
@@ -464,6 +473,90 @@
                             });
                         }
                 })
+            });
+
+            $('.Check_sit').click(function() {
+                var allValls = [];
+                $(".sub_chk:checked").each(function () {
+                    allValls.push($(this).attr('data-id'));
+                });
+                if (allValls.length <= 0) {
+                    // alert("SSSS");
+                    Swal.fire({
+                        title: 'คุณยังไม่ได้เลือกรายการ ?',
+                        text: "กรุณาเลือกรายการก่อน",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        }).then((result) => {
+
+                        })
+                } else {
+
+                    Swal.fire({
+                        position: "top-end",
+                        title: 'Are you sure?',
+                        text: "ต้องการตรวจสอบสอทธิ์ใช่ไหม!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'You Check Sit Data!.!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                var check = true;
+                                if (check == true) {
+                                    var join_selected_values = allValls.join(",");
+                                    // alert(join_selected_values);
+                                    $("#overlay").fadeIn(300);　
+                                    $("#spinner").show(); //Load button clicked show spinner
+
+                                    $.ajax({
+                                        url:$(this).data('url'),
+                                        type: 'POST',
+                                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                        data: 'ids='+join_selected_values,
+                                        success:function(data){
+                                                if (data.status == 200) {
+                                                    $(".sub_chk:checked").each(function () {
+                                                        $(this).parents("tr").remove();
+                                                    });
+                                                    Swal.fire({
+                                                        position: "top-end",
+                                                        title: 'เช็คสิทธิ์สำเร็จ',
+                                                        text: "You Check sit success",
+                                                        icon: 'success',
+                                                        showCancelButton: false,
+                                                        confirmButtonColor: '#06D177',
+                                                        confirmButtonText: 'เรียบร้อย'
+                                                    }).then((result) => {
+                                                        if (result
+                                                            .isConfirmed) {
+                                                            console.log(
+                                                                data);
+                                                            window.location.reload();
+                                                            $('#spinner').hide();//Request is complete so hide spinner
+                                                        setTimeout(function(){
+                                                            $("#overlay").fadeOut(300);
+                                                        },500);
+                                                        }
+                                                    })
+                                                } else {
+
+                                                }
+
+                                        }
+                                    });
+                                    $.each(allValls,function (index,value) {
+                                        $('table tr').filter("[data-row-id='"+value+"']").remove();
+                                    });
+                                }
+                            }
+                        })
+
+
+                    }
             });
 
             $('.Destroystamp').on('click', function(e) {

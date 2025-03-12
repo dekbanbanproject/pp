@@ -86,8 +86,8 @@ use App\Models\D_apiwalkin_opd;
 use App\Models\D_walkin;
 use App\Models\D_fdh;
 use App\Models\D_walkin_report;
-
-
+use App\Models\Acc_debtor_log;
+use App\Models\Acc_1102050101_201send;
 
 use App\Models\Fdh_ins;
 use App\Models\Fdh_pat;
@@ -393,12 +393,14 @@ class Account216Controller extends Controller
         $dateend = $request->dateend;
         $date = date('Y-m-d');
 
-        $data_sitss = DB::connection('mysql')->select('SELECT vn,an,cid,vstdate,dchdate FROM acc_debtor WHERE account_code="1102050101.216" AND stamp = "N" GROUP BY vn');
+        // $data_sitss = DB::connection('mysql')->select('SELECT vn,an,cid,vstdate,dchdate FROM acc_debtor WHERE account_code="1102050101.216" AND stamp = "N" GROUP BY vn');
        //  AND subinscl IS NULL
            //  LIMIT 30
         // WHERE vstdate = CURDATE()
         // BETWEEN "2024-02-03" AND "2024-02-15"
         // $token_data = DB::connection('mysql')->select('SELECT cid,token FROM ssop_token');
+        $id        = $request->ids;
+        $data_sitss = Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))->get();
         $token_data = DB::connection('mysql10')->select('SELECT * FROM nhso_token ORDER BY update_datetime desc limit 1');
         foreach ($token_data as $key => $value) {
             $cid_    = $value->cid;
@@ -473,8 +475,9 @@ class Account216Controller extends Controller
 
     }
     public function account_pkucs216_pulldata(Request $request)
-    {
-        $datenow = date('Y-m-d');
+    { 
+        $datenow    = date('Y-m-d');
+        $datatime   = date('H:m:s');
         $startdate = $request->datepicker;
         $enddate = $request->datepicker2;
         Acc_temp216::truncate();
@@ -487,7 +490,7 @@ class Account216Controller extends Controller
                 LEFT OUTER JOIN s_drugitems s on s.icode = op.icode
                 WHERE v.vstdate BETWEEN "' . $startdate . '" AND "' . $enddate . '"
                 AND v.pttype IN("W1","W2") AND v.pdx <> "B24"
-                AND v.hospmain NOT IN("10970","10971","10972","10973","10974","10975","10976","10977","10702","10979","10980","10981","10983")
+                AND v.hospmain NOT IN("10970","10971","10972","10973","10974","10975","10976","10977","10702","10979","10980","10981","10982","10983")
                 AND NOT(s.name like "Portex tube%") AND NOT(v.pdx LIKE "C%")
                 GROUP BY v.vn
         ');
@@ -765,6 +768,14 @@ class Account216Controller extends Controller
                 }
             }
         }
+
+        Acc_debtor_log::insert([
+            'account_code'       => '1102050101.216',
+            'make_gruop'         => 'ดึงลูกหนี้',
+            'date_save'          => $datenow,
+            'date_time'          => $datatime,
+            'user_id'            => Auth::user()->id,
+        ]);
 
         // LEFT OUTER JOIN pttype_eclaim e on e.code=ptt.pttype_eclaim_id
         // $getdata =  DB::connection('mysql')->select('SELECT COUNT(vn), vn,hn,sum(debit_total) FROM acc_debtor WHERE vstdate BETWEEN "' . $startdate . '" AND "' . $enddate . '" AND account_code ="1102050101.216" GROUP BY hn HAVING COUNT(hn) > 1;');

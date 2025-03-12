@@ -138,7 +138,7 @@
                                 ค้นหา</span>
                         </button>
                     </form>
-                    <button type="button" class="ladda-button me-2 btn-pill btn btn-primary btn-sm input_new Savestamp" data-url="{{url('account_401_send')}}">
+                    <button type="button" class="ladda-button me-2 btn-pill btn btn-primary btn-sm input_new Sendtamp" data-url="{{url('account_401_send')}}">
                         <img src="{{ asset('images/send_data.png') }}" class="me-2 ms-2" height="18px" width="18px">
                         ส่งลูกหนี้บัญชี
                     </button>
@@ -303,7 +303,7 @@
                         $(".sub_chk").prop('checked',false);
                     }
             });
-            $('.Savestamp').on('click', function(e) {
+            $('.Sendtamp').on('click', function(e) {
                 // alert('oo');
                 var allValls = [];
                 $(".sub_chk:checked").each(function () {
