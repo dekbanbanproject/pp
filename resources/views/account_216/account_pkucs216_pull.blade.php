@@ -161,7 +161,7 @@
 
                                 <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-primary cardacc Savestamp" data-url="{{url('account_pkucs216_stam')}}">
                                     <img src="{{ asset('images/Stam_white.png') }}" class="me-2 ms-2" height="18px" width="18px">
-                                    ตั้งลูกหนี้
+                                    ตั้งลูกหนี้ + ส่งลูกหนี้
                                 </button>
                                 <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-danger cardacc Destroystamp" data-url="{{url('account_216_destroy')}}">
                                     <img src="{{ asset('images/removewhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
@@ -177,12 +177,12 @@
                                 <table id="example" class="table table-sm table-hover table-striped table-bordered dt-responsive nowrap" style=" border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr>
-                                            <th width="1%" class="text-center">ลำดับ</th>
+                                            <th width="1%" class="text-center" style="font-size: 11px;">ลำดับ</th>
                                             <th width="2%" class="text-center"><input type="checkbox" class="dcheckbox_" name="stamp" id="stamp"> </th>
-                                            <th class="text-center">ตั้งลูกหนี้</th>
+                                            <th class="text-center" style="font-size: 11px;">ตั้งลูกหนี้</th>
                                             <th class="text-center">
-                                                <span class="bg-success badge">{{ $count_claim }}</span> เคลม
-                                                <span class="bg-danger badge">{{ $count_noclaim }}</span>
+                                                <span class="bg-success badge" style="font-size: 11px;">{{ $count_claim }}</span> เคลม
+                                                <span class="bg-danger badge" style="font-size: 11px;">{{ $count_noclaim }}</span>
                                             </th>
                                             <th class="text-center">
                                                 <span class="bg-success badge">{{ $count_no }}</span> Authen
@@ -198,8 +198,8 @@
                                             <th class="text-center" width="3%">hmain</th>
                                       
                                             <th class="text-center" width="4%">income</th>
-                                            <th class="text-center" width="4%">ชำระเงิน</th>
-                                            <th class="text-center" width="4%">ลูกหนี้</th>
+                                            <th class="text-center" width="4%" style="font-size: 11px;">ชำระเงิน</th>
+                                            <th class="text-center" width="4%" style="font-size: 11px;">ลูกหนี้</th>
                                             <th class="text-center" width="4%">imc</th>
                                             <th class="text-center" width="4%">inst</th>
                                             <th class="text-center" width="4%">drug</th>

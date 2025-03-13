@@ -1218,13 +1218,17 @@ if (Auth::check()) {
                             @endif
                             @if ($per_accb01 != 0)
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-apps" role="button" >
+                                    <a class="nav-link dropdown-toggle arrow-none" href="{{URL('account_totalrep_db')}}" id="topnav-apps" role="button" >
                                         <img src="{{ asset('images/acc11.png') }}" height="27px" width="27px">
 
                                         ลูกหนี้รายเดือน
                                         <div class="arrow-down"></div>
                                     </a>
-                                    <div class="dropdown-menu" aria-labelledby="topnav-apps">
+
+                                    <div class="dropdown-menu menufont" aria-labelledby="topnav-apps">
+                                        <a href="{{ url('account_totalrep') }}" class="dropdown-item">รายการลูกหนี้</a>
+                                    </div>
+                                    <!-- <div class="dropdown-menu" aria-labelledby="topnav-apps">
                                         <div class="dropdown">
                                             <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-form" role="button">
                                                 OFC <div class="arrow-down"></div>
@@ -1255,7 +1259,7 @@ if (Auth::check()) {
                                             </div>
                                         </div>
 
-                                    </div>
+                                    </div> -->
 
 
 

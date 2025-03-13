@@ -88,6 +88,7 @@ use App\Models\D_fdh;
 use App\Models\D_walkin_report;
 use App\Models\Acc_debtor_log;
 use App\Models\Acc_1102050101_201send;
+use App\Models\Acc_account_total;
 
 use App\Models\Fdh_ins;
 use App\Models\Fdh_pat;
@@ -740,6 +741,18 @@ class Account216Controller extends Controller
     }
     public function account_pkucs216_stam(Request $request)
     {
+        $datenow    = date('Y-m-d');
+        $datatime   = date('H:m:s');
+        Acc_debtor_log::insert([
+            'account_code'       => '1102050101.216',
+            'make_gruop'         => 'ตั้งลูกหนี้และส่งลูกหนี้',
+            'date_save'          => $datenow,
+            'date_time'          => $datatime,
+            'user_id'            => Auth::user()->id,
+        ]);
+
+        $maxnumber = DB::table('acc_debtor_log')->where('account_code','1102050101.216')->where('user_id',Auth::user()->id)->max('acc_debtor_log_id');
+
         $id = $request->ids;
         $iduser = Auth::user()->id;
         // Acc_1102050101_217_stam::truncate();
@@ -750,21 +763,65 @@ class Account216Controller extends Controller
                     ]);
         foreach ($data as $key => $value) {
             $check = Acc_1102050101_216::where('vn', $value->vn)->count();
-           if ($check > 0) {
-            # code...
-           } else {
-                Acc_1102050101_216::insert([
-                    'vn'                => $value->vn,
-                    'hn'                => $value->hn,
-                    'an'                => $value->an,
-                    'cid'               => $value->cid,
-                    'ptname'            => $value->ptname,
-                    'vstdate'           => $value->vstdate,
-                    'regdate'           => $value->regdate,
-                    'dchdate'           => $value->dchdate,
-                    'pttype'            => $value->pttype,
-                    'acc_code'          => $value->acc_code,
-                    'account_code'      => $value->account_code,
+            if ($check > 0) {
+                # code...
+            } else {
+                    Acc_1102050101_216::insert([
+                        'vn'                 => $value->vn,
+                        'hn'                 => $value->hn,
+                        'an'                 => $value->an,
+                        'cid'                => $value->cid,
+                        'ptname'             => $value->ptname,
+                        'vstdate'            => $value->vstdate,
+                        'vsttime'            => $value->vsttime,
+                        'hospmain'           => $value->hospmain,
+                        'regdate'            => $value->regdate,
+                        'dchdate'            => $value->dchdate,
+                        'pttype'             => $value->pttype,
+                        'acc_code'           => $value->acc_code,
+                        'account_code'       => $value->account_code,
+                        'rw'                 => $value->rw,
+                        'adjrw'              => $value->adjrw,
+                        'total_adjrw_income' => $value->total_adjrw_income,
+                        'debit_drug'         => $value->debit_drug,
+                        'debit_instument'    => $value->debit_instument,
+                        'debit_toa'          => $value->debit_toa,
+                        'debit_refer'        => $value->debit_refer,
+                        'debit_walkin'       => $value->debit_walkin,
+                        'income'             => $value->income,
+                        'uc_money'           => $value->uc_money,
+                        'discount_money'     => $value->discount_money,
+                        'rcpt_money'         => $value->rcpt_money,
+                        'debit'              => $value->debit,
+                        'debit_total'        => $value->debit_total,
+                        'acc_debtor_userid'  => $value->acc_debtor_userid
+                    ]);
+            }
+
+
+            $check_total  = Acc_account_total::where('vn', $value->vn)->where('account_code', $value->account_code)->count();
+
+            if ($check_total > 0) {
+                # code...
+            } else {
+                Acc_account_total::insert([
+                    'vn'                 => $value->vn,
+                    'hn'                 => $value->hn,
+                    'an'                 => $value->an,
+                    'cid'                => $value->cid,
+                    'ptname'             => $value->ptname,
+                    'vstdate'            => $value->vstdate,
+                    'vsttime'            => $value->vsttime,
+                    'hospmain'           => $value->hospmain,
+                    'regdate'            => $value->regdate,
+                    'dchdate'            => $value->dchdate,
+
+                    'pttype'             => $value->pttype,
+                    'pttype_nhso'        => $value->subinscl,
+                    'hsub'               => $value->hsub,
+
+                    'acc_code'           => $value->acc_code,
+                    'account_code'       => $value->account_code,
                     'rw'                 => $value->rw,
                     'adjrw'              => $value->adjrw,
                     'total_adjrw_income' => $value->total_adjrw_income,
@@ -773,18 +830,24 @@ class Account216Controller extends Controller
                     'debit_toa'          => $value->debit_toa,
                     'debit_refer'        => $value->debit_refer,
                     'debit_walkin'       => $value->debit_walkin,
+
+                    'debit_imc'          => $value->debit_imc,
+                    'debit_imc_adpcode'  => $value->debit_imc_adpcode,
+                    'debit_thai'         => $value->debit_thai,
+
                     'income'             => $value->income,
                     'uc_money'           => $value->uc_money,
                     'discount_money'     => $value->discount_money,
                     'rcpt_money'         => $value->rcpt_money,
                     'debit'              => $value->debit,
                     'debit_total'        => $value->debit_total,
-                    'acc_debtor_userid'  => $value->acc_debtor_userid
+                    'acc_debtor_userid'  => $value->acc_debtor_userid,
+                    'acc_debtor_log_id'  => $maxnumber
                 ]);
-           }
+            }
+            
 
-
-
+            
 
         }
 
