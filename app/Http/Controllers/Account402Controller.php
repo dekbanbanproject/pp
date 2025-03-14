@@ -112,6 +112,8 @@ use App\Models\Dapi_ipd;
 use App\Models\Dapi_aer;
 use App\Models\Dapi_irf;
 use App\Models\Dapi_lvd;
+use App\Models\Acc_account_total;
+use App\Models\Acc_debtor_log;
 
 use PDF;
 use setasign\Fpdi\Fpdi;
@@ -538,6 +540,7 @@ class Account402Controller extends Controller
     public function account_402_pulldata(Request $request)
     {
         $datenow = date('Y-m-d');
+        $datatime   = date('H:m:s');
         $startdate = $request->datepicker;
         $enddate = $request->datepicker2;
         // Acc_opitemrece::truncate();
@@ -678,13 +681,17 @@ class Account402Controller extends Controller
                 //     'fokliad'        => $value->fokliad,
                 //     'debit_total'    => $value->debit - $value->fokliad,
                 // ]);
-            }
-
-
-
-
+            } 
 
         }
+
+        Acc_debtor_log::insert([
+            'account_code'       => '1102050101.402',
+            'make_gruop'         => 'ดึงลูกหนี้',
+            'date_save'          => $datenow,
+            'date_time'          => $datatime,
+            'user_id'            => Auth::user()->id,
+        ]);
 
             return response()->json([
 
@@ -693,20 +700,32 @@ class Account402Controller extends Controller
     }
     public function account_402_stam(Request $request)
     {
+        $datenow    = date('Y-m-d');
+        $datatime   = date('H:m:s');
+        Acc_debtor_log::insert([
+            'account_code'       => '1102050101.402',
+            'make_gruop'         => 'ตั้งลูกหนี้และส่งลูกหนี้',
+            'date_save'          => $datenow,
+            'date_time'          => $datatime,
+            'user_id'            => Auth::user()->id,
+        ]);
+        $maxnumber = DB::table('acc_debtor_log')->where('account_code','1102050101.402')->where('user_id',Auth::user()->id)->max('acc_debtor_log_id');
         $id = $request->ids;
         $iduser = Auth::user()->id;
         $data = Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))->get();
             Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))
                     ->update([
-                        'stamp' => 'Y'
+                        'stamp'       => 'Y',
+                        'send_active' => 'Y'
                     ]);
         foreach ($data as $key => $value) {
                 $date = date('Y-m-d H:m:s');
-             $check = Acc_1102050101_402::where('an', $value->an)->count();
+                $check = Acc_1102050101_402::where('an', $value->an)->count();
                 if ($check > 0) {
                 # code...
                 } else {
                     Acc_1102050101_402::insert([
+                            // 'bg_yearnow'        => $value->bg_yearnow,
                             'vn'                => $value->vn,
                             'hn'                => $value->hn,
                             'an'                => $value->an,
@@ -737,6 +756,51 @@ class Account402Controller extends Controller
                             'acc_debtor_userid' => $iduser
                     ]);
                 }
+
+                $check_total  = Acc_account_total::where('vn', $value->vn)->where('account_code','=','1102050101.402')->count();
+            if ($check_total > 0) {
+                # code...
+            } else {
+                Acc_account_total::insert([
+                    'bg_yearnow'         => $value->bg_yearnow,
+                    'vn'                 => $value->vn,
+                    'hn'                 => $value->hn,
+                    'an'                 => $value->an,
+                    'cid'                => $value->cid,
+                    'ptname'             => $value->ptname,
+                    'vstdate'            => $value->vstdate,
+                    'vsttime'            => $value->vsttime,
+                    'hospmain'           => $value->hospmain,
+                    'regdate'            => $value->regdate,
+                    'dchdate'            => $value->dchdate,
+                    'pttype'             => $value->pttype,
+                    'pttype_nhso'        => $value->subinscl,
+                    'hsub'               => $value->hsub,
+                    'acc_code'           => $value->acc_code,
+                    'account_code'       => $value->account_code,
+                    'rw'                 => $value->rw,
+                    'adjrw'              => $value->adjrw,
+                    'total_adjrw_income' => $value->total_adjrw_income,
+                    'debit_drug'         => $value->debit_drug,
+                    'debit_instument'    => $value->debit_instument,
+                    'debit_toa'          => $value->debit_toa,
+                    'debit_refer'        => $value->debit_refer,
+                    'debit_walkin'       => $value->debit_walkin,
+                    'debit_imc'          => $value->debit_imc,
+                    'debit_imc_adpcode'  => $value->debit_imc_adpcode,
+                    'debit_thai'         => $value->debit_thai,
+                    'income'             => $value->income,
+                    'uc_money'           => $value->uc_money,
+                    'discount_money'     => $value->discount_money,
+                    'rcpt_money'         => $value->rcpt_money,
+                    'debit'              => $value->debit,
+                    'debit_total'        => $value->debit_total,
+                    'acc_debtor_userid'  => $value->acc_debtor_userid,
+                    'acc_debtor_log_id'  => $maxnumber
+                ]);
+            }
+
+
 
         }
         return response()->json([

@@ -89,7 +89,7 @@
                 <div class="row"> 
                     <div class="col"></div>
                     <div class="col-md-7">
-                        <h4 class="card-title" style="color:green">Detail Report Account</h4>
+                        <h4 class="card-title" style="color:rgb(202, 120, 250)">Detail Report Account</h4>
                         <p class="card-title-desc">รายงานลูกหนี้ค่ารักษาพยาบาล</p>
                     </div>
                   
@@ -120,7 +120,7 @@
                     </div>
                     @endif
                     <div class="col-md-2 text-start">  
-                        <button type="submit" class="ladda-button btn-pill btn btn-sm btn-info cardacc" data-style="expand-left">
+                        <button type="submit" class="ladda-button btn-pill btn btn-info cardacc" data-style="expand-left">
                             <span class="ladda-label">
                                 <img src="{{ asset('images/Search02.png') }}" class="me-2 ms-2" height="18px" width="18px">
                                 ค้นหา {{$budget_year}}</span>
@@ -136,7 +136,7 @@
              
                 @if ($budget_year =='')
                     <div class="col-xl-12">
-                        <div class="card card_audit_4c" style="background-color: rgb(246, 235, 247)">   
+                        <div class="card card_audit_4c" style="background-color: rgb(253, 249, 239)">   
                             <div class="table-responsive p-2"> 
                                 <table id="example" class="table table-sm table-hover table-striped table-bordered dt-responsive nowrap" style=" border-spacing: 0; width: 100%;"> 
                                     @php
@@ -145,21 +145,21 @@
                                     @endphp
                                     <thead style="color:#0770c5">
                                         <tr>
-                                            <th width="7%" class="text-center" style="font-size: 11px;">รหัสผัง</th>
-                                            <th class="text-center" style="font-size: 11px;">ชื่อผัง</th>
+                                            <th width="7%" class="text-center" style="font-size: 11px;border: 1px solid rgb(250, 214, 159);">รหัสผัง</th>
+                                            <th class="text-center" style="font-size: 11px;border: 1px solid rgb(250, 214, 159);">ชื่อผัง</th>
 
-                                            <th width="6%" class="text-center" style="font-size: 11px;">มกราคม<br>( {{$ynowh}} )</th>
-                                            <th width="6%" class="text-center" style="font-size: 11px;">กุมภาพันธ์<br>( {{$ynowh}} )</th>
-                                            <th width="6%" class="text-center" style="font-size: 11px;">มีนาคม<br>( {{$ynowh}} )</th>
-                                            <th width="6%" class="text-center" style="font-size: 11px;">เมษายน<br>( {{$ynowh}} )</th>
-                                            <th width="6%" class="text-center" style="font-size: 11px;">พฤษภาคม<br>( {{$ynowh}} )</th>
-                                            <th width="6%" class="text-center" style="font-size: 11px;">มิถุนายน<br>( {{$ynowh}} )</th>
-                                            <th width="6%" class="text-center" style="font-size: 11px;">กรกฎาคม<br>( {{$ynowh}} )</th>
-                                            <th width="6%" class="text-center" style="font-size: 11px;">สิงหาคม<br>( {{$ynowh}} )</th>
-                                            <th width="6%" class="text-center" style="font-size: 11px;">กันยายน<br>( {{$ynowh}} )</th>
-                                            <th width="6%" class="text-center" style="font-size: 11px;">ตุลาคม<br>( {{$yoldh}} )</th>
-                                            <th width="6%" class="text-center" style="font-size: 11px;">พฤษจิกายน<br>( {{$yoldh}} )</th>
-                                            <th width="6%" class="text-center" style="font-size: 11px;">ธันวาคม<br>( {{$yoldh}} )</th>
+                                            <th width="6%" class="text-center" style="font-size: 11px;border: 1px solid rgb(250, 214, 159);">มกราคม<br>( {{$ynowh}} )</th>
+                                            <th width="6%" class="text-center" style="font-size: 11px;border: 1px solid rgb(250, 214, 159);">กุมภาพันธ์<br>( {{$ynowh}} )</th>
+                                            <th width="6%" class="text-center" style="font-size: 11px;border: 1px solid rgb(250, 214, 159);">มีนาคม<br>( {{$ynowh}} )</th>
+                                            <th width="6%" class="text-center" style="font-size: 11px;border: 1px solid rgb(250, 214, 159);">เมษายน<br>( {{$ynowh}} )</th>
+                                            <th width="6%" class="text-center" style="font-size: 11px;border: 1px solid rgb(250, 214, 159);">พฤษภาคม<br>( {{$ynowh}} )</th>
+                                            <th width="6%" class="text-center" style="font-size: 11px;border: 1px solid rgb(250, 214, 159);">มิถุนายน<br>( {{$ynowh}} )</th>
+                                            <th width="6%" class="text-center" style="font-size: 11px;border: 1px solid rgb(250, 214, 159);">กรกฎาคม<br>( {{$ynowh}} )</th>
+                                            <th width="6%" class="text-center" style="font-size: 11px;border: 1px solid rgb(250, 214, 159);">สิงหาคม<br>( {{$ynowh}} )</th>
+                                            <th width="6%" class="text-center" style="font-size: 11px;border: 1px solid rgb(250, 214, 159);">กันยายน<br>( {{$ynowh}} )</th>
+                                            <th width="6%" class="text-center" style="font-size: 11px;border: 1px solid rgb(250, 214, 159);">ตุลาคม<br>( {{$yoldh}} )</th>
+                                            <th width="6%" class="text-center" style="font-size: 11px;border: 1px solid rgb(250, 214, 159);">พฤษจิกายน<br>( {{$yoldh}} )</th>
+                                            <th width="6%" class="text-center" style="font-size: 11px;border: 1px solid rgb(250, 214, 159);">ธันวาคม<br>( {{$yoldh}} )</th>
 
                                         </tr>                                        
                                     </thead>
@@ -186,43 +186,43 @@
                                                                                 
                                                 @endphp
                                                 <tr>
-                                                    <td class="text-center" width="7%" style="color:#fc800d">{{$item->pang}}</td>
-                                                    <td style="color:#f8325d">{{$item->pangname}}</td> 
-                                                    <td class="text-center" width="5%" style="color:#1179ce">
-                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/1/'.$ynow)}}">{{number_format($total1, 2)}}</a> 
+                                                    <td class="text-center" width="7%" style="color:#fc800d;border: 1px solid rgb(250, 214, 159);">{{$item->pang}}</td>
+                                                    <td style="color:#6b6869;border: 1px solid rgb(250, 214, 159);">{{$item->pangname}}</td> 
+                                                    <td class="text-center" width="5%" style="color:#1179ce;border: 1px solid rgb(250, 214, 159);">
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->pang.'/1/'.$ynow)}}">{{number_format($total1, 2)}}</a> 
                                                     </td>
-                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
-                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/2/'.$ynow)}}">{{number_format($total2, 2)}}</a> 
+                                                    <td class="text-center" width="5%" style="color:#1179ce;border: 1px solid rgb(250, 214, 159);"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->pang.'/2/'.$ynow)}}">{{number_format($total2, 2)}}</a> 
                                                     </td>
-                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
-                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/3/'.$ynow)}}">{{number_format($total3, 2)}}</a> 
+                                                    <td class="text-center" width="5%" style="color:#1179ce;border: 1px solid rgb(250, 214, 159);"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->pang.'/3/'.$ynow)}}">{{number_format($total3, 2)}}</a> 
                                                     </td>
-                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
-                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/4/'.$ynow)}}">{{number_format($total4, 2)}}</a> 
+                                                    <td class="text-center" width="5%" style="color:#1179ce;border: 1px solid rgb(250, 214, 159);"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->pang.'/4/'.$ynow)}}">{{number_format($total4, 2)}}</a> 
                                                     </td>
-                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
-                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/5/'.$ynow)}}">{{number_format($total5, 2)}}</a> 
+                                                    <td class="text-center" width="5%" style="color:#1179ce;border: 1px solid rgb(250, 214, 159);"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->pang.'/5/'.$ynow)}}">{{number_format($total5, 2)}}</a> 
                                                     </td>
-                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
-                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/6/'.$ynow)}}">{{number_format($total6, 2)}}</a> 
+                                                    <td class="text-center" width="5%" style="color:#1179ce;border: 1px solid rgb(250, 214, 159);"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->pang.'/6/'.$ynow)}}">{{number_format($total6, 2)}}</a> 
                                                     </td>
-                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
-                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/7/'.$ynow)}}">{{number_format($total7, 2)}}</a> 
+                                                    <td class="text-center" width="5%" style="color:#1179ce;border: 1px solid rgb(250, 214, 159);"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->pang.'/7/'.$ynow)}}">{{number_format($total7, 2)}}</a> 
                                                     </td>
-                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
-                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/8/'.$ynow)}}">{{number_format($total8, 2)}}</a> 
+                                                    <td class="text-center" width="5%" style="color:#1179ce;border: 1px solid rgb(250, 214, 159);"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->pang.'/8/'.$ynow)}}">{{number_format($total8, 2)}}</a> 
                                                     </td>
-                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
-                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/9/'.$ynow)}}">{{number_format($total9, 2)}}</a> 
+                                                    <td class="text-center" width="5%" style="color:#1179ce;border: 1px solid rgb(250, 214, 159);"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->pang.'/9/'.$ynow)}}">{{number_format($total9, 2)}}</a> 
                                                     </td>
-                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
-                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/10/'.$yold)}}">{{number_format($total10, 2)}}</a> 
+                                                    <td class="text-center" width="5%" style="color:#1179ce;border: 1px solid rgb(250, 214, 159);"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->pang.'/10/'.$yold)}}">{{number_format($total10, 2)}}</a> 
                                                     </td>
-                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
-                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/11/'.$yold)}}">{{number_format($total11, 2)}}</a> 
+                                                    <td class="text-center" width="5%" style="color:#1179ce;border: 1px solid rgb(250, 214, 159);"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->pang.'/11/'.$yold)}}">{{number_format($total11, 2)}}</a> 
                                                     </td>
-                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
-                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/12/'.$yold)}}">{{number_format($total12, 2)}}</a> 
+                                                    <td class="text-center" width="5%" style="color:#1179ce;border: 1px solid rgb(250, 214, 159);"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->pang.'/12/'.$yold)}}">{{number_format($total12, 2)}}</a> 
                                                     </td>
                                                 </tr> 
                                             

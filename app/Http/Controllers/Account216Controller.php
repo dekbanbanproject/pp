@@ -86,9 +86,10 @@ use App\Models\D_apiwalkin_opd;
 use App\Models\D_walkin;
 use App\Models\D_fdh;
 use App\Models\D_walkin_report;
-use App\Models\Acc_debtor_log;
+
 use App\Models\Acc_1102050101_201send;
 use App\Models\Acc_account_total;
+use App\Models\Acc_debtor_log;
 
 use App\Models\Fdh_ins;
 use App\Models\Fdh_pat;
@@ -482,6 +483,8 @@ class Account216Controller extends Controller
         $startdate = $request->datepicker;
         $enddate = $request->datepicker2;
         Acc_temp216::truncate();
+        $bgs_year      = DB::table('budget_year')->where('years_now','Y')->first();
+        $bg_yearnow    = $bgs_year->leave_year_id;
 
         $data_w1 = DB::connection('mysql2')->select(
             'SELECT v.vn,v.hn,v.pttype,v.hospmain,v.vstdate,"W1NEW1" as wnew
@@ -600,6 +603,7 @@ class Account216Controller extends Controller
                    
                         } else {
                             Acc_debtor::insert([
+                                'bg_yearnow'         => $value->bg_yearnow,
                                 'hn'                 => $value->hn,
                                 'an'                 => $value->an,
                                 'vn'                 => $value->vn,
@@ -690,6 +694,7 @@ class Account216Controller extends Controller
                             // Acc_1102050101_216::where('vn', $value2->vn)->update(['vsttime' => $value2->vsttime]);
                         } else {
                             Acc_debtor::insert([
+                                'bg_yearnow'         => $value->bg_yearnow,
                                 'hn'                 => $value2->hn,
                                 'an'                 => $value2->an,
                                 'vn'                 => $value2->vn,
@@ -759,7 +764,8 @@ class Account216Controller extends Controller
         $data = Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))->get();
             Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))
                     ->update([
-                        'stamp' => 'Y'
+                        'stamp'       => 'Y',
+                        'send_active' => 'Y'
                     ]);
         foreach ($data as $key => $value) {
             $check = Acc_1102050101_216::where('vn', $value->vn)->count();
@@ -799,12 +805,12 @@ class Account216Controller extends Controller
             }
 
 
-            $check_total  = Acc_account_total::where('vn', $value->vn)->where('account_code', $value->account_code)->count();
-
+            $check_total  = Acc_account_total::where('vn', $value->vn)->where('account_code','=','1102050101.216')->count();
             if ($check_total > 0) {
                 # code...
             } else {
                 Acc_account_total::insert([
+                    'bg_yearnow'         => $value->bg_yearnow,
                     'vn'                 => $value->vn,
                     'hn'                 => $value->hn,
                     'an'                 => $value->an,
@@ -845,9 +851,7 @@ class Account216Controller extends Controller
                     'acc_debtor_log_id'  => $maxnumber
                 ]);
             }
-            
-
-            
+             
 
         }
 

@@ -17,6 +17,7 @@ return new class extends Migration
                 $table->bigIncrements('acc_account_total_id');
                 $table->enum('sendto', ['Y', 'N'])->default('N'); //
                 $table->enum('active', ['Y', 'N'])->default('N'); //
+                $table->string('bg_yearnow')->nullable();// 
                 $table->string('vn')->nullable();// รหัส
                 $table->string('an')->nullable();//
                 $table->string('hn')->nullable();//

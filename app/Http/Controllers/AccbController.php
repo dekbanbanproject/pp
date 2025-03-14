@@ -158,7 +158,8 @@ class AccbController extends Controller
     public function account_totalrep_detail(Request $request,$id,$months,$year)
     {
         $budget_year        = $request->budget_year;
-        $acc_trimart_id     = $request->acc_trimart_id;
+        $startdate          = $request->startdate;
+        $enddate            = $request->enddate;
         $dabudget_year      = DB::table('budget_year')->where('active','=',true)->get();
         $leave_month_year   = DB::table('leave_month')->orderBy('MONTH_ID', 'ASC')->get();
         $date = date('Y-m-d');
@@ -169,33 +170,38 @@ class AccbController extends Controller
         $bgs_year      = DB::table('budget_year')->where('years_now','Y')->first();
         $data['bg_yearnow']    = $bgs_year->leave_year_id;
 
-        if ($budget_year == '') {
-            $yearnew     = date('Y');
-            $year_old    = date('Y')-1;
-            $bg           = DB::table('budget_year')->where('years_now','Y')->first();
-            $startdate    = $bg->date_begin;
-            $enddate      = $bg->date_end;
-    
-            $data_pangall = DB::select('SELECT * FROM acc_setpang WHERE active="TRUE"'); 
+        $bgs_year      = DB::table('budget_year')->where('years_now','Y')->first();
+ 
+        if ($startdate =='') {
+            $datashow = DB::select(
+                'SELECT a.acc_setpang_id,a.pang,a.pangname,a.active,b.*
+                    FROM acc_setpang a 
+                    LEFT JOIN acc_account_total b ON b.account_code = a.pang
+                    WHERE b.vn IS NOT NULL AND b.account_code ="'.$id.'"
+                    GROUP BY b.vn,account_code
+            '); 
         } else {
-
-            $bg           = DB::table('budget_year')->where('leave_year_id','=',$budget_year)->first();
-            $startdate    = $bg->date_begin;
-            $enddate      = $bg->date_end;
-
-          
-            $data_pangall = DB::select('SELECT * FROM acc_setpang WHERE active="TRUE"'); 
+            $datashow = DB::select(
+                'SELECT a.acc_setpang_id,a.pang,a.pangname,a.active,b.*
+                    FROM acc_setpang a 
+                    LEFT JOIN acc_account_total b ON b.account_code = a.pang
+                    WHERE b.vn IS NOT NULL AND vstdate BETWEEN "'.$startdate.'" and "'.$enddate.'"
+                    AND b.account_code ="'.$id.'"
+                    GROUP BY b.vn,account_code
+            '); 
         }
-   
-        return view('accb.account_totalrep', $data, [
+        
+            
+          
+        return view('accb.account_totalrep_detail', $data, [
             'startdate'         =>  $startdate,
             'enddate'           =>  $enddate,
-            'leave_month_year'  =>  $leave_month_year,
-     
+            'leave_month_year'  =>  $leave_month_year,     
             'dabudget_year'     =>  $dabudget_year,
             'budget_year'       =>  $budget_year,
-            'data_pangall'      =>  $data_pangall,
+            'datashow'          =>  $datashow,
             'y'                 =>  $y,
+            'pang'              =>  $id,
         ]);
     }
     public function account_pk_dash(Request $request)

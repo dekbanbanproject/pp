@@ -80,11 +80,11 @@
             </div>
         </div>
 
-        <form action="{{ URL('account_totalrep') }}" method="GET">
-            @csrf
+        {{-- <form action="{{ URL('account_totalrep_detail') }}" method="GET">
+            @csrf --}}
         <div class="row">
             <div class="col-md-4">
-                <h3 class="card-title" style="color:rgb(10, 168, 134)">Detail Send Data 1102050101.401</h3>
+                <h3 class="card-title" style="color:rgb(10, 168, 134)">Detail Send Data {{$pang}}</h3>
                 <p class="card-title-desc">ลูกหนี้ที่ส่งมาให้บัญชีเรียบร้อยแล้ว</p>
             </div>
             <div class="col"></div>
@@ -100,7 +100,7 @@
                                 <img src="{{ asset('images/Search02.png') }}" class="me-2 ms-2" height="18px" width="18px">
                                 ค้นหา</span>
                         </button>
-                    </form>
+                    {{-- </form> --}}
 
             </div>
         </div>
@@ -108,7 +108,7 @@
 
         <div class="row ">
             <div class="col-md-12">
-                <div class="card card_audit_4c" style="background-color: rgb(246, 235, 247)">
+                <div class="card card_audit_4c" style="background-color: rgb(253, 249, 239)">
 
                     <div class="card-body">
                         <div class="table-responsive">
@@ -116,7 +116,7 @@
                         <table id="example" class="table table-sm table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             {{-- <table id="example" class="table table-striped table-bordered "
                             style="border-collapse: collapse; border-spacing: 0; width: 100%;"> --}}
-                            <thead>
+                            <thead style="border: 1px solid rgb(250, 214, 159);">
                                 <tr>
                                     <th class="text-center">ลำดับ</th> 
                                     <th class="text-center" >vn</th>
@@ -132,7 +132,7 @@
                                     <th class="text-center">STMdoc</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody style="border: 1px solid rgb(250, 214, 159);">
                                 <?php $number = 0;
                                 $total1 = 0; $total2 = 0;$total3 = 0;$total4 = 0;$total5 = 0;$total6 = 0;$total7 = 0;$total8 = 0;$total9 = 0;
                                 ?>

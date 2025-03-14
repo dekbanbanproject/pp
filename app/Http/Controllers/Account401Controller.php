@@ -116,6 +116,8 @@ use App\Models\Fdh_aer;
 use App\Models\Fdh_irf;
 use App\Models\Acc_ofc_dateconfig;
 use App\Models\Acc_1102050101_401send;
+use App\Models\Acc_debtor_log;
+use App\Models\Acc_account_total;
 
 use PDF;
 use setasign\Fpdi\Fpdi;
@@ -473,9 +475,10 @@ class Account401Controller extends Controller
     }
     public function account_401_pulldata(Request $request)
     {
-        $datenow = date('Y-m-d');
-        $startdate = $request->datepicker;
-        $enddate = $request->datepicker2;
+        $datenow    = date('Y-m-d');
+        $datatime   = date('H:m:s');
+        $startdate  = $request->datepicker;
+        $enddate    = $request->datepicker2;
         Acc_ofc_dateconfig::truncate();
         $acc_debtor = DB::connection('mysql2')->select(
             'SELECT o.vn,o.an,o.hn,pt.cid,concat(pt.pname,pt.fname," ",pt.lname) ptname
@@ -517,24 +520,24 @@ class Account401Controller extends Controller
         // AND vp.pttype IN("O1","O2","O3","O4","O5")
         // ,e.ar_opd as account_code
         // ,e.name as account_name
+         // $datenow    = date('Y-m-d');
+         
+
         $bgs_year      = DB::table('budget_year')->where('years_now','Y')->first();
         $bg_yearnow    = $bgs_year->leave_year_id;
 
             foreach ($acc_debtor as $key => $value) {
                         $check = Acc_debtor::where('vn', $value->vn)->where('account_code','1102050101.401')->count();
                         // ->whereBetween('vstdate', [$startdate, $enddate])
-
                         // $starttime = substr($vst, 0, 5);
                         // $day = substr($value->vstdate,0,2);
                         // $mo = substr($value->vstdate,3,2);
                         // $year = substr($value->vstdate,7,4);
-
                         // $vsttime = substr($value->vstdate,12,8);
                         $hm = substr($value->vsttime,0,5);
                         // $hh = substr($value->vstdate,12,2);
                         // $mm = substr($value->vstdate,15,2);
                         // $vstdate = $year.'-'.$mo.'-'.$day;
-
                         if ($check > 0) {
                             Acc_debtor::where('vn', $value->vn)->update([
                                 'pdx'                => $value->pdx,
@@ -578,14 +581,25 @@ class Account401Controller extends Controller
                                 'approval_code'      => $value->approval_code,
                                 'price_ofc'          => $value->price_ofc,
                                 'acc_debtor_userid'  => Auth::user()->id
-                            ]);
-
-
+                            ]); 
                         }
+
+
+                        
             }
+            
+            
             Acc_ofc_dateconfig::insert([
                 'startdate'   => $startdate,
                 'enddate'     => $enddate,
+            ]);
+
+            Acc_debtor_log::insert([
+                'account_code'       => '1102050101.216',
+                'make_gruop'         => 'ดึงลูกหนี้',
+                'date_save'          => $datenow,
+                'date_time'          => $datatime,
+                'user_id'            => Auth::user()->id,
             ]);
 
             return response()->json([
@@ -675,16 +689,27 @@ class Account401Controller extends Controller
     }
     public function account_401_stam(Request $request)
     {
+        $datenow = date('Y-m-d');
+        $datatime   = date('H:m:s');
+         Acc_debtor_log::insert([
+             'account_code'       => '1102050101.401',
+             'make_gruop'         => 'ตั้งลูกหนี้และส่งลูกหนี้',
+             'date_save'          => $datenow,
+             'date_time'          => $datatime,
+             'user_id'            => Auth::user()->id,
+         ]);
+         $maxnumber = DB::table('acc_debtor_log')->where('account_code','1102050101.401')->where('user_id',Auth::user()->id)->max('acc_debtor_log_id');
         $id = $request->ids;
         $iduser = Auth::user()->id;
         $data = Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))->get();
             Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))
                     ->update([
-                        'stamp' => 'Y'
+                         'stamp'       => 'Y',
+                         'send_active' => 'Y'
                     ]);
         foreach ($data as $key => $value) {
                 $date = date('Y-m-d H:m:s');
-             $check = Acc_1102050101_401::where('vn', $value->vn)->count();
+                $check = Acc_1102050101_401::where('vn', $value->vn)->count();
                 // $check = Acc_debtor::where('vn', $value->vn)
                 // ->where('debit_total','=','0')
                 // ->count();
@@ -723,6 +748,51 @@ class Account401Controller extends Controller
                             'acc_debtor_userid' => $iduser
                     ]);
                 }
+
+                $check_total  = Acc_account_total::where('vn', $value->vn)->where('account_code','=','1102050101.401')->count();
+                if ($check_total > 0) {
+                    # code...
+                } else {
+                    Acc_account_total::insert([
+                        'bg_yearnow'         => $value->bg_yearnow,
+                        'vn'                 => $value->vn,
+                        'hn'                 => $value->hn,
+                        'an'                 => $value->an,
+                        'cid'                => $value->cid,
+                        'ptname'             => $value->ptname,
+                        'vstdate'            => $value->vstdate,
+                        'vsttime'            => $value->vsttime,
+                        'hospmain'           => $value->hospmain,
+                        'regdate'            => $value->regdate,
+                        'dchdate'            => $value->dchdate,    
+                        'pttype'             => $value->pttype,
+                        'pttype_nhso'        => $value->subinscl,
+                        'hsub'               => $value->hsub,    
+                        'acc_code'           => $value->acc_code,
+                        'account_code'       => $value->account_code,
+                        'rw'                 => $value->rw,
+                        'adjrw'              => $value->adjrw,
+                        'total_adjrw_income' => $value->total_adjrw_income,
+                        'debit_drug'         => $value->debit_drug,
+                        'debit_instument'    => $value->debit_instument,
+                        'debit_toa'          => $value->debit_toa,
+                        'debit_refer'        => $value->debit_refer,
+                        'debit_walkin'       => $value->debit_walkin,    
+                        'debit_imc'          => $value->debit_imc,
+                        'debit_imc_adpcode'  => $value->debit_imc_adpcode,
+                        'debit_thai'         => $value->debit_thai,    
+                        'income'             => $value->income,
+                        'uc_money'           => $value->uc_money,
+                        'discount_money'     => $value->discount_money,
+                        'rcpt_money'         => $value->rcpt_money,
+                        'debit'              => $value->debit,
+                        'debit_total'        => $value->debit_total,
+                        'acc_debtor_userid'  => $value->acc_debtor_userid,
+                        'acc_debtor_log_id'  => $maxnumber
+                    ]);
+                }
+
+
 
         }
         return response()->json([

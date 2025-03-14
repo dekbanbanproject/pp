@@ -110,7 +110,7 @@
 
         <div class="row">
             <div class="col-xl-12">
-                <div class="card card_audit_4c" style="background-color: rgb(246, 235, 247)">
+                <div class="card card_audit_4c" style="background-color: rgb(239, 247, 235)">
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-md-6 text-start">
@@ -147,7 +147,7 @@
 
                                 <button type="button" class="ladda-button me-2 btn-pill btn btn-primary btn-sm input_new Savestamp" data-url="{{url('account_401_stam')}}">
                                     <img src="{{ asset('images/Stam_white.png') }}" class="me-2 ms-2" height="18px" width="18px">
-                                    ตั้งลูกหนี้
+                                    ตั้งลูกหนี้ + ส่งลูกหนี้
                                 </button>
                                 <button type="button" class="ladda-button me-2 btn-pill btn btn-danger btn-sm input_new Destroystamp" data-url="{{url('account_401_destroy_all')}}">
                                     <img src="{{ asset('images/removewhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
@@ -273,18 +273,20 @@
                                                 {{-- <table id="example" class="table table-hover table-sm dt-responsive nowrap" style=" border-spacing: 0; width: 100%;"> --}}
                                                 {{-- <table id="example" class="table table-sm" style="border-collapse: collapse;border-spacing: 0; width: 100%;"> --}}
                                                     {{-- <table id="example21" class="table table-hover table-sm dt-responsive nowrap myTable" style=" border-spacing: 0; width: 100%;"> --}}
-                                                        <table id="scroll-vertical-datatable" class="table table-sm table-striped dt-responsive nowrap w-100">
+                                           {{-- <table id="scroll-vertical-datatable" class="table table-sm table-striped dt-responsive nowrap w-100"> --}}
+                                            <table id="example7" class="table table-sm table-hover table-striped table-bordered dt-responsive nowrap" style=" border-spacing: 0; width: 100%;">
                                                             {{-- <table id="example" class="table table-sm table-striped table-bordered dt-responsive nowrap myTable" style="border-collapse: collapse; border-spacing: 0; width: 100%;">   --}}
-                                                    <thead>
+                                                    <thead style="border: 1px solid rgb(250, 214, 159);">
                                                         <tr>
 
-                                                            <th width="5%" class="text-center">ลำดับ</th>
-                                                            <th width="5%" class="text-center"><input type="checkbox" class="dcheckbox_" name="stamp" id="stamp"> </th>
-                                                            <th class="text-center" style="background-color: #fad6b8" >
+                                                            <th width="1%" class="text-center">ลำดับ</th>
+                                                            <th width="2%" class="text-center"><input type="checkbox" class="dcheckbox_" name="stamp" id="stamp"> </th>
+                                                            <th class="text-center" style="background-color: #fad6b8">
                                                                 <span class="badge" style="background-color: #05a0b4">{{ $count_no }}</span>  Approv
                                                                 <span class="badge" style="background-color: #f84848">{{ $count_null }}</span>
                                                             </th>
                                                             <th class="text-center">ตั้งลูกหนี้</th>
+                                                            <th class="text-center" style="font-size: 11px;">ส่งลูกหนี้</th>
                                                             <th class="text-center">
                                                                 <span class="badge" style="background-color: #05a0b4">{{ $count_claim }}</span> เคลม
                                                                 <span class="badge" style="background-color: #f84848">{{ $count_noclaim }}</span>
@@ -309,7 +311,7 @@
                                                             <th class="text-center">Rep</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
+                                                    <tbody style="border: 1px solid rgb(250, 214, 159);">
                                                         <?php $i = 1; ?>
                                                         @foreach ($acc_debtor as $item)
 
@@ -343,45 +345,57 @@
                                                             }
                                                         ?>
                                                             <tr id="tr_{{$item->acc_debtor_id}}">
-                                                                <td class="text-center" width="5%">{{ $i++ }}</td>
+                                                                <td class="text-center" width="1%">{{ $i++ }}</td>
                                                                 @if ($activeclaim == 'Y')
                                                                     @if ($item->debit_total == '' || $item->approval_code =='' || $item->pdx =='')
-                                                                        <td class="text-center" width="5%">
+                                                                        <td class="text-center" width="2%">
                                                                             <input class="form-check-input" type="checkbox" id="flexCheckDisabled" disabled>
                                                                         </td>
                                                                     @else
-                                                                        <td class="text-center" width="5%"><input type="checkbox" class="dcheckbox_ sub_chk" data-id="{{$item->acc_debtor_id}}"> </td>
+                                                                        <td class="text-center" width="2%"><input type="checkbox" class="dcheckbox_ sub_chk" data-id="{{$item->acc_debtor_id}}"> </td>
                                                                     @endif
                                                                 @else
-                                                                    <td class="text-center" width="5%"><input type="checkbox" class="dcheckbox_ sub_chk" data-id="{{$item->acc_debtor_id}}"> </td>
+                                                                    <td class="text-center" width="2%"><input type="checkbox" class="dcheckbox_ sub_chk" data-id="{{$item->acc_debtor_id}}"> </td>
                                                                 @endif
 
-                                                                <td class="text-center" width="6%">
+                                                                <td class="text-center" width="5%">
                                                                     @if ($item->approval_code != NULL)
                                                                         <span class="bg-success badge text-center">{{ $item->approval_code }}</span>
                                                                     @else
                                                                         <span class="bg-warning badge text-center">-</span>
                                                                     @endif
                                                                 </td>
-                                                                <td class="text-center" width="5%">
-                                                                    @if ($item->stamp =='N')
-                                                                        {{-- <span class="bg-danger badge me-2">{{ $item->stamp }}</span> --}}
-                                                                        <img src="{{ asset('images/Cancel_new2.png') }}" height="23px" width="23px">
+
+                                                                <td class="text-center" width="3%">
+                                                                    @if ($item->stamp =='N') 
+                                                                        <img src="{{ asset('images/Cancel_new2.png') }}" height="20px" width="20px">
                                                                     @else
-                                                                    <img src="{{ asset('images/check_trueinfo3.png') }}" height="23px" width="23px">
-                                                                        {{-- <span class="bg-success badge me-2">{{ $item->stamp }}</span> --}}
+                                                                    <img src="{{ asset('images/check_trueinfo3.png') }}" height="20px" width="20px"> 
                                                                     @endif
                                                                 </td>
-                                                                <td class="text-center" width="5%">
+                                                                <td class="text-center" width="3%">
+                                                                    @if ($item->send_active =='N') 
+                                                                        <img src="{{ asset('images/Cancel_new2.png') }}" height="20px" width="20px">
+                                                                    @else
+                                                                    <img src="{{ asset('images/check_trueinfo3.png') }}" height="20px" width="20px"> 
+                                                                    @endif
+                                                                </td>
+
+                                                                <td class="text-center" width="3%">
                                                                     @if ($item->active_claim =='N')
-                                                                    <img src="{{ asset('images/Cancel_new2.png') }}" height="23px" width="23px">
-                                                                        {{-- <span class="bg-danger badge me-2">{{ $item->active_claim }}</span> --}}
-                                                                    @else
-                                                                        {{-- <span class="bg-success badge me-2">{{ $item->active_claim }}</span> --}}
-                                                                        <img src="{{ asset('images/check_trueinfo3.png') }}" height="23px" width="23px">
+                                                                    <img src="{{ asset('images/Cancel_new2.png') }}" height="20px" width="20px"> 
+                                                                    @else 
+                                                                        <img src="{{ asset('images/check_trueinfo3.png') }}" height="20px" width="20px">
                                                                     @endif
                                                                 </td>
-                                                                <td class="text-start" width="5%">
+                                                                {{-- <td class="text-center" width="3%">
+                                                                    @if ($item->send_active =='N')
+                                                                    <img src="{{ asset('images/Cancel_new2.png') }}" height="20px" width="20px"> 
+                                                                    @else 
+                                                                        <img src="{{ asset('images/check_trueinfo3.png') }}" height="20px" width="20px">
+                                                                    @endif
+                                                                </td> --}}
+                                                                <td class="text-start" width="3%">
                                                                     @if ($item->pdx != NULL)
                                                                         <span class="bg-info badge">{{ $item->pdx }}</span>
                                                                     @else
@@ -1297,7 +1311,7 @@
                                                         $(this).parents("tr").remove();
                                                     });
                                                     Swal.fire({ position: "top-end",
-                                                        title: 'ตั้งลูกหนี้สำเร็จ',
+                                                        title: 'ตั้งและส่งลูกหนี้สำเร็จ',
                                                         text: "You Debtor data success",
                                                         icon: 'success',
                                                         showCancelButton: false,
