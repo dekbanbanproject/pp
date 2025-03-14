@@ -2753,6 +2753,7 @@ Route::get('home_supplies_excel', [App\Http\Controllers\AirController::class, 'h
   // ********************************************** บัญชี *******************************************************************
   Route::match(['get', 'post'], 'account_totalrep_db', [App\Http\Controllers\AccbController::class, 'account_totalrep_db'])->name('accb.account_totalrep_db'); //
   Route::match(['get', 'post'], 'account_totalrep', [App\Http\Controllers\AccbController::class, 'account_totalrep'])->name('accb.account_totalrep'); //
+  Route::match(['get', 'post'], 'account_totalrep_detail/{id}/{months}/{year}', [App\Http\Controllers\AccbController::class, 'account_totalrep_detail'])->name('accb.account_totalrep_detail'); //
   Route::match(['get', 'post'], 'account_rep', [App\Http\Controllers\AccbController::class, 'account_rep'])->name('accb.account_rep'); //
   Route::match(['get', 'post'], 'account_rep_401', [App\Http\Controllers\AccbController::class, 'account_rep_401'])->name('accb.account_rep_401'); //
   Route::match(['get', 'post'], 'account_rep_402', [App\Http\Controllers\AccbController::class, 'account_rep_402'])->name('accb.account_rep_402'); //

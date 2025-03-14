@@ -155,6 +155,49 @@ class AccbController extends Controller
             'y'                 =>  $y,
         ]);
     }
+    public function account_totalrep_detail(Request $request,$id,$months,$year)
+    {
+        $budget_year        = $request->budget_year;
+        $acc_trimart_id     = $request->acc_trimart_id;
+        $dabudget_year      = DB::table('budget_year')->where('active','=',true)->get();
+        $leave_month_year   = DB::table('leave_month')->orderBy('MONTH_ID', 'ASC')->get();
+        $date = date('Y-m-d');
+        $y = date('Y') + 543;
+        $newweek = date('Y-m-d', strtotime($date . ' -1 week')); //ย้อนหลัง 1 สัปดาห์
+        $newDate = date('Y-m-d', strtotime($date . ' -5 months')); //ย้อนหลัง 5 เดือน
+        $newyear = date('Y-m-d', strtotime($date . ' -1 year')); //ย้อนหลัง 1 ปี
+        $bgs_year      = DB::table('budget_year')->where('years_now','Y')->first();
+        $data['bg_yearnow']    = $bgs_year->leave_year_id;
+
+        if ($budget_year == '') {
+            $yearnew     = date('Y');
+            $year_old    = date('Y')-1;
+            $bg           = DB::table('budget_year')->where('years_now','Y')->first();
+            $startdate    = $bg->date_begin;
+            $enddate      = $bg->date_end;
+    
+            $data_pangall = DB::select('SELECT * FROM acc_setpang WHERE active="TRUE"'); 
+        } else {
+
+            $bg           = DB::table('budget_year')->where('leave_year_id','=',$budget_year)->first();
+            $startdate    = $bg->date_begin;
+            $enddate      = $bg->date_end;
+
+          
+            $data_pangall = DB::select('SELECT * FROM acc_setpang WHERE active="TRUE"'); 
+        }
+   
+        return view('accb.account_totalrep', $data, [
+            'startdate'         =>  $startdate,
+            'enddate'           =>  $enddate,
+            'leave_month_year'  =>  $leave_month_year,
+     
+            'dabudget_year'     =>  $dabudget_year,
+            'budget_year'       =>  $budget_year,
+            'data_pangall'      =>  $data_pangall,
+            'y'                 =>  $y,
+        ]);
+    }
     public function account_pk_dash(Request $request)
     {
             $budget_year   = $request->budget_year;

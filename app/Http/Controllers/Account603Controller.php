@@ -383,11 +383,25 @@ class Account603Controller extends Controller
         $acc_debtor = DB::connection('mysql2')->select(
             'SELECT ip.vn,a.an,a.hn,pt.cid,concat(pt.pname,pt.fname," ",pt.lname) ptname
                     ,a.regdate,a.dchdate as dchdate,v.vstdate
-                    ,a.pttype,ptt.max_debt_money,ec.code,ec.ar_ipd as account_code
-                    ,ec.name as account_name
+                    ,ipt.pttype,ptt.max_debt_money
+                     
+                    ,CASE  
+                        WHEN ipt.pttype IN ("31","36","37","38","39") THEN "28"		 
+                        ELSE ec.code
+                    END as code
+                    ,CASE  
+                        WHEN ipt.pttype IN ("31","36","37","38","39") THEN "1102050102.603"		 
+                        ELSE ec.ar_ipd
+                    END as account_code
+                    ,CASE  
+                        WHEN ipt.pttype IN ("31","36","37","38","39") THEN "พรบ.รถ"		 
+                        ELSE ec.name
+                    END as account_name
+
                     ,CASE
-                    WHEN a.income-a.rcpt_money-a.discount_money < 30000 THEN a.income-a.rcpt_money-a.discount_money
-                    WHEN  ipt.pttype_number ="1" AND ipt.pttype IN ("31","36","37","38","39") AND a.income-a.rcpt_money-a.discount_money > 30000 THEN ipt.max_debt_amount
+                   
+                    WHEN ipt.pttype_number ="1" AND ipt.pttype IN ("31","36","37","38","39") AND a.income-a.rcpt_money-a.discount_money > 30000 THEN ipt.max_debt_amount
+                    WHEN ipt.pttype_number = "2" AND ipt.pttype IN ("31","36","37","38","39") THEN ipt.nhso_ownright_pid
                     ELSE a.income-a.rcpt_money-a.discount_money
                     END as debit
 
@@ -415,54 +429,29 @@ class Account603Controller extends Controller
                     AND a.income-a.rcpt_money-a.discount_money <> 0
                     GROUP BY a.an
         ');
+        // WHEN a.income-a.rcpt_money-a.discount_money < 30000 THEN a.income-a.rcpt_money-a.discount_money
+        // ,ec.code,ec.ar_ipd as account_code
+        // ,ec.name as account_name
         //   AND d.name NOT like "CT%"
+        $bgs_year      = DB::table('budget_year')->where('years_now','Y')->first();
+        $bg_yearnow    = $bgs_year->leave_year_id;
         foreach ($acc_debtor as $key => $value) {
             // $check = Acc_debtor::where('an', $value->an)->where('account_code','1102050102.603')->whereBetween('dchdate', [$startdate, $enddate])->count();
             $check = Acc_debtor::where('an', $value->an)->where('account_code','1102050102.603')->count();
-                    // if ($check == 0) {
-                    //     if ($value->pttype == '31' || $value->pttype == '36' || $value->pttype == '37' || $value->pttype == '38' || $value->pttype == '39') {
-                    //         Acc_debtor::insert([
-                    //             'hn'                 => $value->hn,
-                    //             'an'                 => $value->an,
-                    //             'vn'                 => $value->vn,
-                    //             'cid'                => $value->cid,
-                    //             'ptname'             => $value->ptname,
-                    //             'pttype'             => $value->pttype,
-                    //             'vstdate'            => $value->vstdate,
-                    //             'rxdate'             => $value->regdate,
-                    //             'dchdate'            => $value->dchdate,
-                    //             'acc_code'           => $value->code,
-                    //             'account_code'       => $value->account_code,
-                    //             'account_name'       => $value->account_name,
-                    //             // 'income_group'       => $value->income_group,
-                    //             'income'             => $value->income,
-                    //             'uc_money'           => $value->uc_money,
-                    //             'discount_money'     => $value->discount_money,
-                    //             'paid_money'         => $value->paid_money,
-                    //             'rcpt_money'         => $value->rcpt_money,
-                    //             'debit'              => $value->debit,
-                    //             'debit_drug'         => $value->debit_drug,
-                    //             'debit_instument'    => $value->debit_instument,
-                    //             'debit_toa'          => $value->debit_toa,
-                    //             'debit_refer'        => $value->debit_refer,
-                    //             'fokliad'            => $value->fokliad,
-                    //             'debit_total'        => $value->debit,
-                    //             'max_debt_amount'    => $value->max_debt_money,
-                    //             'acc_debtor_userid'  => Auth::user()->id
-                    //         ]);
-                    //     }
-                    // }
+                //    dd($check);
                     if ($check > 0) {
-                        if ($value->pttype == '31' || $value->pttype == '36' || $value->pttype == '37' || $value->pttype == '38' || $value->pttype == '39') {
-                            Acc_debtor::where('an', $value->an)->where('account_code','1102050102.603')->update([
-                                'vn'            => $value->vn,
-                                'debit_total'   => $value->debit,
+                
+                            Acc_debtor::where('an', $value->an)->where('account_code','1102050102.603')->update([ 
+                                'pttype'          => $value->pttype,
+                                'debit'           => $value->debit,
+                                'debit_total'     => $value->debit,
+                                'bg_yearnow'      => $bg_yearnow,
                             ]);
-                        }
+                     
                     } else {
-                        if ($value->pttype == '31' || $value->pttype == '36' || $value->pttype == '37' || $value->pttype == '38' || $value->pttype == '39') {
-
+                        
                             Acc_debtor::insert([
+                                'bg_yearnow'         => $bg_yearnow,
                                 'hn'                 => $value->hn,
                                 'an'                 => $value->an,
                                 'vn'                 => $value->vn,
@@ -491,7 +480,7 @@ class Account603Controller extends Controller
                                 'max_debt_amount'    => $value->max_debt_money,
                                 'acc_debtor_userid'  => Auth::user()->id
                             ]);
-                        }
+                       
                     }
 
         }

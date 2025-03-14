@@ -143,7 +143,7 @@
                                         $ynowh = date('Y')+543;
                                         $yoldh = date('Y')+542;
                                     @endphp
-                                    <thead style="color:#f83b64">
+                                    <thead style="color:#0770c5">
                                         <tr>
                                             <th width="7%" class="text-center" style="font-size: 11px;">รหัสผัง</th>
                                             <th class="text-center" style="font-size: 11px;">ชื่อผัง</th>
@@ -186,20 +186,44 @@
                                                                                 
                                                 @endphp
                                                 <tr>
-                                                    <td class="text-center" width="7%">{{$item->pang}}</td>
-                                                    <td>{{$item->pangname}}</td> 
-                                                    <td class="text-center" width="5%">{{number_format($total1, 2)}}</td>
-                                                    <td class="text-center" width="5%">{{number_format($total2, 2)}}</td>
-                                                    <td class="text-center" width="5%">{{number_format($total3, 2)}}</td>
-                                                    <td class="text-center" width="5%">{{number_format($total4, 2)}}</td>
-                                                    <td class="text-center" width="5%">{{number_format($total5, 2)}}</td>
-                                                    <td class="text-center" width="5%">{{number_format($total6, 2)}}</td>
-                                                    <td class="text-center" width="5%">{{number_format($total7, 2)}}</td>
-                                                    <td class="text-center" width="5%">{{number_format($total8, 2)}}</td>
-                                                    <td class="text-center" width="5%">{{number_format($total9, 2)}}</td>
-                                                    <td class="text-center" width="5%">{{number_format($total10, 2)}}</td>
-                                                    <td class="text-center" width="5%">{{number_format($total11, 2)}}</td>
-                                                    <td class="text-center" width="5%">{{number_format($total12, 2)}}</td>
+                                                    <td class="text-center" width="7%" style="color:#fc800d">{{$item->pang}}</td>
+                                                    <td style="color:#f8325d">{{$item->pangname}}</td> 
+                                                    <td class="text-center" width="5%" style="color:#1179ce">
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/1/'.$ynow)}}">{{number_format($total1, 2)}}</a> 
+                                                    </td>
+                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/2/'.$ynow)}}">{{number_format($total2, 2)}}</a> 
+                                                    </td>
+                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/3/'.$ynow)}}">{{number_format($total3, 2)}}</a> 
+                                                    </td>
+                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/4/'.$ynow)}}">{{number_format($total4, 2)}}</a> 
+                                                    </td>
+                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/5/'.$ynow)}}">{{number_format($total5, 2)}}</a> 
+                                                    </td>
+                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/6/'.$ynow)}}">{{number_format($total6, 2)}}</a> 
+                                                    </td>
+                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/7/'.$ynow)}}">{{number_format($total7, 2)}}</a> 
+                                                    </td>
+                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/8/'.$ynow)}}">{{number_format($total8, 2)}}</a> 
+                                                    </td>
+                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/9/'.$ynow)}}">{{number_format($total9, 2)}}</a> 
+                                                    </td>
+                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/10/'.$yold)}}">{{number_format($total10, 2)}}</a> 
+                                                    </td>
+                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/11/'.$yold)}}">{{number_format($total11, 2)}}</a> 
+                                                    </td>
+                                                    <td class="text-center" width="5%" style="color:#1179ce"> 
+                                                        <a href="{{URL('account_totalrep_detail/'.$item->acc_setpang_id.'/12/'.$yold)}}">{{number_format($total12, 2)}}</a> 
+                                                    </td>
                                                 </tr> 
                                             
                                         @else
