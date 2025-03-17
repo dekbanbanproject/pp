@@ -111,6 +111,9 @@
                 <div class="card card_audit_4c" style="background-color: rgb(253, 249, 239)">
 
                     <div class="card-body">
+
+
+                        
                         <div class="table-responsive">
 
                         <table id="example" class="table table-sm table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
