@@ -703,12 +703,23 @@ class Account602Controller extends Controller
                     ');
 
                     foreach ($sync_data as $key => $value2) {
-                        Acc_1102050102_602::where('vn',$value2->vn)
+                        if ($value2->nhso_ownright_pid =='' || $value2->nhso_ownright_pid == null) {
+                            Acc_1102050102_602::where('vn',$value2->vn)
+                            ->update([
+                                'nhso_docno'           => $value2->nhso_docno ,
+                                'nhso_ownright_pid'    => "0",
+                                'nhso_ownright_name'   => "0",
+                        ]);
+                        } else {
+                            Acc_1102050102_602::where('vn',$value2->vn)
                             ->update([
                                 'nhso_docno'           => $value2->nhso_docno ,
                                 'nhso_ownright_pid'    => $value2->nhso_ownright_pid,
                                 'nhso_ownright_name'   => $value2->nhso_ownright_name
                         ]);
+                        }
+                        
+                        
                     }
 
 

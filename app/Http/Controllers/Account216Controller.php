@@ -592,6 +592,7 @@ class Account216Controller extends Controller
             if ($value->debit_refer > 0 ) {
             } else {
                 if ($value->debit > 0 && $value->cid != '') {
+                   
                 
                         $check = Acc_debtor::where('vn', $value->vn)->where('account_code', '1102050101.216')->count();
                         if ($check > 0) {
@@ -603,7 +604,7 @@ class Account216Controller extends Controller
                    
                         } else {
                             Acc_debtor::insert([
-                                'bg_yearnow'         => $value->bg_yearnow,
+                                'bg_yearnow'         => $bg_yearnow,
                                 'hn'                 => $value->hn,
                                 'an'                 => $value->an,
                                 'vn'                 => $value->vn,
@@ -688,13 +689,15 @@ class Account216Controller extends Controller
             if ($value2->debit_refer > 0 ) {
             } else {
                 if ($value2->debit > 0 && $value2->cid != '') {
+                    
+
                         $check2 = Acc_debtor::where('vn', $value2->vn)->where('account_code', '1102050101.216')->count();
                         if ($check2 > 0) {
                             Acc_debtor::where('vn', $value2->vn)->where('account_code', '1102050101.216')->update([ 'claim_code'=> $value2->auth_code,'vsttime' => $value2->vsttime,]);
                             // Acc_1102050101_216::where('vn', $value2->vn)->update(['vsttime' => $value2->vsttime]);
                         } else {
                             Acc_debtor::insert([
-                                'bg_yearnow'         => $value->bg_yearnow,
+                                'bg_yearnow'         => $bg_yearnow,
                                 'hn'                 => $value2->hn,
                                 'an'                 => $value2->an,
                                 'vn'                 => $value2->vn,

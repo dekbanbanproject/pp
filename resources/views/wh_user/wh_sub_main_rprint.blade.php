@@ -255,25 +255,27 @@
                   <label for="" style="font-size:15px;"><b>ใบเบิกวัสดุ</b></label>
                     <table>
                         <tr style="height: 10px">
-                            <td style="font-size: 13px;width: 450px"><b class="me-2">ชื่อหน่วยงาน</b> {{$wh_request->DEPARTMENT_SUB_SUB_NAME}}</td>
-                            {{-- <td style="font-size: 13px;width: 250px"> </td> --}}
-                            <td style="font-size: 13px"><b class="me-2">ใบเบิกวัสดุเลขที่</b> {{$wh_request->request_no}}</td>
-                        </tr>
-                        <tr style="height: 10px">
-                            <td style="font-size: 13px;width: 450px"><b class="me-2">เรื่อง</b> ขออนุมัติเบิก</td>
-                            {{-- <td style="font-size: 13px;width: 250px"></td> --}}
-                            <td style="font-size: 13px"><b class="me-2">วันที่</b> {{DateThai($wh_request->request_date)}}</td>
-                        </tr>
-                        <tr style="height: 10px">
-                            <td style="font-size: 13px;width: 200px"><b class="me-2">เรียน</b> หัวหน้าหน่วยพัสดุ</td>
-                            <td style="font-size: 13px;width: 250px"></td>
-                            <td style="font-size: 13px"></td>
+                            <td style="font-size: 14px;width: 500px"><b class="me-2">ชื่อหน่วยงาน</b> {{$wh_request->DEPARTMENT_SUB_SUB_NAME}}</td> 
+                            <td style="font-size: 14px"><b class="me-2">ใบเบิกวัสดุเลขที่</b> {{$wh_request->request_no}}</td>
                         </tr>
                     </table>
                     <table>
                         <tr style="height: 10px">
-                            <td style="font-size: 13px;width: 30px"></td>
-                            <td style="font-size: 13px;width: auto">ข้าพเจ้า  {{$data_head->prefix_name}}{{$data_head->fname}}  {{$data_head->lname}}  ขอเบิกพัสดุตามรายการข้างล่างนี้ เพื่อใช้ในราชการ โรงพยาบาลภูเขียวเฉลิมพระเกียรติ</td>
+                            <td style="font-size: 14px;width: 565px"><b class="me-2">เรื่อง</b> ขออนุมัติเบิก</td> 
+                            <td style="font-size: 14px"><b class="me-2">วันที่</b> {{DateThai($wh_request->request_date)}}</td>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr style="height: 10px">
+                            <td style="font-size: 14px;width: 200px"><b class="me-2">เรียน</b> หัวหน้าหน่วยพัสดุ</td>
+                            <td style="font-size: 14px;width: 250px"></td>
+                            <td style="font-size: 14px"></td>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr style="height: 10px">
+                            <td style="font-size: 14px;width: 30px"></td>
+                            <td style="font-size: 14px;width: auto">ข้าพเจ้า  {{$data_head->prefix_name}}{{$data_head->fname}}  {{$data_head->lname}}  ขอเบิกพัสดุตามรายการข้างล่างนี้ เพื่อใช้ในราชการ โรงพยาบาลภูเขียวเฉลิมพระเกียรติ</td>
                         </tr>
                     </table>
                     <table>
@@ -288,7 +290,7 @@
                     {{-- <table class="table table-sm table-bordered mb-4" style="width: 100%;">  --}}
                             <table class="mb-4" style="width: 100%;">
                                 <thead>
-                                    <tr style="font-size: 11px;height: 11px;" class="text-center">
+                                    <tr style="font-size: 14px;height: 11px;" class="text-center">
                                         <th rowspan="2" style="border: 1px solid black;width: 5%;">ลำดับ</th>
                                         <th rowspan="2" style="border: 1px solid black;width: 45%;">รายการ</th>
                                         <th colspan="4" style="border: 1px solid black;width: 15%;">จำนวน</th>
@@ -296,7 +298,7 @@
                                         <th rowspan="2" style="border: 1px solid black;width: 10%;">ราคารวม</th>
                                         <th rowspan="2" style="border: 1px solid black;width: 10%;">หมายเหตุ</th>
                                     </tr>
-                                    <tr style="font-size: 11px;height: 11px;" class="text-center">
+                                    <tr style="font-size: 13px;height: 11px;" class="text-center">
                                         <th style="border: 1px solid black;">หน่วย</th>
                                         <th style="border: 1px solid black;">คลังย่อย</th>
                                         <th style="border: 1px solid black;">เบิก</th>
@@ -349,7 +351,7 @@
 
 
           @endphp
-                                    <tr style="font-size: 11px;height: 11px;">
+                                    <tr style="font-size: 14px;height: 11px;">
                                         <th style="border: 1px solid black;width: 5%;" class="text-center">{{$loop->iteration}}</th>
                                         <td style="border: 1px solid black;width: 10%;" class="text-start">&nbsp;{{$item->pro_name}}</td>
                                         <td style="border: 1px solid black;" class="text-center">&nbsp;{{$item->unit_name}}</td>
@@ -368,37 +370,37 @@
 
                         <table class="mt-4">
                                 <tr>
-                                    <td style="font-size: 12px;width:50px"><b></b></td>
-                                    <td style="font-size: 12px;width:350px;height: 10px;" class="ms-5">&nbsp;ลงชื่อ........................................................ผู้เบิก<br>
-                                    <label style="font-size: 12px;;height: 10px;" class="ms-5">(  {{$data_head->prefix_name}}{{$data_head->fname}}  {{$data_head->lname}}  )</label><br>
-                                    <label style="font-size: 12px;;height: 10px;">หัวหน้ากลุ่มงาน  {{$data_uerreq->DEPARTMENT_SUB_SUB_NAME}}</label>
+                                    <td style="font-size: 13px;width:50px"><b></b></td>
+                                    <td style="font-size: 13px;width:350px;height: 10px;" class="ms-5">&nbsp;ลงชื่อ........................................................ผู้เบิก<br>
+                                    <label style="font-size: 13px;;height: 10px;" class="ms-5">(  {{$data_head->prefix_name}}{{$data_head->fname}}  {{$data_head->lname}}  )</label><br>
+                                    <label style="font-size: 13px;;height: 10px;">หัวหน้ากลุ่มงาน  {{$data_uerreq->DEPARTMENT_SUB_SUB_NAME}}</label>
                                     </td>
-                                    <td style="font-size: 12px;"></td>
-                                    <td style="font-size: 12px;width:230px;height: 10px;">ลงชื่อ........................................................ผู้สั่งจ่าย<br>
-                                    <label style="font-size: 12px;;height: 10px;" class="ms-5"> (  {{$data_uer->prefix_name}}{{$data_uer->fname}}  {{$data_uer->lname}}  )</label><br>
-                                    <label style="font-size: 12px;;height: 10px;" >ตำแหน่ง  {{$data_uer->POSITION_NAME}}{{$data_uer->user_level_name}} </label>
+                                    <td style="font-size: 13px;"></td>
+                                    <td style="font-size: 13px;width:230px;height: 10px;">ลงชื่อ........................................................ผู้สั่งจ่าย<br>
+                                    <label style="font-size: 13px;;height: 10px;" class="ms-5"> (  {{$data_uer->prefix_name}}{{$data_uer->fname}}  {{$data_uer->lname}}  )</label><br>
+                                    <label style="font-size: 13px;;height: 10px;" >ตำแหน่ง  {{$data_uer->POSITION_NAME}}{{$data_uer->user_level_name}} </label>
                                     </td>
                                 </tr>
                         </table>
                         <table  class="mt-2">
                             <tr>
-                                <td style="font-size: 12px;width:100px"><b></b></td>
-                                <td style="font-size: 12px;width:200px;height: 10px;">ได้รับพัสดุถูกต้องครบถ้วน </td>
-                                <td style="font-size: 12px;width:130px"><b></b></td>
-                                <td style="font-size: 12px;width:200px;height: 10px;">ได้จ่ายและลงบัญชีแล้ว </td>
+                                <td style="font-size: 13px;width:100px"><b></b></td>
+                                <td style="font-size: 13px;width:200px;height: 10px;">ได้รับพัสดุถูกต้องครบถ้วน </td>
+                                <td style="font-size: 13px;width:130px"><b></b></td>
+                                <td style="font-size: 13px;width:200px;height: 10px;">ได้จ่ายและลงบัญชีแล้ว </td>
                             </tr>
                         </table>
                         <table class="mt-3">
                                 <tr>
-                                    <td style="font-size: 12px;width:50px"><b></b></td>
-                                    <td style="font-size: 12px;width:350px;height: 10px;">ลงชื่อ........................................................ผู้รับ<br>
-                                    <label style="font-size: 12px;;height: 10px;" class="ms-4">(.......................................................)</label><br>
-                                    <label style="font-size: 12px;;height: 10px;" >วันที่ .........................................................</label>
+                                    <td style="font-size: 13px;width:50px"><b></b></td>
+                                    <td style="font-size: 13px;width:350px;height: 10px;">ลงชื่อ........................................................ผู้รับ<br>
+                                    <label style="font-size: 13px;;height: 10px;" class="ms-4">(.......................................................)</label><br>
+                                    <label style="font-size: 13px;;height: 10px;" >วันที่ .........................................................</label>
                                     </td>
-                                    <td style="font-size: 12px;"></td>
-                                    <td style="font-size: 12px;width:230px;height: 10px;">ลงชื่อ........................................................ผู้จ่าย<br>
-                                    <label style="font-size: 12px;;height: 10px;" class="ms-5">(  {{$data_userpay->prefix_name}}{{$data_userpay->fname}}  {{$data_userpay->lname}}  )</label><br>
-                                    <label style="font-size: 12px;;height: 10px;" >วันที่ .........................................................</label>
+                                    <td style="font-size: 13px;"></td>
+                                    <td style="font-size: 13px;width:230px;height: 10px;">ลงชื่อ........................................................ผู้จ่าย<br>
+                                    <label style="font-size: 13px;;height: 10px;" class="ms-5">(  {{$data_userpay->prefix_name}}{{$data_userpay->fname}}  {{$data_userpay->lname}}  )</label><br>
+                                    <label style="font-size: 13px;;height: 10px;" >วันที่ .........................................................</label>
                                     </td>
                                 </tr>
                         </table>

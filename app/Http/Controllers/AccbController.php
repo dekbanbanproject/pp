@@ -177,7 +177,7 @@ class AccbController extends Controller
                 'SELECT a.acc_setpang_id,a.pang,a.pangname,a.active,b.*
                     FROM acc_setpang a 
                     LEFT JOIN acc_account_total b ON b.account_code = a.pang
-                    WHERE b.vn IS NOT NULL AND b.account_code ="'.$id.'"
+                    WHERE b.vn IS NOT NULL AND b.account_code ="'.$id.'" AND month(b.vstdate) ="'.$months.'" AND year(b.vstdate) ="'.$year.'"
                     GROUP BY b.vn,account_code
             '); 
         } else {

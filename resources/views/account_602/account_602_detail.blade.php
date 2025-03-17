@@ -210,7 +210,14 @@
                                                 </button>
                                             @endif
                                         </td>
-                                        <td class="text-center" width="10%" >{{ $item->nhso_ownright_name }}</td>
+                                        <td class="text-center" width="10%" >
+                                          
+                                            @if ($item->nhso_ownright_name != '' || $item->nhso_ownright_name != null)
+                                                0.00
+                                            @else
+                                                {{ $item->nhso_ownright_name }}
+                                            @endif
+                                        </td>
                                     </tr>
 
                                     <?php

@@ -449,7 +449,7 @@ class Account603Controller extends Controller
                             ]);
                      
                     } else {
-                        
+                        if ($value->debit > 0) {
                             Acc_debtor::insert([
                                 'bg_yearnow'         => $bg_yearnow,
                                 'hn'                 => $value->hn,
@@ -480,6 +480,11 @@ class Account603Controller extends Controller
                                 'max_debt_amount'    => $value->max_debt_money,
                                 'acc_debtor_userid'  => Auth::user()->id
                             ]);
+                        } else {
+                            # code...
+                        }
+                        
+                           
                        
                     }
 
