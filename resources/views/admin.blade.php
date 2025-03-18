@@ -937,7 +937,7 @@ $checkup                  = StaticController::checkup($iduser);
                     </div>
                 </div>
             </div> --}}
-            @if ($per_fdh != 0)
+            {{-- @if ($per_fdh != 0)
             <div class="col-xl-3 col-md-3">
                 <a href="{{ url('fdh_dashboard') }}" target="_blank">
                     <div class="main-card mb-3 card shadow-lg rounded-pill"
@@ -965,7 +965,7 @@ $checkup                  = StaticController::checkup($iduser);
                     </div>
                 </a>
             </div>
-            @endif
+            @endif --}}
 
             @if ($per_nurse != 0)
             <div class="col-xl-3 col-md-3">

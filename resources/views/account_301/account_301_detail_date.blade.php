@@ -133,7 +133,7 @@ $pos = strrpos($url, '/') + 1;
         </form>
         <div class="row">
             <div class="col-xl-12">
-                <div class="card card_audit_4c" style="background-color: rgb(246, 235, 247)">
+                <div class="card card_audit_4c" style="background-color: rgb(239, 247, 235)">
                     {{-- <div class="card-header">
                     รายละเอียด 1102050101.301
                         <div class="btn-actions-pane-right">
@@ -146,7 +146,7 @@ $pos = strrpos($url, '/') + 1;
                                 {{-- <table id="datatable-buttons" class="table table-sm table-striped table-bordered dt-responsive nowrap"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;"> --}}
                                 <table id="datatable-buttons" class="table table-sm table-striped table-bordered" style="width: 100%;">
-                                <thead>
+                                <thead style="border: 1px solid rgb(250, 214, 159);">
                                     <tr>
                                         <th class="text-center" width="4%">ลำดับ</th>
                                         <th class="text-center" >vn</th>
@@ -167,15 +167,14 @@ $pos = strrpos($url, '/') + 1;
                                         <th class="text-center">ลงวันที่</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style="border: 1px solid rgb(250, 214, 159);">
                                     <?php $number = 0; $total1 = 0; $total2 = 0;$total3 = 0;$total4 = 0;$total5 = 0;$total6 = 0;$total7 = 0;$total8 = 0;$total9 = 0;?>
                                     @foreach ($data as $item)
                                         <?php $number++; ?>
 
                                             <tr height="20" style="font-size: 14px;">
                                                 <td class="text-font" style="text-align: center;" width="4%">{{ $number }}</td>
-                                                <td class="text-center" width="7%">{{ $item->vn }}</td>
-                                                {{-- <td class="text-center" width="7%">{{ $item->an }}</td> --}}
+                                                <td class="text-center" width="7%">{{ $item->vn }}</td> 
                                                 <td class="text-center" width="5%">{{ $item->hn }}</td>
                                                 <td class="text-center" width="10%">{{ $item->cid }}</td>
                                                 <td class="text-start" >{{ $item->ptname }}</td>

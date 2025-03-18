@@ -110,13 +110,12 @@
                                 {{-- <i class="fa-solid fa-magnifying-glass text-white me-2"></i> --}}
                                 <img src="{{ asset('images/Search02.png') }}" class="me-2 ms-2" height="18px" width="18px">
                                 ค้นหา</span>
-                            {{-- <span class="ladda-spinner"></span> --}}
+                                {{-- <span class="ladda-spinner"></span> --}}
                         </button>
-                {{-- <button type="button" class="btn-icon btn-rounded btn-shadow btn-dashed btn btn-outline-primary" id="Pulldata">
-                    <i class="fa-solid fa-file-circle-plus text-primary me-2"></i>
-                    ดึงข้อมูล
-                </button>   --}}
-
+                        {{-- <button type="button" class="btn-icon btn-rounded btn-shadow btn-dashed btn btn-outline-primary" id="Pulldata">
+                            <i class="fa-solid fa-file-circle-plus text-primary me-2"></i>
+                            ดึงข้อมูล
+                        </button>   --}}
             </form>
                 <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-primary cardacc" data-style="expand-left" id="Pulldata">
                     <span class="ladda-label">
@@ -133,7 +132,7 @@
 
         <div class="row">
             <div class="col-xl-12">
-                <div class="card card_audit_4c" style="background-color: rgb(246, 235, 247)">
+                <div class="card card_audit_4c" style="background-color: rgb(239, 247, 235)">
                     <div class="card-body">
 
 
@@ -173,7 +172,7 @@
 
                                 <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-primary cardacc Savestamp" data-url="{{url('account_301_stam')}}">
                                     <img src="{{ asset('images/Stam_white.png') }}" class="me-2 ms-2" height="18px" width="18px">
-                                    ตั้งลูกหนี้
+                                    ตั้งลูกหนี้ + ส่งลูกหนี้
                                 </button>
                                 <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-danger cardacc Destroystamp" data-url="{{url('account_301_destroy_all')}}">
                                     <img src="{{ asset('images/removewhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
@@ -237,18 +236,20 @@
                             <div class="tab-pane active" id="ssop" role="tabpanel">
 
                                     <div class="table-responsive">
-                                        <table id="scroll-vertical-datatable" class="table table-sm table-striped dt-responsive nowrap w-100">
-                                            <thead>
+                                        {{-- <table id="scroll-vertical-datatable" class="table table-sm table-striped dt-responsive nowrap w-100"> --}}
+                                        <table id="example" class="table table-sm table-hover table-striped table-bordered dt-responsive nowrap" style=" border-spacing: 0; width: 100%;">
+                                            <thead style="border: 1px solid rgb(250, 214, 159);">
                                                 <tr>
 
-                                                    <th width="5%" class="text-center">ลำดับ</th>
-                                                    <th width="5%" class="text-center"><input type="checkbox" class="dcheckbox_" name="stamp" id="stamp"> </th>
-                                                    <th width="5%" class="text-center">ตั้งลูกหนี้</th>
+                                                    <th width="2%" class="text-center">ลำดับ</th>
+                                                    <th width="2%" class="text-center"><input type="checkbox" class="dcheckbox_" name="stamp" id="stamp"> </th>
+                                                    <th width="4%" class="text-center">ตั้งลูกหนี้</th>
+                                                    <th class="text-center" style="font-size: 11px;">ส่งลูกหนี้</th>
                                                     <th width="5%" class="text-center">
                                                         <span class="bg-success badge">{{ $count_claim }}</span> เคลม
                                                         <span class="bg-danger badge">{{ $count_noclaim }}</span>
                                                     </th>
-                                                    <th width="5%" class="text-center">pdx</th>
+                                                    <th width="4%" class="text-center">pdx</th>
                                                     <th class="text-center">vn</th>
                                                     <th class="text-center" width="5%">hn</th>
                                                     <th class="text-center">ptname</th>
@@ -261,38 +262,41 @@
                                                     <th class="text-center" width="10%">ct-3013</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody style="border: 1px solid rgb(250, 214, 159);">
                                                 <?php $i = 1; ?>
                                                 @foreach ($acc_debtor as $item)
                                                     <tr id="tr_{{$item->acc_debtor_id}}">
-                                                        <td class="text-center" width="5%">{{ $i++ }}</td>
+                                                        <td class="text-center" width="2%">{{ $i++ }}</td>
                                                         @if ($item->debit_total == '')
-                                                            <td class="text-start" width="5%">
+                                                            <td class="text-center" width="4%">
                                                                 <input class="form-check-input" type="checkbox" id="flexCheckDisabled" disabled>
                                                             </td>
                                                         @else
-                                                            <td class="text-start" width="5%"><input type="checkbox" class="dcheckbox_ sub_chk" data-id="{{$item->acc_debtor_id}}"> </td>
+                                                            <td class="text-center" width="4%"><input type="checkbox" class="dcheckbox_ sub_chk" data-id="{{$item->acc_debtor_id}}"> </td>
                                                         @endif
 
-                                                        <td class="text-start" width="5%">
+                                                        <td class="text-center" width="4%">
                                                             @if ($item->stamp =='N')
-                                                            <img src="{{ asset('images/Cancel_new2.png') }}" height="23px" width="23px">
-                                                                {{-- <span class="bg-danger badge me-2">{{ $item->stamp }}</span> --}}
+                                                            <img src="{{ asset('images/Cancel_new2.png') }}" height="23px" width="23px"> 
                                                             @else
-                                                            <img src="{{ asset('images/check_trueinfo3.png') }}" height="23px" width="23px">
-                                                                {{-- <span class="bg-success badge me-2">{{ $item->stamp }}</span> --}}
+                                                            <img src="{{ asset('images/check_trueinfo3.png') }}" height="23px" width="23px"> 
                                                             @endif
                                                         </td>
-                                                        <td class="text-start" width="5%">
+                                                        <td class="text-center" width="3%">
+                                                            @if ($item->send_active =='N')
+                                                                <img src="{{ asset('images/Cancel_new2.png') }}" height="20px" width="20px">
+                                                            @else
+                                                            <img src="{{ asset('images/check_trueinfo3.png') }}" height="20px" width="20px">
+                                                            @endif
+                                                        </td>
+                                                        <td class="text-center" width="5%">
                                                             @if ($item->active_claim =='N')
-                                                            <img src="{{ asset('images/Cancel_new2.png') }}" height="23px" width="23px">
-                                                                {{-- <span class="bg-danger badge me-2">{{ $item->active_claim }}</span> --}}
+                                                            <img src="{{ asset('images/Cancel_new2.png') }}" height="23px" width="23px"> 
                                                             @else
-                                                            <img src="{{ asset('images/check_trueinfo3.png') }}" height="23px" width="23px">
-                                                                {{-- <span class="bg-success badge me-2">{{ $item->active_claim }}</span> --}}
+                                                            <img src="{{ asset('images/check_trueinfo3.png') }}" height="23px" width="23px"> 
                                                             @endif
                                                         </td>
-                                                        <td class="text-start" width="5%">
+                                                        <td class="text-center" width="5%">
                                                             @if ($item->pdx != NULL)
                                                                 <span class="bg-info badge">{{ $item->pdx }}</span>
                                                             @else
@@ -300,16 +304,16 @@
                                                             @endif
                                                         </td>
 
-                                                        <td class="text-start">{{ $item->vn }}</td>
-                                                        <td class="text-start" width="5%">{{ $item->hn }}</td>
-                                                        <td class="p-2">{{ $item->ptname }}</td>
-                                                        <td class="text-start" width="10%">{{ $item->vstdate }}</td>
-                                                        <td class="text-start" style="color:rgb(73, 147, 231)" width="5%">{{ $item->pttype }}</td>
-                                                        <td class="text-start" style="color:rgb(216, 95, 14)" width="5%">{{ $item->subinscl }}</td>
-                                                        <td class="text-start" width="10%">{{ number_format($item->income, 2) }}</td>
-                                                        <td class="text-start" width="10%">{{ number_format($item->debit_total, 2) }}</td>
-                                                        <td class="text-start" width="10%">{{ number_format($item->debit_ins_sss, 2) }}</td>
-                                                        <td class="text-start" width="10%">{{ number_format($item->debit_ct_sss, 2) }}</td>
+                                                        <td class="text-center">{{ $item->vn }}</td>
+                                                        <td class="text-center" width="5%">{{ $item->hn }}</td>
+                                                        <td class="text-start">{{ $item->ptname }}</td>
+                                                        <td class="text-center" width="8%">{{ $item->vstdate }}</td>
+                                                        <td class="text-center" style="color:rgb(73, 147, 231)" width="5%">{{ $item->pttype }}</td>
+                                                        <td class="text-center" style="color:rgb(216, 95, 14)" width="5%">{{ $item->subinscl }}</td>
+                                                        <td class="text-center" width="7%">{{ number_format($item->income, 2) }}</td>
+                                                        <td class="text-center" width="7%">{{ number_format($item->debit_total, 2) }}</td>
+                                                        <td class="text-center" width="7%">{{ number_format($item->debit_ins_sss, 2) }}</td>
+                                                        <td class="text-center" width="7%">{{ number_format($item->debit_ct_sss, 2) }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>

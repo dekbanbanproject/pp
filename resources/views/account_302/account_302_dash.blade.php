@@ -92,7 +92,7 @@
             <div class="row mt-2">
                 <div class="col"></div>
                 <div class="col-md-4">
-                    <h4 class="card-title" style="color:rgb(10, 151, 85)">Detail 1102050101.302</h4>
+                    <h4 class="card-title" style="color:rgb(248, 28, 83)">Detail 1102050101.302</h4>
                     <p class="card-title-desc">รายละเอียดข้อมูล ผัง 1102050101.302</p>
                 </div>
                 <div class="col"></div>
@@ -286,11 +286,11 @@
             <div class="col"></div>
 
                 <div class="col-xl-10 col-md-10">
-                    <div class="card card_audit_4c" style="background-color: rgb(246, 235, 247)">
+                    <div class="card card_audit_4c" style="background-color: rgb(239, 247, 235)">
                         <div class="table-responsive p-3">
                             <table id="example" class="table table-sm table-striped table-bordered dt-responsive nowrap myTable"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                <thead>
+                                <thead style="border: 1px solid rgb(250, 214, 159);">
                                     <tr>
                                         <th class="text-center" style="background-color: rgb(219, 247, 232)">ลำดับ</th>
                                         <th class="text-center" style="background-color: rgb(219, 247, 232)">ไตรมาส</th>
@@ -301,7 +301,7 @@
                                         <th class="text-center" style="background-color: rgb(250, 225, 234)">ยกยอดไป</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style="border: 1px solid rgb(250, 214, 159);">
                                     <?php
                                         $number = 0; $total1 = 0; $total2 = 0; $total3 = 0; $total4 = 0; $total5 = 0;$total6 = 0;$total7 = 0;
                                     ?>

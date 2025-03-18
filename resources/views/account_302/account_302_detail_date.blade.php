@@ -110,7 +110,7 @@ $pos = strrpos($url, '/') + 1;
 
     <div class="row">
         <div class="col-xl-12">
-            <div class="card card_audit_4c" style="background-color: rgb(246, 235, 247)">
+            <div class="card card_audit_4c" style="background-color: rgb(239, 247, 235)">
 
                     <div class="card-body">
                         {{-- <h4 class="card-title" style="color:rgb(10, 151, 85)">รายละเอียด 1102050101.302</h4> --}}
@@ -118,7 +118,7 @@ $pos = strrpos($url, '/') + 1;
                             {{-- <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;"> --}}
                                 <table id="datatable-buttons" class="table table-sm table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                <thead>
+                                <thead style="border: 1px solid rgb(250, 214, 159);">
                                     <tr>
                                         <th class="text-center">ลำดับ</th>
                                         <th class="text-center">an</th>
@@ -138,7 +138,7 @@ $pos = strrpos($url, '/') + 1;
                                         <th class="text-center">ลงวันที่</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style="border: 1px solid rgb(250, 214, 159);">
                                     <?php $number = 0; $total1 = 0; $total2 = 0;$total3 = 0;$total4 = 0;$total5 = 0;$total6 = 0;$total7 = 0;$total8 = 0;$total9 = 0;?>
                                     @foreach ($data as $item)
                                         <?php $number++; ?>

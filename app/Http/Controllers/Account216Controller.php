@@ -758,7 +758,6 @@ class Account216Controller extends Controller
             'date_time'          => $datatime,
             'user_id'            => Auth::user()->id,
         ]);
-
         $maxnumber = DB::table('acc_debtor_log')->where('account_code','1102050101.216')->where('user_id',Auth::user()->id)->max('acc_debtor_log_id');
 
         $id = $request->ids;

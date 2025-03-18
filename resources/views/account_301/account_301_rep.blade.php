@@ -100,7 +100,7 @@
 
             <div class="col"></div>
             <div class="col-xl-8 col-md-6">
-                <div class="card card_audit_4c mb-3" style="background-color: rgb(246, 235, 247)">
+                <div class="card card_audit_4c mb-3" style="background-color: rgb(239, 247, 235)">
                     <div class="grid-menu-col">
                         <form action="{{ route('acc.account_301_repsave') }}" method="POST" enctype="multipart/form-data"> 
                             @csrf
@@ -154,11 +154,11 @@
         <div class="row">
  
             <div class="col-xl-12 col-md-6">
-                <div class="card p-3 card_audit_4c" style="background-color: rgb(246, 235, 247)">
+                <div class="card p-3 card_audit_4c" style="background-color: rgb(239, 247, 235)">
                     <div class="grid-menu-col"> 
                             <table id="example" class="table table-striped table-bordered "
                             style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                            <thead>
+                            <thead style="border: 1px solid rgb(250, 214, 159);">
                                 <tr style="font-size: 12px">
                                     <th class="text-center">ลำดับ</th>
                                     <th class="text-center">repno</th>
@@ -174,7 +174,7 @@
 
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody style="border: 1px solid rgb(250, 214, 159);">
                                 <?php $number = 0;
                                 $total1 = 0; ?>
                                 @foreach ($datashow as $item)

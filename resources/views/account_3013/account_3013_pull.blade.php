@@ -74,7 +74,8 @@
                 </div>
             </div>
         </div>
-       
+        <form action="{{ URL('account_3013_pull') }}" method="GET">
+            @csrf   
         <div class="row"> 
             <div class="col-md-4">
                 <h5 class="card-title" style="color:rgb(248, 28, 83)">Detail 1102050101.3013</h5>
@@ -88,21 +89,28 @@
                      data-provide="datepicker" data-date-autoclose="true" data-date-language="th-th" value="{{ $startdate }}"/>
                     <input type="text" class="form-control-sm cardacc" name="enddate" placeholder="End Date" id="datepicker2" data-date-container='#datepicker1' autocomplete="off"
                     data-provide="datepicker" data-date-autoclose="true" data-date-language="th-th" value="{{ $enddate }}"/>
+                   
+                    <button type="submit" class="ladda-button btn-pill btn btn-sm btn-info cardacc">
+                        <span class="ladda-label"> 
+                            <img src="{{ asset('images/Search02.png') }}" class="me-2 ms-2" height="18px" width="18px"> ค้นหา</span> 
+                    </button> 
+                   
+            </form>      
                     <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-primary cardacc" data-style="expand-left" id="Pulldata">
-                        <span class="ladda-label"> <i class="fa-solid fa-file-circle-plus text-white me-2"></i>ดึงข้อมูล</span>
-                        <span class="ladda-spinner"></span>
+                        <img src="{{ asset('images/pull_datawhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
+                        ดึงข้อมูล</span>
                     </button>  
             </div> 
         </div>
     </div>    
         <div class="row">
             <div class="col-xl-12">
-                <div class="card card_audit_4c">
+                <div class="card card_audit_4c" style="background-color: rgb(239, 247, 235)">
                     <div class="card-body">
                         <div class="row mb-3"> 
                             <div class="col"></div>
                             <div class="col-md-3 text-end">
-                                <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-info cardacc" id="Check_sit">
+                                {{-- <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-info cardacc" id="Check_sit">
                                     <i class="fa-solid fa-user me-2"></i>
                                     ตรวจสอบสิทธิ์
                                 </button>
@@ -113,13 +121,28 @@
                                 <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-danger cardacc Destroystamp" data-url="{{url('account_3013_destroy')}}">
                                     <i class="fa-solid fa-trash-can me-2"></i>
                                     ลบ
+                                </button> --}}
+
+                                <button type="button" class="ladda-button me-2 btn-pill btn btn-info btn-sm input_new Check_sit" data-url="{{url('account_3013_checksit')}}">
+                                    <img src="{{ asset('images/Check_sitwhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
+                                    ตรวจสอบสิทธิ์
                                 </button>
+
+                                <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-primary cardacc Savestamp" data-url="{{url('account_3013_stam')}}">
+                                    <img src="{{ asset('images/Stam_white.png') }}" class="me-2 ms-2" height="18px" width="18px">
+                                    ตั้งลูกหนี้ + ส่งลูกหนี้
+                                </button>
+                                <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-danger cardacc Destroystamp" data-url="{{url('account_3013_destroy')}}">
+                                    <img src="{{ asset('images/removewhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
+                                    ลบ
+                                </button>
+
                             </div>
                         </div>
                         <p class="mb-0">
                             <div class="table-responsive">
                                 <table id="example" class="table table-hover table-sm dt-responsive nowrap" style=" border-spacing: 0; width: 100%;">
-                                    <thead>
+                                    <thead style="border: 1px solid rgb(250, 214, 159);">
                                         <tr>                                          
                                             <th width="5%" class="text-center">ลำดับ</th> 
                                             <th width="5%" class="text-center"><input type="checkbox" class="dcheckbox_" name="stamp" id="stamp"> </th>  
@@ -139,7 +162,7 @@
                                             {{-- <th class="text-center">ส่วนต่าง</th>   --}}
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody style="border: 1px solid rgb(250, 214, 159);">
                                         <?php $i = 1; ?>
                                         @foreach ($acc_debtor as $item) 
                                             <tr id="tr_{{$item->acc_debtor_id}}">                                                  
@@ -358,59 +381,141 @@
                 })
             });
 
-            $('#Check_sit').click(function() {
-                var datepicker = $('#datepicker').val(); 
-                var datepicker2 = $('#datepicker2').val(); 
-                //    alert(datepicker);
-                Swal.fire({
-                        title: 'ต้องการตรวจสอบสอทธิ์ใช่ไหม ?',
-                        text: "You Check Sit Data!",
+            // $('#Check_sit').click(function() {
+            //     var datepicker = $('#datepicker').val(); 
+            //     var datepicker2 = $('#datepicker2').val(); 
+            //     //    alert(datepicker);
+            //     Swal.fire({
+            //             title: 'ต้องการตรวจสอบสอทธิ์ใช่ไหม ?',
+            //             text: "You Check Sit Data!",
+            //             icon: 'warning',
+            //             showCancelButton: true,
+            //             confirmButtonColor: '#3085d6',
+            //             cancelButtonColor: '#d33',
+            //             confirmButtonText: 'Yes, pull it!'
+            //             }).then((result) => {
+            //                 if (result.isConfirmed) {
+            //                     $("#overlay").fadeIn(300);　
+            //                     $("#spinner-div").show(); //Load button clicked show spinner 
+            //                 $.ajax({
+            //                     url: "{{ route('acc.account_3013_checksit') }}",
+            //                     type: "POST",
+            //                     dataType: 'json',
+            //                     data: {
+            //                         datepicker,
+            //                         datepicker2                        
+            //                     },
+            //                     success: function(data) {
+            //                         if (data.status == 200) { 
+            //                             Swal.fire({
+            //                                 title: 'เช็คสิทธิ์สำเร็จ',
+            //                                 text: "You Check sit success",
+            //                                 icon: 'success',
+            //                                 showCancelButton: false,
+            //                                 confirmButtonColor: '#06D177',
+            //                                 confirmButtonText: 'เรียบร้อย'
+            //                             }).then((result) => {
+            //                                 if (result
+            //                                     .isConfirmed) {
+            //                                     console.log(
+            //                                         data);
+            //                                     window.location.reload();
+            //                                     $('#spinner-div').hide();//Request is complete so hide spinner
+            //                                         setTimeout(function(){
+            //                                             $("#overlay").fadeOut(300);
+            //                                         },500);
+            //                                 }
+            //                             })
+            //                         } else {
+                                        
+            //                         }
+
+            //                     },
+            //                 });
+            //             }
+            //     })
+            // });
+
+            $('.Check_sit').click(function() {
+                var allValls = [];
+                $(".sub_chk:checked").each(function () {
+                    allValls.push($(this).attr('data-id'));
+                });
+                if (allValls.length <= 0) {
+                    // alert("SSSS");
+                    Swal.fire({
+                        title: 'คุณยังไม่ได้เลือกรายการ ?',
+                        text: "กรุณาเลือกรายการก่อน",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, pull it!'
+                        }).then((result) => {
+
+                        })
+                } else {
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "ต้องการตรวจสอบสอทธิ์ใช่ไหม!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'You Check Sit Data!.!'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                $("#overlay").fadeIn(300);　
-                                $("#spinner-div").show(); //Load button clicked show spinner 
-                            $.ajax({
-                                url: "{{ route('acc.account_3013_checksit') }}",
-                                type: "POST",
-                                dataType: 'json',
-                                data: {
-                                    datepicker,
-                                    datepicker2                        
-                                },
-                                success: function(data) {
-                                    if (data.status == 200) { 
-                                        Swal.fire({
-                                            title: 'เช็คสิทธิ์สำเร็จ',
-                                            text: "You Check sit success",
-                                            icon: 'success',
-                                            showCancelButton: false,
-                                            confirmButtonColor: '#06D177',
-                                            confirmButtonText: 'เรียบร้อย'
-                                        }).then((result) => {
-                                            if (result
-                                                .isConfirmed) {
-                                                console.log(
-                                                    data);
-                                                window.location.reload();
-                                                $('#spinner-div').hide();//Request is complete so hide spinner
-                                                    setTimeout(function(){
-                                                        $("#overlay").fadeOut(300);
-                                                    },500);
-                                            }
-                                        })
-                                    } else {
-                                        
-                                    }
+                                var check = true;
+                                if (check == true) {
+                                    var join_selected_values = allValls.join(",");
+                                    // alert(join_selected_values);
+                                    $("#overlay").fadeIn(300);　
+                                    $("#spinner").show(); //Load button clicked show spinner
 
-                                },
-                            });
-                        }
-                })
+                                    $.ajax({
+                                        url:$(this).data('url'),
+                                        type: 'POST',
+                                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                        data: 'ids='+join_selected_values,
+                                        success:function(data){
+                                                if (data.status == 200) {
+                                                    $(".sub_chk:checked").each(function () {
+                                                        $(this).parents("tr").remove();
+                                                    });
+                                                    Swal.fire({
+                                                        title: 'เช็คสิทธิ์สำเร็จ',
+                                                        text: "You Check sit success",
+                                                        icon: 'success',
+                                                        showCancelButton: false,
+                                                        confirmButtonColor: '#06D177',
+                                                        confirmButtonText: 'เรียบร้อย'
+                                                    }).then((result) => {
+                                                        if (result
+                                                            .isConfirmed) {
+                                                            console.log(
+                                                                data);
+                                                            window.location.reload();
+                                                            $('#spinner').hide();//Request is complete so hide spinner
+                                                        setTimeout(function(){
+                                                            $("#overlay").fadeOut(300);
+                                                        },500);
+                                                        }
+                                                    })
+                                                } else {
+
+                                                }
+
+                                        }
+                                    });
+                                    $.each(allValls,function (index,value) {
+                                        $('table tr').filter("[data-row-id='"+value+"']").remove();
+                                    });
+                                }
+                            }
+                        })
+
+
+                    }
             });
 
             $('.Destroystamp').on('click', function(e) {

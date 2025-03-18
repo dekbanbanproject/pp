@@ -60,6 +60,8 @@ use App\Models\Ssop_billtran;
 use App\Models\Ssop_billitems;
 use App\Models\D_ssop_main;
 use App\Models\Fdh_sesion;
+use App\Models\Acc_account_total;
+use App\Models\Acc_debtor_log;
 
 use PDF;
 use setasign\Fpdi\Fpdi;
@@ -477,12 +479,24 @@ class Account301Controller extends Controller
     }
     public function account_301_stam(Request $request)
     {
+        $datenow    = date('Y-m-d');
+        $datatime   = date('H:m:s');
+        Acc_debtor_log::insert([
+            'account_code'       => '1102050101.301',
+            'make_gruop'         => 'ตั้งลูกหนี้และส่งลูกหนี้',
+            'date_save'          => $datenow,
+            'date_time'          => $datatime,
+            'user_id'            => Auth::user()->id,
+        ]);
+        $maxnumber = DB::table('acc_debtor_log')->where('account_code','1102050101.301')->where('user_id',Auth::user()->id)->max('acc_debtor_log_id');
+
         $id = $request->ids;
         $iduser = Auth::user()->id;
         $data = Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))->get();
             Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))
                     ->update([
-                        'stamp' => 'Y'
+                         'stamp'       => 'Y',
+                        'send_active' => 'Y'
                     ]);
         foreach ($data as $key => $value) {
                 $date = date('Y-m-d H:m:s');
@@ -519,6 +533,51 @@ class Account301Controller extends Controller
                             'debit_ct_sss'      => $value->debit_ct_sss,
                             'max_debt_amount'   => $value->max_debt_amount,
                             'acc_debtor_userid' => $iduser
+                    ]);
+                }
+
+                $check_total  = Acc_account_total::where('vn', $value->vn)->where('account_code','=','1102050101.301')->count();
+                if ($check_total > 0) {
+                    # code...
+                } else {
+                    Acc_account_total::insert([
+                        'bg_yearnow'         => $value->bg_yearnow,
+                        'vn'                 => $value->vn,
+                        'hn'                 => $value->hn,
+                        'an'                 => $value->an,
+                        'cid'                => $value->cid,
+                        'ptname'             => $value->ptname,
+                        'vstdate'            => $value->vstdate,
+                        'vsttime'            => $value->vsttime,
+                        'hospmain'           => $value->hospmain,
+                        'regdate'            => $value->regdate,
+                        'dchdate'            => $value->dchdate,
+                        'pttype'             => $value->pttype,
+                        'pttype_nhso'        => $value->subinscl,
+                        'hsub'               => $value->hsub,
+                        'acc_code'           => $value->acc_code,
+                        'account_code'       => $value->account_code,
+                        'rw'                 => $value->rw,
+                        'adjrw'              => $value->adjrw,
+                        'total_adjrw_income' => $value->total_adjrw_income,
+                        'debit_drug'         => $value->debit_drug,
+                        'debit_instument'    => $value->debit_instument,
+                        'debit_toa'          => $value->debit_toa,
+                        'debit_refer'        => $value->debit_refer,
+                        'debit_walkin'       => $value->debit_walkin,
+
+                        'debit_imc'          => $value->debit_imc,
+                        'debit_imc_adpcode'  => $value->debit_imc_adpcode,
+                        'debit_thai'         => $value->debit_thai,
+
+                        'income'             => $value->income,
+                        'uc_money'           => $value->uc_money,
+                        'discount_money'     => $value->discount_money,
+                        'rcpt_money'         => $value->rcpt_money,
+                        'debit'              => $value->debit,
+                        'debit_total'        => $value->debit_total,
+                        'acc_debtor_userid'  => $value->acc_debtor_userid,
+                        'acc_debtor_log_id'  => $maxnumber
                     ]);
                 }
 
