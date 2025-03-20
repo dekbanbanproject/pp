@@ -541,6 +541,7 @@ class Account402Controller extends Controller
     {
         $datenow = date('Y-m-d');
         $datatime   = date('H:m:s');
+        $ip = $request->ip();
         $startdate = $request->datepicker;
         $enddate = $request->datepicker2;
         // Acc_opitemrece::truncate();
@@ -691,6 +692,7 @@ class Account402Controller extends Controller
             'date_save'          => $datenow,
             'date_time'          => $datatime,
             'user_id'            => Auth::user()->id,
+            'ip'                 => $ip
         ]);
 
             return response()->json([
@@ -702,12 +704,14 @@ class Account402Controller extends Controller
     {
         $datenow    = date('Y-m-d');
         $datatime   = date('H:m:s');
+        $ip = $request->ip();
         Acc_debtor_log::insert([
             'account_code'       => '1102050101.402',
             'make_gruop'         => 'ตั้งลูกหนี้และส่งลูกหนี้',
             'date_save'          => $datenow,
             'date_time'          => $datatime,
             'user_id'            => Auth::user()->id,
+            'ip'                 => $ip
         ]);
         $maxnumber = DB::table('acc_debtor_log')->where('account_code','1102050101.402')->where('user_id',Auth::user()->id)->max('acc_debtor_log_id');
         $id = $request->ids;

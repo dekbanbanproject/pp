@@ -527,10 +527,8 @@ class CheckupController extends Controller
             $datashow    = DB::table('checkup_report_temp')->where('checkup_report_temp_id',1)->first();
             
             $data_show_sub = DB::connection('mysql10')->select(
-                'SELECT lh.vn , lh.hn ,p.sex ,v.age_y, lo.lab_items_code 
-                            ,ifnull(if(lit.lab_items_name is null,lo.lab_items_name_ref,lit.lab_items_name),lit.lab_items_name) lab_items_name
-                            ,lit.lab_items_display_name , lo.lab_order_result , lo.lab_items_normal_value_ref ,
-                            lo.lab_items_sub_group_code , lh.sub_group_list
+                'SELECT lh.vn , lh.hn ,p.sex ,v.age_y, lo.lab_items_code,ifnull(if(lit.lab_items_name is null,lo.lab_items_name_ref,lit.lab_items_name),lit.lab_items_name) lab_items_name
+                            ,lit.lab_items_display_name ,lo.lab_order_result , lo.lab_items_normal_value_ref,lo.lab_items_sub_group_code , lh.sub_group_list
                             FROM lab_head lh
                             LEFT JOIN lab_order lo ON lo.lab_order_number = lh.lab_order_number
                             LEFT JOIN lab_items li ON li.lab_items_code = lo.lab_items_code
@@ -542,7 +540,7 @@ class CheckupController extends Controller
                             AND lo.lab_order_result IS NOT NULL
                             and lo.lab_order_result <> ""
                             AND lo.lab_items_code not in ("253","259","260","257","523")
-                            order by lo.lab_items_sub_group_code,li.display_order,li.lab_items_name   limit 1
+                            order by lo.lab_items_sub_group_code,li.display_order,li.lab_items_name limit 1
                 ');
 
                 $data_show_subnew = DB::connection('mysql')->select(
@@ -634,81 +632,102 @@ class CheckupController extends Controller
                 $datashow    = DB::table('checkup_report_temp')->where('checkup_report_temp_id',1)->first();
                 $checks    = DB::table('checkup_report_temp')->count();
 
-                $data_show_sub = DB::connection('mysql10')->select(
-                    'SELECT lh.vn, lh.hn, p.sex, v.age_y, lo.lab_items_code, lh.order_date,
-                            COALESCE(lit.lab_items_name, lo.lab_items_name_ref) AS lab_items_name,
-                            lit.lab_items_display_name, lo.lab_order_result, lo.lab_items_normal_value_ref,
-                            lo.lab_items_sub_group_code, lh.sub_group_list
+                $data_show_sub = DB::connection('mysql2')->select(
+                    'SELECT lh.vn, lh.hn, p.sex, v.age_y, lo.lab_items_code, lh.order_date, COALESCE(lit.lab_items_name, lo.lab_items_name_ref) AS lab_items_name,
+                            lit.lab_items_display_name, lo.lab_order_result, lo.lab_items_normal_value_ref, lo.lab_items_sub_group_code, lh.sub_group_list
+                            ,pc.lab_items_normal_value_min,pc.lab_items_normal_value_max
                             FROM lab_head lh
                             LEFT JOIN lab_order lo ON lo.lab_order_number = lh.lab_order_number
                             LEFT JOIN lab_items li ON li.lab_items_code = lo.lab_items_code
                             LEFT JOIN lab_itemsthai lit ON lit.lab_items_code = li.lab_items_code
                             LEFT JOIN patient p ON p.hn = lh.hn
                             LEFT JOIN vn_stat v ON v.vn = lh.vn
+                            INNER JOIN pkbackoffice.checkup_config pc ON pc.lab_items_code = li.lab_items_code AND pc.sex = p.sex
                             WHERE lh.order_date = "'.$datepicker.'"
                             AND lh.hn = "'.$chackup_hn.'" 
                             AND lo.lab_order_result IS NOT NULL
                             AND lo.lab_order_result <> ""
                             AND lo.lab_items_code NOT IN ("253", "259", "260", "257", "523")
+                            GROUP BY li.lab_items_code
                             ORDER BY lo.lab_items_sub_group_code,li.display_order,li.lab_items_name;
 
                 ');
                     // dd($data_show_sub);
                 foreach ($data_show_sub as $key => $value_sub) {
+                    // Checkup_lab::where('vn', $value_sub->vn)->delete();
                     // ตรวจสอบว่ามีข้อมูลใน checkup_lab หรือไม่
                     $checkssub = DB::table('checkup_lab')->where('vn', $value_sub->vn)->where('sex', $value_sub->sex)->where('lab_items_code', $value_sub->lab_items_code)->count();                    
                     if ($checkssub > 0) { 
+                         
                         // ถ้ามีข้อมูลแล้ว อัปเดตข้อมูลเพศ และอายุ
-                        Checkup_lab::where('vn', $value_sub->vn)->update([
-                            'sex'    => $value_sub->sex,
-                            'age_y'  => $value_sub->age_y,
-                        ]);
-                    } else {
-                        // ตรวจสอบว่าค่ารหัสแลปไม่ว่างเปล่า
+                        // Checkup_lab::where('vn', $value_sub->vn)->update([
+                        //     'sex'    => $value_sub->sex,
+                        //     'age_y'  => $value_sub->age_y,
+                        // ]);
 
-                        if ($value_sub->lab_items_code != '' && $value_sub->lab_items_code != '0') {
-                            // dd([
-                            //     'lab_items_code' => $value_sub->lab_items_code,
-                            //     'lab_order_result' => $value_sub->lab_order_result
-                            // ]);
-                            // ดึงค่าปกติจาก checkup_config
-                            
-                            $datashowlab = DB::table('checkup_config')->where('lab_items_code', $value_sub->lab_items_code)->first();
-                                if ($datashowlab && is_numeric($datashowlab->lab_items_normal_value_min) && is_numeric($datashowlab->lab_items_normal_value_max)) {
-                                    $lab_min = floatval($datashowlab->lab_items_normal_value_min);
-                                    $lab_max = floatval($datashowlab->lab_items_normal_value_max);
-                                }
-                            
-                            if ($datashowlab) {
-                                $lab_min = $datashowlab->lab_items_normal_value_min;
-                                $lab_max = $datashowlab->lab_items_normal_value_max;
-                                // ตรวจสอบผลแลปว่าปกติหรือไม่
-                                if ($value_sub->lab_order_result >= $lab_min && $value_sub->lab_order_result <= $lab_max) {
-                                    $lab_order_result_new = "ปกติ";
-                                } else {
-                                    $lab_order_result_new = "ผิดปกติ";
-                                }
-                                } else {
-                                    $lab_order_result_new = $value_sub->lab_order_result;
-                                    }                                       
+                    } else {
+
+                        if ($value_sub->lab_order_result == '-') { 
+                            // แทรกข้อมูลเข้า checkup_lab
+                            Checkup_lab::insert([
+                                'vn'                           => $value_sub->vn,
+                                'hn'                           => $value_sub->hn,
+                                'sex'                          => $value_sub->sex,
+                                'age_y'                        => $value_sub->age_y,
+                                'order_date'                   => $value_sub->order_date,
+                                'lab_items_code'               => $value_sub->lab_items_code,
+                                'lab_items_name'               => $value_sub->lab_items_name,
+                                'lab_items_display_name'       => $value_sub->lab_items_display_name,
+                                'lab_order_result'             => $value_sub->lab_order_result, 
+                                'lab_items_normal_value_ref'   => $value_sub->lab_items_normal_value_ref,
+                                'lab_items_sub_group_code'     => $value_sub->lab_items_sub_group_code,
+                                'sub_group_list'               => $value_sub->sub_group_list,
+                                'lab_order_result_new'         => '',
+                            ]);
+
+                        } else {
+                            // ตรวจสอบว่าค่ารหัสแลปไม่ว่างเปล่า
+                            if ($value_sub->lab_items_code != '' && $value_sub->lab_items_code != '0') {                                   
+                                        // ดึงค่าปกติจาก checkup_config                            
+                                        $datashowlab = DB::table('checkup_config')->where('lab_items_code', $value_sub->lab_items_code)->where('sex', $value_sub->sex)->first();
+
+                                        if ($datashowlab && is_numeric($datashowlab->lab_items_normal_value_min) && is_numeric($datashowlab->lab_items_normal_value_max)) {
+                                            $lab_min = floatval($datashowlab->lab_items_normal_value_min);
+                                            $lab_max = floatval($datashowlab->lab_items_normal_value_max);
+                                        }
+                                
+                                    if ($datashowlab) {
+                                                $lab_min = $datashowlab->lab_items_normal_value_min;
+                                                $lab_max = $datashowlab->lab_items_normal_value_max;
+                                                // ตรวจสอบผลแลปว่าปกติหรือไม่
+                                                if ($value_sub->lab_order_result >= $lab_min && $value_sub->lab_order_result <= $lab_max) {
+                                                    $lab_order_result_new = "ปกติ";
+                                                } else {
+                                                    $lab_order_result_new = "ผิดปกติ";
+                                                }
+                                    } else {
+                                        $lab_order_result_new = $value_sub->lab_order_result;
+                                    }   
+
+                            }                
+                            // แทรกข้อมูลเข้า checkup_lab
+                            Checkup_lab::insert([
+                                'vn'                           => $value_sub->vn,
+                                'hn'                           => $value_sub->hn,
+                                'sex'                          => $value_sub->sex,
+                                'age_y'                        => $value_sub->age_y,
+                                'order_date'                   => $value_sub->order_date,
+                                'lab_items_code'               => $value_sub->lab_items_code,
+                                'lab_items_name'               => $value_sub->lab_items_name,
+                                'lab_items_display_name'       => $value_sub->lab_items_display_name,
+                                'lab_order_result'             => $value_sub->lab_order_result, 
+                                'lab_items_normal_value_ref'   => $value_sub->lab_items_normal_value_ref,
+                                'lab_items_sub_group_code'     => $value_sub->lab_items_sub_group_code,
+                                'sub_group_list'               => $value_sub->sub_group_list,
+                                'lab_order_result_new'         => $lab_order_result_new,
+                            ]);
                         }
-                
-                        // แทรกข้อมูลเข้า checkup_lab
-                        Checkup_lab::insert([
-                            'vn'                           => $value_sub->vn,
-                            'hn'                           => $value_sub->hn,
-                            'sex'                          => $value_sub->sex,
-                            'age_y'                        => $value_sub->age_y,
-                            'order_date'                   => $value_sub->order_date,
-                            'lab_items_code'               => $value_sub->lab_items_code,
-                            'lab_items_name'               => $value_sub->lab_items_name,
-                            'lab_items_display_name'       => $value_sub->lab_items_display_name,
-                            'lab_order_result'             => $value_sub->lab_order_result, 
-                            'lab_items_normal_value_ref'   => $value_sub->lab_items_normal_value_ref,
-                            'lab_items_sub_group_code'     => $value_sub->lab_items_sub_group_code,
-                            'sub_group_list'               => $value_sub->sub_group_list,
-                            'lab_order_result_new'         => $lab_order_result_new,
-                        ]);
+
                     }
                 }
 

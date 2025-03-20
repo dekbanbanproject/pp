@@ -348,14 +348,14 @@
 
         <div class="row">
             <div class="table table-bordered">
-                <table class="table table-sm table-striped table-bordered dt-responsive nowrap myTable" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                <table id="example" class="table table-sm table-striped table-bordered dt-responsive nowrap myTable" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
                         <tr>
-                            <th class="text-center" width="3%" style="background-color: rgb(219, 247, 232)">ลำดับ</th>
-                            <th class="text-center" width="5%" style="background-color: rgb(221, 219, 247)">รายการ</th>
-                            <th class="text-center" width="5%" style="background-color: rgb(199, 224, 252)">ผลตรวจ</th>
+                            <th class="text-center" width="2%" style="background-color: rgb(219, 247, 232)">ลำดับ</th>
+                            <th class="text-center" style="background-color: rgb(221, 219, 247)">รายการ</th>
+                            <th class="text-center" width="7%" style="background-color: rgb(199, 224, 252)">ผลตรวจ</th>
                             <th class="text-center" width="10%" style="background-color: rgb(255, 255, 255)">ค่ามาตรฐาน</th>
-                            <th class="text-center" width="3%" style="background-color: rgb(219, 247, 232)">ผลตรวจ</th>
+                            <th class="text-center" width="7%" style="background-color: rgb(219, 247, 232)">ผลตรวจ</th>
                             {{-- <th class="text-center" width="3%" style="background-color: rgb(252, 182, 182)">ไม่ปกติ</th> --}}
                         </tr>
                     </thead>
@@ -371,10 +371,10 @@
                                     <input type="hidden" name="" id="" value="{{$item_sub->age_y}}">
                                     {{$i}}
                                 </td>
-                                <td class="text-start" width="5%" style="font-size: 14px">{{$item_sub->lab_items_name}}&nbsp;{{$item_sub->lab_items_display_name}}</td>
-                                <td class="text-center" width="5%" style="font-size: 14px">{{$item_sub->lab_order_result}}</td>
-                                <td class="text-center" width="10%" style="font-size: 14px">{{$item_sub->lab_items_normal_value_ref}}</td>
-                                <td class="text-center" width="3%">
+                                <td class="text-start" style="font-size: 14px">{{$item_sub->lab_items_name}}&nbsp;{{$item_sub->lab_items_display_name}}</td>
+                                <td class="text-center" width="7%" style="font-size: 14px">{{$item_sub->lab_order_result}}</td>
+                                <td class="text-start" width="10%" style="font-size: 14px">{{$item_sub->lab_items_normal_value_ref}}</td>
+                                <td class="text-center" width="7%">
                                     @if ($item_sub->lab_items_normal_value_ref == '')
                                             <span class="badge bg-primary" style="font-size: 14px">{{$item_sub->lab_order_result}}</span>
                                         @else

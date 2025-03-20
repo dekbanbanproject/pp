@@ -482,6 +482,7 @@ class Account216Controller extends Controller
         $datatime   = date('H:m:s');
         $startdate = $request->datepicker;
         $enddate = $request->datepicker2;
+        $ip = $request->ip();
         Acc_temp216::truncate();
         $bgs_year      = DB::table('budget_year')->where('years_now','Y')->first();
         $bg_yearnow    = $bgs_year->leave_year_id;
@@ -688,8 +689,7 @@ class Account216Controller extends Controller
         foreach ($acc_debtor_w1 as $key => $value2) {
             if ($value2->debit_refer > 0 ) {
             } else {
-                if ($value2->debit > 0 && $value2->cid != '') {
-                    
+                if ($value2->debit > 0 && $value2->cid != '') {                    
 
                         $check2 = Acc_debtor::where('vn', $value2->vn)->where('account_code', '1102050101.216')->count();
                         if ($check2 > 0) {
@@ -741,6 +741,7 @@ class Account216Controller extends Controller
             'date_save'          => $datenow,
             'date_time'          => $datatime,
             'user_id'            => Auth::user()->id,
+            'ip'                 => $ip
         ]);
  
         return response()->json([
@@ -751,12 +752,14 @@ class Account216Controller extends Controller
     {
         $datenow    = date('Y-m-d');
         $datatime   = date('H:m:s');
+        $ip         = $request->ip();
         Acc_debtor_log::insert([
             'account_code'       => '1102050101.216',
             'make_gruop'         => 'ตั้งลูกหนี้และส่งลูกหนี้',
             'date_save'          => $datenow,
             'date_time'          => $datatime,
             'user_id'            => Auth::user()->id,
+            'ip'                 => $ip
         ]);
         $maxnumber = DB::table('acc_debtor_log')->where('account_code','1102050101.216')->where('user_id',Auth::user()->id)->max('acc_debtor_log_id');
 
