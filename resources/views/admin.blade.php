@@ -980,7 +980,9 @@ $checkup                  = StaticController::checkup($iduser);
                                             <div class="flex-grow-1">
                                                 <p class="text-start font-size-13 mb-2">PK-OFFICE</p>
                                                     <h5 class="text-start mb-2">NURSE</h5>
-                                            </div>
+                                           
+                                           
+                                                </div>
                                             <div class="avatar ms-2">
                                                     <button
                                                         class="btn-icon btn-shadow btn-dashed btn btn-outline-info avatar-title bg-white text-primary rounded-pill">
