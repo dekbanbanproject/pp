@@ -118,8 +118,6 @@ use App\Models\Fdh_irf;
 use App\Models\Acc_ofc_dateconfig;
 use App\Models\Acc_ucep_24;
 use App\Models\Acc_db_202;
-use App\Models\Acc_account_total;
-use App\Models\Acc_debtor_log;
 
 use PDF;
 use setasign\Fpdi\Fpdi;
@@ -659,9 +657,6 @@ class Account202Controller extends Controller
      public function account_pkucs202_pulldata(Request $request)
      {
         $date              = date('Y-m-d H:i:s');
-        $datenow           = date('Y-m-d');
-        $datatime          = date('H:m:s');
-        $ip                = $request->ip();
         $startdate         = $request->datepicker;
         $enddate           = $request->datepicker2;
         $data_main = DB::connection('mysql2')->select('
@@ -836,14 +831,42 @@ class Account202Controller extends Controller
                 AND ipt.pttype IN(SELECT pttype FROM pkbackoffice.acc_setpang_type WHERE pang ="1102050101.202" AND opdipd ="IPD" AND pttype <>"")
                 GROUP BY a.an
         ');
-          
+        // ,(
+        //     SELECT SUM(o.sum_price) as ucepprice
+        //             FROM ipt i
+        //             LEFT JOIN opitemrece o on i.an = o.an
+        //             LEFT JOIN ovst a on a.an = o.an
+        //             left JOIN er_regist e on e.vn = i.vn
+        //             LEFT JOIN ipt_pttype ii on ii.an = i.an
+        //             LEFT JOIN pttype p on p.pttype = ii.pttype
+        //             LEFT JOIN s_drugitems n on n.icode = o.icode
+        //             LEFT JOIN patient pt on pt.hn = a.hn
+        //             WHERE i.dchdate BETWEEN "' . $startdate . '" AND "' . $enddate . '"
+        //             AND i.an = ip.an
+        //             AND o.income NOT IN ("02")
+        //             AND op.icode NOT IN ("3002895","3002896","3002897","3002898","3002909","3002910","3002911","3002912","3002913","3002914","3002915","3002916","3002918","1560016","1540073","1530005","3001412","3001417","3010829","3011068","3010864","3010861","3010862","3010863","3011069","3011012","3011070")
+        //             AND o.an is not null
+        //             AND o.paidst ="02"
+        //             AND p.hipdata_code ="ucs"
+        //             AND DATEDIFF(o.rxdate,a.vstdate)<="1"
+        //             AND hour(TIMEDIFF(concat(a.vstdate," ",a.vsttime),concat(o.rxdate," ",o.rxtime))) <="24"
+        //             AND e.er_emergency_type in("1","2")
+        // ) as debit_ucep
+
+        // ,CASE
+        // WHEN  ipt.pttype_number ="2" THEN a.income - a.rcpt_money - a.discount_money - ipt.max_debt_amount
+        // ELSE a.income - a.rcpt_money - a.discount_money
+        // END as debit
+
+        // IN("3010894","3010941","3010942","3010943","3011044","3011045","3011046","3010817","3010818","3010867","3010819","3010820","3010871","3009720","3010895","3010065","3010581")
         $bgs_year      = DB::table('budget_year')->where('years_now','Y')->first();
         $bg_yearnow    = $bgs_year->leave_year_id;
 
          foreach ($acc_debtor as $key => $value) {
-           
+            // $count_pttype = DB::connection('mysql2')->select('SELECT COUNT(an) as C_an FROM  ipt_pttype WHERE an = "'.$value->an.'" ');
             $count_pttype = DB::connection('mysql2')->table('ipt_pttype')->where('an', $value->an)->count();
-           
+            // $total_ = $value->debit-$value->debit_drug-$value->debit_instument-$value->debit_toa-$value->debit_refer-$value->debit_ucep;
+            // dd($count_pttype);
             if ($count_pttype > 1) {
                 $check = Acc_debtor::where('an', $value->an)->where('account_code', '1102050101.202')->count();
                     if ($check == 0) {
@@ -980,18 +1003,32 @@ class Account202Controller extends Controller
                 }
             }
          }
-         
+        //  $acc_ucep = DB::connection('mysql')->select('SELECT an,sum_price_ipd,sum_price_ucep_all FROM acc_ucep_24');
+        //  foreach ($acc_ucep as $key => $val_up) {
+        //     $count_u = Acc_debtor::where('account_code', '1102050101.202')->where('an', $val_up->an)->count();
+        //     if ($count_u > 0) {
+        //         Acc_debtor::where('an',$val_up->an)->where('account_code', '1102050101.202')->update([
+        //             'debit_total'    => $val_up->sum_price_ipd - $val_up->sum_price_ucep_all,
+        //             'debit_ucep'     => $val_up->sum_price_ucep_all,
+        //         ]);
+        //     }
+        //  }
+        // $acc_norget = DB::connection('mysql')->select('
+        //     SELECT an,debit,debit_instument,debit_drug,debit_toa,debit_refer,debit_ucep,nonpay
+        //     FROM acc_debtor
+        //     WHERE dchdate BETWEEN "' . $startdate . '" AND "' . $enddate . '"
+        //     AND account_code = "1102050101.202"
+        //     AND (debit_ucep IS NULL OR debit_ucep = "")
+        // ');
+        // foreach ($acc_norget as $key => $value_get) {
+        //             Acc_debtor::where('an',$value_get->an)->where('account_code', '1102050101.202')->update([
+        //                 'debit_total'    => (($value_get->debit)- ($value_get->debit_instument+$value_get->debit_drug + $value_get->debit_toa)) - ($value_get->debit_refer)+($value_get->nonpay),
+        //                 'debit_cr'       => ($value_get->debit_instument + $value_get->debit_drug) + ($value_get->debit_toa + $value_get->debit_refer),
+        //             ]);
+        //             Acc_debtor::where('an',$value_get->an)->where('debit_total', '<', 1)->delete();
+        // }
+        // $deleted = DB::table('users')->where('votes', '>', 100)->delete();
         Acc_debtor::where('account_code', '1102050101.202')->where('debit_total', '<', 1)->delete();
-
-        Acc_debtor_log::insert([
-            'account_code'       => '1102050101.402',
-            'make_gruop'         => 'ดึงลูกหนี้',
-            'date_save'          => $datenow,
-            'date_time'          => $datatime,
-            'user_id'            => Auth::user()->id,
-            'ip'                 => $ip
-        ]);
-
         return response()->json([
 
             'status'    => '200'
@@ -1138,7 +1175,11 @@ class Account202Controller extends Controller
          $date = date('Y-m-d');
 
          $data_sitss = DB::connection('mysql')->select('SELECT vn,an,cid,vstdate,dchdate FROM acc_debtor WHERE account_code="1102050101.202" AND stamp = "N" GROUP BY an');
-       
+        //  AND subinscl IS NULL
+            //  LIMIT 30
+         // WHERE vstdate = CURDATE()
+         // BETWEEN "2024-02-03" AND "2024-02-15"
+         // $token_data = DB::connection('mysql')->select('SELECT cid,token FROM ssop_token');
          $token_data = DB::connection('mysql10')->select('SELECT * FROM nhso_token ORDER BY update_datetime desc limit 1');
          foreach ($token_data as $key => $value) {
              $cid_    = $value->cid;
@@ -1148,14 +1189,17 @@ class Account202Controller extends Controller
              $pids = $item->cid;
              $vn   = $item->vn;
              $an   = $item->an;
-               
+                 // $token_data = DB::connection('mysql10')->select('SELECT cid,token FROM hos.nhso_token where token <> ""');
+                 // foreach ($token_data as $key => $value) {
                      $client = new SoapClient("http://ucws.nhso.go.th/ucwstokenp1/UCWSTokenP1?wsdl",
                          array("uri" => 'http://ucws.nhso.go.th/ucwstokenp1/UCWSTokenP1?xsd=1',"trace" => 1,"exceptions" => 0,"cache_wsdl" => 0)
                          );
                          $params = array(
                              'sequence' => array(
                                  "user_person_id"   => "$cid_",
-                                 "smctoken"         => "$token_", 
+                                 "smctoken"         => "$token_",
+                                 // "user_person_id" => "$value->cid",
+                                 // "smctoken"       => "$value->token",
                                  "person_id"        => "$pids"
                          )
                      );
@@ -1219,7 +1263,42 @@ class Account202Controller extends Controller
         $data_year         = DB::table('budget_year')->where('leave_year_id',$bdy)->first();
         $startdate         = $data_year->date_begin;
         $enddate           = $data_year->date_end;
- 
+
+        // Acc_db_202::truncate();
+        // $acc_tongtung = DB::connection('mysql')->select('
+        //         SELECT day(a.dchdate) as days,month(a.dchdate) as months,year(a.dchdate) as years,l.MONTH_NAME
+        //         ,count(distinct a.an) as an_tongtung
+        //         ,sum(a.debit_total) as debit_total
+        //         FROM acc_debtor a
+        //         LEFT OUTER JOIN leave_month l on l.MONTH_ID = month(a.dchdate)
+        //         WHERE a.dchdate BETWEEN "' . $startdate . '" AND "' . $enddate . '"
+        //         AND account_code = "1102050101.202"
+        //         GROUP BY days,months,years
+        //         order by a.dchdate desc
+        // ');
+        // foreach ($acc_tongtung as $key => $value_t) {
+        //     $count_t = Acc_db_202::where('days',$value_t->days)->where('months',$value_t->months)->where('years',$value_t->years)->count();
+        //     if ($count_t > 0) {
+        //         Acc_db_202::where('days',$value_t->days)->where('months',$value_t->months)->where('years',$value_t->years)->update([
+        //             'count_tongtung_an'   => $value_t->an_tongtung,
+        //             'debit_tontung'       => $value_t->debit_total,
+        //             'user_id'             => $iduser,
+        //             'last_update'         => $datetime,
+        //         ]);
+        //     } else {
+        //         Acc_db_202::insert([
+        //             'days'                => $value_t->days,
+        //             'months'              => $value_t->months,
+        //             'years'               => $value_t->years,
+        //             'MONTH_NAME'          => $value_t->MONTH_NAME,
+        //             'count_tongtung_an'   => $value_t->an_tongtung,
+        //             'debit_tontung'       => $value_t->debit_total,
+        //             'user_id'             => $iduser,
+        //             'last_update'         => $datetime,
+        //         ]);
+        //     }
+        // }
+
         $acc_tung = DB::connection('mysql')->select('
                 SELECT day(a.dchdate) as days,month(a.dchdate) as months,year(a.dchdate) as years,l.MONTH_NAME
                 ,count(distinct a.an) as an_tung
@@ -1284,7 +1363,21 @@ class Account202Controller extends Controller
          $date              = date('Y-m-d H:i:s');
          $startdate         = $request->datepicker;
          $enddate           = $request->datepicker2;
-          
+        //  $now_timestamp     = strtotime(date('Y-m-d H:i:s'));
+        //  $now_timestamp     = strtotime(date('2023-09-25 18:19:00'));
+        //  $diff_timestamp    = $now_timestamp - strtotime($date);
+        //  if ($diff_timestamp < (86400 * 24)) {
+        //      $data_ = DB::connection('mysql2')->select('
+        //                 SELECT SUM(op.sum_price) as sum_price
+        //                 FROM ipt i
+        //                 LEFT JOIN opitemrece op on i.an = op.an
+        //                 WHERE i.dchdate BETWEEN "'.$startdate.'" and "'.$enddate.'"
+        //     ');
+        //  } else {
+        //     # code...
+        //  }
+
+        // dd($diff_timestamp);
         $data_ = DB::connection('mysql2')->select('
                         SELECT i.vn,i.an,o.vstdate,i.dchdate,op.rxdate,op.rxtime
                         FROM ipt i
@@ -1675,10 +1768,10 @@ class Account202Controller extends Controller
              WHERE month(dchdate) = "'.$months.'" and year(dchdate) = "'.$year.'"
              GROUP BY an
          ');
-            //  AND stamp = "Y"
-            // SELECT *,au.subinscl  from acc_1102050101_202 a
-            //     LEFT JOIN acc_debtor au ON au.an = a.an
-            //     WHERE month(a.dchdate) = "'.$months.'" and year(a.dchdate) = "'.$year.'";
+        //  AND stamp = "Y"
+         // SELECT *,au.subinscl  from acc_1102050101_202 a
+         //     LEFT JOIN acc_debtor au ON au.an = a.an
+         //     WHERE month(a.dchdate) = "'.$months.'" and year(a.dchdate) = "'.$year.'";
 
          return view('account_202.account_pkucs202_detail', $data, [
              'startdate'     =>     $startdate,
@@ -1701,7 +1794,10 @@ class Account202Controller extends Controller
              WHERE dchdate BETWEEN "'.$startdate.'" AND  "'.$enddate.'"
 
          ');
-        
+         // SELECT *,au.subinscl  from acc_1102050101_202 a
+         //     LEFT JOIN acc_debtor au ON au.an = a.an
+         //     WHERE month(a.dchdate) = "'.$months.'" and year(a.dchdate) = "'.$year.'";
+
          return view('account_202.account_pkucs202_detail_date', $data, [
              'startdate'     =>     $startdate,
              'enddate'       =>     $enddate,
@@ -1712,27 +1808,14 @@ class Account202Controller extends Controller
      }
      public function account_pkucs202_stam(Request $request)
      {
-        $datenow    = date('Y-m-d');
-        $datatime   = date('H:m:s');
-        $ip = $request->ip();
-        Acc_debtor_log::insert([
-            'account_code'       => '1102050101.402',
-            'make_gruop'         => 'ตั้งลูกหนี้และส่งลูกหนี้',
-            'date_save'          => $datenow,
-            'date_time'          => $datatime,
-            'user_id'            => Auth::user()->id,
-            'ip'                 => $ip
-        ]);
-        $maxnumber = DB::table('acc_debtor_log')->where('account_code','1102050101.202')->where('user_id',Auth::user()->id)->max('acc_debtor_log_id');
-         $id       = $request->ids;
-         $iduser   = Auth::user()->id;
-         $data     = Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))->get();
+         $id = $request->ids;
+         $iduser = Auth::user()->id;
+         $data = Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))->get();
 
              Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))
-                ->update([
-                    'stamp'       => 'Y',
-                    'send_active' => 'Y'
-                ]);
+                     ->update([
+                         'stamp' => 'Y'
+                     ]);
 
          foreach ($data as $key => $value) {
                  $date = date('Y-m-d H:m:s');
@@ -1777,50 +1860,33 @@ class Account202Controller extends Controller
                  }
 
 
-                $check_total  = Acc_account_total::where('vn', $value->vn)->where('account_code','=','1102050101.202')->count();
-                if ($check_total > 0) {
-                    # code...
-                } else {
-                    Acc_account_total::insert([
-                        'bg_yearnow'         => $value->bg_yearnow,
-                        'vn'                 => $value->vn,
-                        'hn'                 => $value->hn,
-                        'an'                 => $value->an,
-                        'cid'                => $value->cid,
-                        'ptname'             => $value->ptname,
-                        'vstdate'            => $value->vstdate,
-                        'vsttime'            => $value->vsttime,
-                        'hospmain'           => $value->hospmain,
-                        'regdate'            => $value->regdate,
-                        'dchdate'            => $value->dchdate,
-                        'pttype'             => $value->pttype,
-                        'pttype_nhso'        => $value->subinscl,
-                        'hsub'               => $value->hsub,
-                        'acc_code'           => $value->acc_code,
-                        'account_code'       => $value->account_code,
-                        'rw'                 => $value->rw,
-                        'adjrw'              => $value->adjrw,
-                        'total_adjrw_income' => $value->total_adjrw_income,
-                        'debit_drug'         => $value->debit_drug,
-                        'debit_instument'    => $value->debit_instument,
-                        'debit_toa'          => $value->debit_toa,
-                        'debit_refer'        => $value->debit_refer,
-                        'debit_walkin'       => $value->debit_walkin,
-                        'debit_imc'          => $value->debit_imc,
-                        'debit_imc_adpcode'  => $value->debit_imc_adpcode,
-                        'debit_thai'         => $value->debit_thai,
-                        'income'             => $value->income,
-                        'uc_money'           => $value->uc_money,
-                        'discount_money'     => $value->discount_money,
-                        'rcpt_money'         => $value->rcpt_money,
-                        'debit'              => $value->debit,
-                        'debit_total'        => $value->debit_total,
-                        'acc_debtor_userid'  => $value->acc_debtor_userid,
-                        'acc_debtor_log_id'  => $maxnumber
-                    ]);
-                }
- 
-                    
+                    //  $acc_opitemrece_ = DB::connection('mysql')->select('
+                    //          SELECT a.stamp,ao.an,ao.vn,ao.hn,ao.vstdate,ao.pttype,ao.paidst,ao.finance_number,ao.income,ao.icode,ao.name as dname,ao.qty,ao.unitprice,ao.cost,ao.discount,ao.sum_price
+                    //          FROM acc_opitemrece ao
+                    //          LEFT JOIN acc_debtor a ON ao.an = a.an
+                    //          WHERE a.account_code ="1102050101.202" AND a.stamp ="Y"
+                    //          AND ao.an ="'.$value->an.'"
+                    //  ');
+                    //  foreach ($acc_opitemrece_ as $va2) {
+                    //      Acc_opitemrece_stm::insert([
+                    //          'hn'                 => $va2->hn,
+                    //          'an'                 => $va2->an,
+                    //          'vn'                 => $va2->vn,
+                    //          'vstdate'            => $va2->vstdate,
+                    //          'pttype'             => $va2->pttype,
+                    //          'paidst'             => $va2->paidst,
+                    //          'finance_number'     => $va2->finance_number,
+                    //          'income'             => $va2->income,
+                    //          'icode'              => $va2->icode,
+                    //          'name'               => $va2->dname,
+                    //          'qty'                => $va2->qty,
+                    //          'cost'               => $va2->cost,
+                    //          'unitprice'          => $va2->unitprice,
+                    //          'discount'           => $va2->discount,
+                    //          'sum_price'          => $va2->sum_price
+                    //      ]);
+
+                    //  }
          }
 
 
@@ -1844,13 +1910,38 @@ class Account202Controller extends Controller
                 AND a.stm_money IS NOT NULL
                 GROUP BY a.an
          ');
-         
+        //  ,s.dmis_money2,s.total_approve,s.inst,s.hc,s.hc_drug,s.ae,s.ae_drug,s.ip_paytrue,s.STMdoc
+        //  INNER JOIN acc_stm_ucs s ON s.an = a.an AND s.ip_paytrue >= "0.00"
+        //  AND s.rep IS NOT NULL
+        //  $sum_money_ = DB::connection('mysql')->select('
+        //     SELECT SUM(a.debit_total) as total
+        //     from acc_1102050101_202 a
+        //     LEFT JOIN acc_stm_ucs au ON au.an = a.an
+        //     WHERE month(a.dchdate) = "'.$months.'" and year(a.dchdate) = "'.$year.'"
+        //     AND au.rep IS NOT NULL;
+        // ');
+        // foreach ($sum_money_ as $key => $value) {
+        //     $sum_debit_total = $value->total;
+        // }
+        //  $sum_stm_ = DB::connection('mysql')->select('
+        //     SELECT SUM(au.inst) as stmtotal
+        //     from acc_1102050101_202 a
+        //     LEFT JOIN acc_stm_ucs au ON au.an = a.an
+        //     WHERE month(a.dchdate) = "'.$months.'" and year(a.dchdate) = "'.$year.'"
+        //     AND au.rep IS NOT NULL;
+        // ');
+        // foreach ($sum_stm_ as $key => $value) {
+        //     $sum_stm_total = $value->stmtotal;
+        // }
+
          return view('account_202.account_pkucs202_stm', $data, [
              'startdate'         =>     $startdate,
              'enddate'           =>     $enddate,
              'datashow'          =>     $datashow,
              'months'            =>     $months,
-             'year'              =>     $year, 
+             'year'              =>     $year,
+            //  'sum_debit_total'   =>     $sum_debit_total,
+            //  'sum_stm_total'     =>     $sum_stm_total
          ]);
      }
      public function account_pkucs202_stm_date(Request $request,$startdate,$enddate)
@@ -1891,13 +1982,45 @@ class Account202Controller extends Controller
                 AND a.stm_money IS NULL
                 GROUP BY a.an
              ');
- 
+
+            //  SELECT au.tranid,a.vn,a.an,a.hn,a.cid,a.ptname,a.vstdate,a.dchdate,a.debit_total,au.dmis_money2,au.total_approve,a.income_group,au.inst,au.ip_paytrue,a.adjrw,a.total_adjrw_income
+            //  from acc_1102050101_202 a
+            //  LEFT JOIN acc_stm_ucs au ON au.an = a.an
+            //  WHERE month(a.dchdate) = "'.$months.'" and year(a.dchdate) = "'.$year.'"
+            //  AND (au.rep IS NULL OR au.ip_paytrue = "0.00")
+            //  GROUP BY a.an
+            //  AND au.rep IS NULL
+             // SELECT vn,an,hn,cid,ptname,dchdate,income_group,debit_total
+             // ,inst
+             // FROM acc_1102050101_202
+             // WHERE status ="N"
+            // $sum_money_ = DB::connection('mysql')->select('
+            //     SELECT SUM(a.debit_total) as total
+            //     from acc_1102050101_202 a
+            //     LEFT JOIN acc_stm_ucs au ON au.an = a.an
+            //     WHERE month(a.dchdate) = "'.$months.'" and year(a.dchdate) = "'.$year.'" AND au.rep IS NULL;
+            // ');
+            // foreach ($sum_money_ as $key => $value) {
+            //     $sum_debit_total = $value->total;
+            // }
+            // $sum_stm_ = DB::connection('mysql')->select('
+            //     SELECT SUM(au.inst) as stmtotal
+            //     from acc_1102050101_202 a
+            //     LEFT JOIN acc_stm_ucs au ON au.an = a.an
+            //     WHERE month(a.dchdate) = "'.$months.'" and year(a.dchdate) = "'.$year.'" AND au.rep IS NULL;
+            // ');
+            // foreach ($sum_stm_ as $key => $value) {
+            //     $sum_stm_total = $value->stmtotal;
+            // }
+
          return view('account_202.account_pkucs202_stmnull', $data, [
              'startdate'         =>     $startdate,
              'enddate'           =>     $enddate,
              'data'              =>     $data,
              'months'            =>     $months,
-             'year'              =>     $year, 
+             'year'              =>     $year,
+            //  'sum_debit_total'   =>     $sum_debit_total,
+            //  'sum_stm_total'     =>     $sum_stm_total
          ]);
      }
      public function account_pkucs202_stmnull_date(Request $request,$startdate,$enddate)

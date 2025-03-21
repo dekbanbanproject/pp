@@ -478,11 +478,12 @@ class Account216Controller extends Controller
     }
     public function account_pkucs216_pulldata(Request $request)
     { 
-        $datenow    = date('Y-m-d');
-        $datatime   = date('H:m:s');
-        $startdate = $request->datepicker;
-        $enddate = $request->datepicker2;
-        $ip = $request->ip();
+        $datenow     = date('Y-m-d');
+        $datatime    = date('H:m:s');
+        $startdate   = $request->datepicker;
+        $enddate     = $request->datepicker2;
+        $ip          = $request->ip();
+        $iduser      = Auth::user()->id;
         Acc_temp216::truncate();
         $bgs_year      = DB::table('budget_year')->where('years_now','Y')->first();
         $bg_yearnow    = $bgs_year->leave_year_id;
@@ -740,7 +741,7 @@ class Account216Controller extends Controller
             'make_gruop'         => 'ดึงลูกหนี้',
             'date_save'          => $datenow,
             'date_time'          => $datatime,
-            'user_id'            => Auth::user()->id,
+            'user_id'            => $iduser ,
             'ip'                 => $ip
         ]);
  
@@ -753,18 +754,19 @@ class Account216Controller extends Controller
         $datenow    = date('Y-m-d');
         $datatime   = date('H:m:s');
         $ip         = $request->ip();
+        $iduser     = Auth::user()->id;
         Acc_debtor_log::insert([
             'account_code'       => '1102050101.216',
             'make_gruop'         => 'ตั้งลูกหนี้และส่งลูกหนี้',
             'date_save'          => $datenow,
             'date_time'          => $datatime,
-            'user_id'            => Auth::user()->id,
+            'user_id'            => $iduser,
             'ip'                 => $ip
         ]);
         $maxnumber = DB::table('acc_debtor_log')->where('account_code','1102050101.216')->where('user_id',Auth::user()->id)->max('acc_debtor_log_id');
 
         $id = $request->ids;
-        $iduser = Auth::user()->id;
+    
         // Acc_1102050101_217_stam::truncate();
         $data = Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))->get();
             Acc_debtor::whereIn('acc_debtor_id',explode(",",$id))

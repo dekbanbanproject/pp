@@ -235,25 +235,25 @@
                                                 <td class="text-center" width="3%">
                                                     @if ($item->stamp =='N')
                                                         {{-- <span class="bg-danger badge me-2">{{ $item->stamp }}</span> --}}
-                                                        <img src="{{ asset('images/Cancel_new2.png') }}" height="23px" width="23px">
+                                                        <img src="{{ asset('images/Cancel_new2.png') }}" height="17px" width="17px">
                                                     @else
-                                                        <img src="{{ asset('images/check_trueinfo3.png') }}" height="23px" width="23px">
+                                                        <img src="{{ asset('images/check_trueinfo3.png') }}" height="17px" width="17px">
                                                         {{-- <span class="bg-success badge me-2">{{ $item->stamp }}</span> --}}
                                                     @endif
                                                 </td>
                                                 <td class="text-center" width="3%">
                                                     @if ($item->send_active =='N') 
-                                                        <img src="{{ asset('images/Cancel_new2.png') }}" height="20px" width="20px">
+                                                        <img src="{{ asset('images/Cancel_new2.png') }}" height="17px" width="17px">
                                                     @else
-                                                    <img src="{{ asset('images/check_trueinfo3.png') }}" height="20px" width="20px"> 
+                                                    <img src="{{ asset('images/check_trueinfo3.png') }}" height="17px" width="17px"> 
                                                     @endif
                                                 </td>
                                                 <td class="text-center" width="3%">
                                                     @if ($item->active_claim =='N')
                                                         {{-- <span class="bg-danger badge me-2">{{ $item->active_claim }}</span> --}}
-                                                        <img src="{{ asset('images/Cancel_new2.png') }}" height="23px" width="23px">
+                                                        <img src="{{ asset('images/Cancel_new2.png') }}" height="17px" width="17px">
                                                     @else
-                                                        <img src="{{ asset('images/check_trueinfo3.png') }}" height="23px" width="23px">
+                                                        <img src="{{ asset('images/check_trueinfo3.png') }}" height="17px" width="17px">
                                                         {{-- <span class="bg-success badge me-2">{{ $item->active_claim }}</span> --}}
                                                     @endif
                                                 </td>

@@ -101,12 +101,7 @@
                         <span class="ladda-label">
                             <img src="{{ asset('images/pull_datawhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
                             ดึงข้อมูล</span>
-                    </button>
-                        {{-- <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-primary cardacc" data-style="expand-left" id="Pulldata">
-                            <span class="ladda-label"> <i class="fa-solid fa-file-circle-plus text-white me-2"></i>ดึงข้อมูล</span>
-                            <span class="ladda-spinner"></span>
-                        </button> --}}
-
+                    </button> 
                 </div>
             </div>
         </div>
@@ -114,7 +109,7 @@
 
         <div class="row ">
             <div class="col-xl-12">
-                <div class="card card_audit_4c" style="background-color: rgb(246, 235, 247)">
+                <div class="card card_audit_4c" style="background-color: rgb(239, 247, 235)">
                     <div class="card-body ">
 
                         <div class="row mb-3">
@@ -146,15 +141,14 @@
                               </div>
 
                               <div class="col"></div>
-                            <div class="col-md-3 text-end">
-                                {{-- <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-info cardacc" id="Check_sitipd"> --}}
+                            <div class="col-md-3 text-end"> 
                                     <button type="button" class="ladda-button me-2 btn-pill btn btn-info btn-sm input_new Check_sit" data-url="{{url('account_202_checksit')}}">
                                     <img src="{{ asset('images/Check_sitwhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
                                     ตรวจสอบสิทธิ์
                                 </button>
                                 <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-primary cardacc Savestamp" data-url="{{url('account_pkucs202_stam')}}">
                                     <img src="{{ asset('images/Stam_white.png') }}" class="me-2 ms-2" height="18px" width="18px">
-                                    ตั้งลูกหนี้
+                                    ตั้งลูกหนี้ + ส่งลูกหนี้
                                 </button>
                                 <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-danger cardacc Destroystamp" data-url="{{url('account_202_destroy')}}">
                                     <img src="{{ asset('images/removewhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
@@ -168,96 +162,100 @@
                                 {{-- <table id="example" class="table table-hover table-sm dt-responsive nowrap" style=" border-spacing: 0; width: 100%;"> --}}
                                     {{-- <table id="scroll-vertical-datatable" class="table table-sm table-striped dt-responsive nowrap w-100"> --}}
                                         <table id="example" class="table table-sm table-striped table-sm dt-responsive nowrap" style=" border-spacing: 0; width: 100%;">
-                                        <thead>
-                                        <tr>
-                                            <th width="5%" class="text-center">ลำดับ</th>
-                                            <th width="5%" class="text-center"><input type="checkbox" class="dcheckbox_" name="stamp" id="stamp"> </th>
-                                            <th class="text-center">ตั้งลูกหนี้</th>
-                                            <th class="text-center">
-                                                <span class="bg-success badge">{{ $count_claim }}</span> เคลม
-                                                <span class="bg-danger badge">{{ $count_noclaim }}</span>
-                                            </th>
-                                            <th class="text-center" style="background-color: #fad6b8">pdx</th>
-                                            <th class="text-center">an</th>
-                                            <th class="text-center" >hn</th>
-                                            <th class="text-center">ptname</th>
-                                            <th class="text-center">dchdate</th>
-                                            <th class="text-center">pttype</th>
-                                            <th class="text-center">spsch</th>
-                                            <th class="text-center">adjrw</th>
-                                            <th class="text-center">income</th>
-                                            <th class="text-center">ชำระแล้ว</th>
-                                            <th class="text-center">ucep</th>
-                                            <th class="text-center">ลูกหนี้/202</th>
-                                            <th class="text-center">ins All</th>
-                                            <th class="text-center">ins เลิกจ่าย</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php $i = 1; ?>
-                                        @foreach ($acc_debtor as $item)
-                                            <tr id="tr_{{$item->acc_debtor_id}}">
-                                                <td class="text-center" width="5%">{{ $i++ }}</td>
-                                                {{-- @if ($item->debit_total == '')
-                                                    <td class="text-center" width="5%">
-                                                        <input class="form-check-input" type="checkbox" id="flexCheckDisabled" disabled>
-                                                    </td>
-                                                @else
-                                                    <td class="text-center" width="5%"><input type="checkbox" class="sub_chk dcheckbox_" data-id="{{$item->acc_debtor_id}}"> </td>
-                                                @endif     --}}
-                                                @if ($activeclaim == 'Y')
-                                                    @if ($item->debit_total == '' || $item->pdx =='')
-                                                        <td class="text-center" width="3%">
-                                                            <input class="form-check-input" type="checkbox" id="flexCheckDisabled" disabled>
-                                                        </td>
-                                                    @else
-                                                        <td class="text-center" width="3%"><input type="checkbox" class="dcheckbox_ sub_chk" data-id="{{$item->acc_debtor_id}}"> </td>
-                                                    @endif
-                                                @else
-                                                    <td class="text-center" width="3%"><input type="checkbox" class="dcheckbox_ sub_chk" data-id="{{$item->acc_debtor_id}}"> </td>
-                                                @endif
-                                                <td class="text-center" width="3%">
-                                                    @if ($item->stamp =='N')
-                                                        <span class="bg-danger badge me-2">{{ $item->stamp }}</span>
-                                                    @else
-                                                        <span class="bg-success badge me-2">{{ $item->stamp }}</span>
-                                                    @endif
-                                                </td>
-                                                <td class="text-center" width="5%">
-                                                    @if ($item->active_claim =='N')
-                                                        <span class="bg-danger badge me-2">{{ $item->active_claim }}</span>
-                                                    @else
-                                                        <span class="bg-success badge me-2">{{ $item->active_claim }}</span>
-                                                    @endif
-                                                </td>
-                                                <td class="text-start" width="3%">
-                                                    @if ($item->pdx != NULL)
-                                                        <span class="bg-info badge">{{ $item->pdx }}</span>
-                                                    @else
-                                                        <span class="bg-warning badge">-</span>
-                                                    @endif
-                                                </td>
-                                                <td class="text-center" width="5%">{{ $item->an }}</td>
-                                                <td class="text-center" width="5%">{{ $item->hn }}</td>
-                                                <td class="text-start" >{{ $item->ptname }}</td>
-                                                <td class="text-center" width="7%">{{ $item->dchdate }}</td>
-                                                <td class="text-center" style="color:rgb(73, 147, 231)" width="5%">{{ $item->pttype }}</td>
-                                                <td class="text-center" style="color:rgb(216, 95, 14)" width="5%">{{ $item->subinscl }}</td>
-                                                <td class="text-center" width="5%">{{ $item->adjrw }}</td>
-                                                <td class="text-end" width="5%">{{ number_format($item->income, 2) }}</td>
-                                                <td class="text-end" width="5%">{{ number_format($item->rcpt_money, 2) }}</td>
-                                                <td class="text-end" width="5%">{{ number_format($item->debit_ucep, 2) }}</td>
-                                                <td class="text-end" width="5%">{{ number_format($item->debit_total, 2) }}</td>
-                                                <td class="text-end" width="5%">{{ number_format($item->nonpay, 2) }}</td>
-                                                <td class="text-end" width="5%">{{ number_format($item->debit_instument, 2) }}</td>
-                                                {{-- <td class="text-end" width="7%">{{ number_format($item->debit_drug, 2) }}</td>  --}}
-                                                {{-- <td class="text-end" width="7%">{{ number_format($item->debit_toa, 2) }}</td>  --}}
-                                                {{-- <td class="text-end" width="7%">{{ number_format($item->debit_refer, 2) }}</td>   --}}
-                                                {{-- <td class="text-end" width="7%">{{ number_format($item->debit_ucep, 2) }}</td>  --}}
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                                <thead style="border: 1px solid rgb(250, 214, 159);">
+                                                    <tr>
+                                                        <th width="2%" class="text-center">ลำดับ</th>
+                                                        <th width="5%" class="text-center"><input type="checkbox" class="dcheckbox_" name="stamp" id="stamp"> </th>
+                                                        <th class="text-center">ตั้งลูกหนี้</th>
+                                                        <th class="text-center">
+                                                            <span class="bg-success badge">{{ $count_claim }}</span> เคลม
+                                                            <span class="bg-danger badge">{{ $count_noclaim }}</span>
+                                                        </th>
+                                                        <th class="text-center" style="background-color: #fad6b8">pdx</th>
+                                                        <th class="text-center">an</th>
+                                                        <th class="text-center" >hn</th>
+                                                        <th class="text-center">ptname</th>
+                                                        <th class="text-center">dchdate</th>
+                                                        <th class="text-center">pttype</th>
+                                                        <th class="text-center">spsch</th>
+                                                        <th class="text-center">adjrw</th>
+                                                        <th class="text-center">income</th>
+                                                        <th class="text-center">ชำระแล้ว</th>
+                                                        <th class="text-center">ucep</th>
+                                                        <th class="text-center">ลูกหนี้/202</th>
+                                                        <th class="text-center">ins All</th>
+                                                        <th class="text-center">ins เลิกจ่าย</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="border: 1px solid rgb(250, 214, 159);">
+                                                    <?php $i = 1; ?>
+                                                    @foreach ($acc_debtor as $item)
+                                                        <tr id="tr_{{$item->acc_debtor_id}}">
+                                                            <td class="text-center" width="2%">{{ $i++ }}</td>
+                                                            {{-- @if ($item->debit_total == '')
+                                                                <td class="text-center" width="5%">
+                                                                    <input class="form-check-input" type="checkbox" id="flexCheckDisabled" disabled>
+                                                                </td>
+                                                            @else
+                                                                <td class="text-center" width="5%"><input type="checkbox" class="sub_chk dcheckbox_" data-id="{{$item->acc_debtor_id}}"> </td>
+                                                            @endif     --}}
+                                                            @if ($activeclaim == 'Y')
+                                                                @if ($item->debit_total == '' || $item->pdx =='')
+                                                                    <td class="text-center" width="3%">
+                                                                        <input class="form-check-input" type="checkbox" id="flexCheckDisabled" disabled>
+                                                                    </td>
+                                                                @else
+                                                                    <td class="text-center" width="3%"><input type="checkbox" class="dcheckbox_ sub_chk" data-id="{{$item->acc_debtor_id}}"> </td>
+                                                                @endif
+                                                            @else
+                                                                <td class="text-center" width="3%"><input type="checkbox" class="dcheckbox_ sub_chk" data-id="{{$item->acc_debtor_id}}"> </td>
+                                                            @endif
+                                                            <td class="text-center" width="3%">
+                                                                @if ($item->stamp =='N')
+                                                                    {{-- <span class="bg-danger badge me-2">{{ $item->stamp }}</span> --}}
+                                                                    <img src="{{ asset('images/Cancel_new2.png') }}" height="17px" width="17px">
+                                                                @else
+                                                                    {{-- <span class="bg-success badge me-2">{{ $item->stamp }}</span> --}}
+                                                                    <img src="{{ asset('images/check_trueinfo3.png') }}" height="17px" width="17px">
+                                                                @endif
+                                                            </td>
+                                                            <td class="text-center" width="5%">
+                                                                @if ($item->active_claim =='N')
+                                                                    {{-- <span class="bg-danger badge me-2">{{ $item->active_claim }}</span> --}}
+                                                                    <img src="{{ asset('images/Cancel_new2.png') }}" height="17px" width="17px">
+                                                                @else
+                                                                    {{-- <span class="bg-success badge me-2">{{ $item->active_claim }}</span> --}}
+                                                                    <img src="{{ asset('images/check_trueinfo3.png') }}" height="17px" width="17px">
+                                                                @endif
+                                                            </td>
+                                                            <td class="text-center" width="3%">
+                                                                @if ($item->pdx != NULL)
+                                                                    <span class="bg-info badge">{{ $item->pdx }}</span>
+                                                                @else
+                                                                    <span class="bg-warning badge">-</span>
+                                                                @endif
+                                                            </td>
+                                                            <td class="text-center" width="5%">{{ $item->an }}</td>
+                                                            <td class="text-center" width="5%">{{ $item->hn }}</td>
+                                                            <td class="text-start" >{{ $item->ptname }}</td>
+                                                            <td class="text-center" width="7%">{{ $item->dchdate }}</td>
+                                                            <td class="text-center" style="color:rgb(73, 147, 231)" width="5%">{{ $item->pttype }}</td>
+                                                            <td class="text-center" style="color:rgb(216, 95, 14)" width="5%">{{ $item->subinscl }}</td>
+                                                            <td class="text-center" width="5%">{{ $item->adjrw }}</td>
+                                                            <td class="text-center" width="5%">{{ number_format($item->income, 2) }}</td>
+                                                            <td class="text-center" width="5%">{{ number_format($item->rcpt_money, 2) }}</td>
+                                                            <td class="text-center" width="5%">{{ number_format($item->debit_ucep, 2) }}</td>
+                                                            <td class="text-center" width="5%">{{ number_format($item->debit_total, 2) }}</td>
+                                                            <td class="text-center" width="5%">{{ number_format($item->nonpay, 2) }}</td>
+                                                            <td class="text-center" width="5%">{{ number_format($item->debit_instument, 2) }}</td>
+                                                            {{-- <td class="text-end" width="7%">{{ number_format($item->debit_drug, 2) }}</td>  --}}
+                                                            {{-- <td class="text-end" width="7%">{{ number_format($item->debit_toa, 2) }}</td>  --}}
+                                                            {{-- <td class="text-end" width="7%">{{ number_format($item->debit_refer, 2) }}</td>   --}}
+                                                            {{-- <td class="text-end" width="7%">{{ number_format($item->debit_ucep, 2) }}</td>  --}}
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                        </table>
                             </div>
                         </p>
 

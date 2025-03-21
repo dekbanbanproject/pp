@@ -3616,6 +3616,10 @@ Route::match(['get','post'],'env_trash_parameter_switchactive',[App\Http\Control
   Route::match(['get', 'post'], 'audit_approve_detail/{month}/{year}', [App\Http\Controllers\PreauditController::class, 'audit_approve_detail'])->name('audit.audit_approve_detail');
   Route::match(['get', 'post'], 'approve_destroy/{id}', [App\Http\Controllers\PreauditController::class, 'approve_destroy'])->name('audit.approve_destroy');
   Route::match(['get', 'post'], 'pre_audit_chart', [App\Http\Controllers\PreauditController::class, 'pre_audit_chart'])->name('audit.pre_audit_chart');
+
+  Route::match(['get', 'post'], 'audit_pdx_all', [App\Http\Controllers\PreauditController::class, 'audit_pdx_all'])->name('audit.audit_pdx_all');
+  Route::match(['get', 'post'], 'audit_pdx_alldetail/{month}/{year}', [App\Http\Controllers\PreauditController::class, 'audit_pdx_alldetail'])->name('audit.audit_pdx_alldetail');
+
   Route::match(['get', 'post'], 'audit_pdx', [App\Http\Controllers\PreauditController::class, 'audit_pdx'])->name('audit.audit_pdx');
   Route::match(['get', 'post'], 'audit_pdx_detail/{month}/{year}', [App\Http\Controllers\PreauditController::class, 'audit_pdx_detail'])->name('audit.audit_pdx_detail');
   Route::match(['get', 'post'], 'audit_pdx_detail_print/{month}/{year}', [App\Http\Controllers\PreauditController::class, 'audit_pdx_detail_print'])->name('audit.audit_pdx_detail_print');
@@ -3964,7 +3968,7 @@ Route::match(['get','post'],'env_trash_parameter_switchactive',[App\Http\Control
  Route::match(['get', 'post'], 'checkup_main', [App\Http\Controllers\CheckupController::class, 'checkup_main'])->name('ch.checkup_main'); //
  Route::match(['get', 'post'], 'checkup_report', [App\Http\Controllers\CheckupController::class, 'checkup_report'])->name('ch.checkup_report'); //
  Route::match(['get', 'post'], 'checkup_report_detail/{hn}/{vstdate}', [App\Http\Controllers\CheckupController::class, 'checkup_report_detail'])->name('ch.checkup_report_detail'); //
-
+ Route::match(['get', 'post'], 'checkup_report_print/{hn}/{vstdate}', [App\Http\Controllers\CheckupController::class, 'checkup_report_print'])->name('ch.checkup_report_print'); //
 
  //********************* */ report_prs  ***********************************
  Route::match(['get', 'post'], 'report_prs', [App\Http\Controllers\ReportPrs::class, 'report_prs'])->name('ch.report_prs'); //

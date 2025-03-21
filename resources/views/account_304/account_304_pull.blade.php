@@ -80,7 +80,8 @@
                 </div>
             </div>
         </div>
-       
+        <form action="{{ URL('account_304_pull') }}" method="GET">
+            @csrf
         <div class="row"> 
             <div class="col-md-4">
                 <h5 class="card-title" style="color:rgb(248, 28, 83)">Process data 1102050101.304</h5>
@@ -94,22 +95,25 @@
                         data-date-language="th-th" value="{{ $startdate }}" required/>
                     <input type="text" class="form-control-sm cardacc" name="enddate" placeholder="End Date" id="datepicker2" data-date-container='#datepicker1' data-provide="datepicker" data-date-autoclose="true" autocomplete="off"
                         data-date-language="th-th" value="{{ $enddate }}"/>  
-                        <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-primary cardacc" data-style="expand-left" id="Pulldata">
-                            <span class="ladda-label"> <i class="fa-solid fa-file-circle-plus text-white me-2"></i>ดึงข้อมูล</span>
-                            <span class="ladda-spinner"></span>
-                        </button> 
-                {{-- <button type="button" class="btn-icon btn-shadow btn-dashed btn btn-outline-primary" id="Pulldata">
-                    <i class="fa-solid fa-file-circle-plus text-primary me-2"></i>
-                    ดึงข้อมูล</button>    
-                </div> --}}
-            </div>
-            {{-- <div class="col"></div> --}}
+                        <button type="submit" class="ladda-button btn-pill btn btn-sm btn-info cardacc" data-style="expand-left">
+                            <span class="ladda-label">
+                                <img src="{{ asset('images/Search02.png') }}" class="me-2 ms-2" height="18px" width="18px">
+                                ค้นหา</span>
+                        </button>
+                    </form>
+                    <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-primary cardacc" data-style="expand-left" id="Pulldata">
+                        <span class="ladda-label">
+                            <img src="{{ asset('images/pull_datawhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
+                            ดึงข้อมูล</span>
+                    </button> 
+              
+            </div> 
         </div>
     </div>      
        
         <div class="row">
             <div class="col-xl-12">
-                <div class="card card_audit_4c">
+                <div class="card card_audit_4c" style="background-color: rgb(239, 247, 235)">
                     <div class="card-body">
                                            
                         <div class="row mb-2">
@@ -120,15 +124,15 @@
                             <div class="col"></div>
                             <div class="col-md-3 text-end">
                                 <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-info cardacc" id="Check_sit">
-                                    <i class="fa-solid fa-user me-2"></i>
+                                    <img src="{{ asset('images/Check_sitwhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
                                     ตรวจสอบสิทธิ์
                                 </button>
                                 <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-primary cardacc Savestamp" data-url="{{url('account_304_stam')}}">
-                                    <i class="fa-solid fa-file-waveform me-2"></i>
-                                    ตั้งลูกหนี้
+                                    <img src="{{ asset('images/Stam_white.png') }}" class="me-2 ms-2" height="18px" width="18px">
+                                    ตั้งลูกหนี้ + ส่งลูกหนี้
                                 </button>
                                 <button type="button" class="ladda-button me-2 btn-pill btn btn-sm btn-danger cardacc Destroystamp" data-url="{{url('account_304_destroy_all')}}">
-                                    <i class="fa-solid fa-trash-can me-2"></i>
+                                    <img src="{{ asset('images/removewhite.png') }}" class="me-2 ms-2" height="18px" width="18px">
                                     ลบ
                                 </button>
                             </div>
@@ -138,7 +142,7 @@
                             <div class="table-responsive">
                                 <table id="example" class="table table-hover table-sm dt-responsive nowrap"
                                 style=" border-spacing: 0; width: 100%;">
-                                    <thead>
+                                    <thead style="border: 1px solid rgb(250, 214, 159);">
                                         <tr>
                                           
                                             <th width="5%" class="text-center">ลำดับ</th> 
@@ -157,7 +161,7 @@
                                             {{-- <th class="text-center"><input type="checkbox" class="dcheckbox" name="destroy" id="destroy"> </th>   --}}
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody style="border: 1px solid rgb(250, 214, 159);">
                                         <?php $i = 1; ?>
                                         @foreach ($acc_debtor as $item) 
                                             <tr id="tr_{{$item->acc_debtor_id}}">                                                  

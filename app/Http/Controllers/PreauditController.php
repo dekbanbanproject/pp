@@ -1702,6 +1702,126 @@ class PreauditController extends Controller
         ]);
     }
 
+    public function audit_pdx_all(Request $request)
+    {
+        $startdate = $request->startdate;
+        $enddate   = $request->enddate;
+        $date      = date('Y-m-d');
+        $y         = date('Y') + 543;
+        $yy        = date('Y');
+        $m         = date('m');
+  
+        $newweek = date('Y-m-d', strtotime($date . ' -3 week')); //ย้อนหลัง 3 สัปดาห์
+        $newDate = date('Y-m-d', strtotime($date . ' -3 months')); //ย้อนหลัง 3 เดือน
+        $newyear = date('Y-m-d', strtotime($date . ' -1 year')); //ย้อนหลัง 1 ปี
+        $yearnew = date('Y');
+        $yearold = date('Y')-1;
+        // $start = (''.$yearold.'-10-01');
+        // $end = (''.$yearnew.'-09-30'); 
+    
+        if ($startdate == '') {
+            $bgs_year         = DB::table('budget_year')->where('years_now','Y')->first();
+            $startdate_new    = $bgs_year->date_begin;
+            $enddate_new      = $bgs_year->date_end;
+
+            $data['datashow']    = DB::connection('mysql10')->select(
+                'SELECT l.MONTH_ID,year(v.vstdate) as years ,month(v.vstdate) as months,year(v.vstdate) as days
+                    ,count(DISTINCT v.vn) as countvn ,sum(v.income)-sum(v.discount_money)-sum(v.rcpt_money) as sum_total
+                    FROM ovst o
+                    LEFT JOIN vn_stat v ON v.vn = o.vn
+                    LEFT JOIN rcpt_debt rr on rr.vn = o.vn
+                    LEFT JOIN ktb_edc_transaction k on k.vn = o.vn
+                    LEFT JOIN leave_month l ON l.MONTH_ID = month(o.vstdate)
+                    WHERE (o.an IS NULL OR o.an ="")
+                    AND o.vstdate BETWEEN "'.$startdate_new.'" AND "'.$enddate_new.'"
+                    GROUP BY month(o.vstdate)
+                    ORDER BY year(v.vstdate),month(v.vstdate) ASC 
+            ');
+            
+            $data['datashow_momth']    = DB::connection('mysql10')->select(
+                'SELECT v.hn,v.vstdate,concat(p.pname,p.fname," ",p.lname) as ptname,v.pdx,v.pttype,vp.claim_code,rr.sss_approval_code,vp.auth_code
+               ,(v.income-v.discount_money-v.rcpt_money) as debit,v.income
+                FROM ovst o
+                LEFT JOIN vn_stat v ON v.vn = o.vn
+                LEFT JOIN visit_pttype vp ON vp.vn = o.vn
+                LEFT JOIN patient p ON p.hn = v.hn
+                LEFT JOIN rcpt_debt rr on rr.vn = o.vn
+                LEFT JOIN ktb_edc_transaction k on k.vn = o.vn
+                WHERE (o.an IS NULL OR o.an ="") AND (v.pdx IS NULL OR v.pdx ="")
+                AND month(o.vstdate) ="'.$m.'" AND year(o.vstdate) ="'.$yy.'" AND (o.vn IS NOT NULL OR o.an <> "")
+                GROUP BY o.vn ORDER BY v.vn DESC
+            ');
+            
+        } else {
+             
+        }
+            // AND (pdx IS NULL OR pdx ="")
+        return view('audit.audit_pdx_all',$data,[
+            'startdate'     =>     $startdate,
+            'enddate'       =>     $enddate,
+        ]);
+    }
+
+    public function audit_pdx_alldetail(Request $request,$month,$year)
+    {
+        $startdate = $request->startdate;
+        $enddate   = $request->enddate;
+        $date      = date('Y-m-d');
+        $y         = date('Y') + 543;
+        $yy        = date('Y');
+        $m         = date('m');
+  
+        $newweek = date('Y-m-d', strtotime($date . ' -3 week')); //ย้อนหลัง 3 สัปดาห์
+        $newDate = date('Y-m-d', strtotime($date . ' -3 months')); //ย้อนหลัง 3 เดือน
+        $newyear = date('Y-m-d', strtotime($date . ' -1 year')); //ย้อนหลัง 1 ปี
+        $yearnew = date('Y');
+        $yearold = date('Y')-1;
+
+        if ($startdate == '') {
+            $data['datashow_momth']    = DB::connection('mysql10')->select(
+                'SELECT p.hn,v.vstdate,concat(p.pname,p.fname," ",p.lname) as ptname,v.pdx,v.pttype,vp.claim_code,rr.sss_approval_code,vp.auth_code,v.cid,v.vn,o.main_dep,o.staff,d.department
+               ,(v.income-v.discount_money-v.rcpt_money) as debit,v.income
+                FROM ovst o
+                LEFT JOIN vn_stat v ON v.vn = o.vn
+                LEFT JOIN visit_pttype vp ON vp.vn = o.vn
+                LEFT JOIN patient p ON p.hn = v.hn
+                LEFT JOIN rcpt_debt rr on rr.vn = o.vn
+                LEFT JOIN ktb_edc_transaction k on k.vn = o.vn
+                LEFT JOIN kskdepartment d ON d.depcode = o.main_dep 
+                WHERE (o.an IS NULL OR o.an ="") AND (v.pdx IS NULL OR v.pdx ="")
+                AND month(o.vstdate) ="'.$month.'" AND year(o.vstdate) ="'.$year.'" AND (o.vn IS NOT NULL OR o.vn <> "")
+                GROUP BY o.vn ORDER BY v.vn DESC
+            ');
+        } else {
+            $data['datashow_momth']    = DB::connection('mysql10')->select(
+                'SELECT p.hn,v.vstdate,concat(p.pname,p.fname," ",p.lname) as ptname,v.pdx,v.pttype,vp.claim_code,rr.sss_approval_code,vp.auth_code,v.cid,v.vn,o.main_dep,o.staff,d.department
+               ,(v.income-v.discount_money-v.rcpt_money) as debit,v.income
+                FROM ovst o
+                LEFT JOIN vn_stat v ON v.vn = o.vn
+                LEFT JOIN visit_pttype vp ON vp.vn = o.vn
+                LEFT JOIN patient p ON p.hn = v.hn
+                LEFT JOIN rcpt_debt rr on rr.vn = o.vn
+                LEFT JOIN ktb_edc_transaction k on k.vn = o.vn
+                LEFT JOIN kskdepartment d ON d.depcode = o.main_dep
+                WHERE (o.an IS NULL OR o.an ="") AND (v.pdx IS NULL OR v.pdx ="")
+                AND o.vstdate BETWEEN "'.$startdate.'" AND "'.$enddate.'" 
+                AND (o.vn IS NOT NULL OR o.vn <> "")
+                GROUP BY o.vn ORDER BY v.vn DESC
+            ');
+        }
+        
+      
+           
+            
+        
+        return view('audit.audit_pdx_alldetail',$data,[
+            'startdate'     =>     $startdate,
+            'enddate'       =>     $enddate,
+            'month'         =>     $month,
+            'year'          =>     $year,
+        ]);
+    }
+
 
 
 
